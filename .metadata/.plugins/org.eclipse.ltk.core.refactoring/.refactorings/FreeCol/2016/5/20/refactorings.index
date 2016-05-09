@@ -1,0 +1,6 @@
+1462766499417	Extract method 'reduceMinRati'
+1462766693902	Extract method 'minProduction'
+1462766718209	Extract method 'maxConsumption'
+1462766904408	Change method 'reduceMinRati'
+1462767318807	Extract method 'filterNonFoods'
+1462767371823	Extract method 'accumalechoices'
