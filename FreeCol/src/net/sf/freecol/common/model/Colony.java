@@ -381,18 +381,29 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
         // Find the food and non-food goods types required by the unit.
         Set<GoodsType> food = new HashSet<>();
         Set<GoodsType> nonFood = new HashSet<>();
-        for (AbstractGoods ag : unit.getType().getConsumedGoods()) {
-            if (productionCache.getNetProductionOf(ag.getType())
-                < ag.getAmount()) {
-                if (ag.getType().isFoodType()) {
-                    food.addAll(ag.getType().getEquivalentTypes());
-                } else {
-                    nonFood.addAll(ag.getType().getEquivalentTypes());
-                }
-            }
-        }
+        
+        filterNonFoods(unit, food, nonFood);
 
-        if (userMode) { // Favour current and expert types in user mode
+        accumalechoices(unit, userMode, result, tried, food, nonFood);
+        
+        accumulateChoices(spec.getFoodGoodsTypeList(), tried, result);
+        accumulateChoices(spec.getNewWorldLuxuryGoodsTypeList(), tried, result);
+        accumulateChoices(spec.getGoodsTypeList(), tried, result);
+        return result;
+    }
+
+	/**
+	 * @param unit
+	 * @param userMode
+	 * @param result
+	 * @param tried
+	 * @param food
+	 * @param nonFood
+	 */
+	private void accumalechoices(Unit unit, boolean userMode,
+			List<Collection<GoodsType>> result, Set<GoodsType> tried,
+			Set<GoodsType> food, Set<GoodsType> nonFood) {
+		if (userMode) { // Favour current and expert types in user mode
             accumulateChoice(unit.getWorkType(), tried, result);
             accumulateChoice(unit.getType().getExpertProduction(), tried, result);
             accumulateChoice(unit.getExperienceType(), tried, result);
@@ -405,11 +416,26 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
             accumulateChoice(unit.getType().getExpertProduction(), tried, result);
             accumulateChoice(unit.getExperienceType(), tried, result);
         }
-        accumulateChoices(spec.getFoodGoodsTypeList(), tried, result);
-        accumulateChoices(spec.getNewWorldLuxuryGoodsTypeList(), tried, result);
-        accumulateChoices(spec.getGoodsTypeList(), tried, result);
-        return result;
-    }
+	}
+
+	/**
+	 * @param unit
+	 * @param food
+	 * @param nonFood
+	 */
+	private void filterNonFoods(Unit unit, Set<GoodsType> food,
+			Set<GoodsType> nonFood) {
+		for (AbstractGoods ag : unit.getType().getConsumedGoods()) {
+            if (productionCache.getNetProductionOf(ag.getType())
+                < ag.getAmount()) {
+                if (ag.getType().isFoodType()) {
+                    food.addAll(ag.getType().getEquivalentTypes());
+                } else {
+                    nonFood.addAll(ag.getType().getEquivalentTypes());
+                }
+            }
+        }
+	}
 
     /**
      * Gets the best occupation for a given unit to produce one of
