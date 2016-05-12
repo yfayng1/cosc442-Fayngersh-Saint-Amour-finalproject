@@ -20,9 +20,6 @@
 package net.sf.freecol.common.model;
 
 import java.util.Collection;
-import java.util.List;
-import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
 import javax.xml.stream.XMLStreamException;
 
@@ -48,8 +45,15 @@ import net.sf.freecol.common.util.Utils;
  */
 public class Operand extends Scope {
 
-    private static final Logger logger = Logger.getLogger(Operand.class.getName());
+    // Serialization
 
+    private static final String OP_TYPE_TAG = "operand-type";
+    private static final String S_LVL_TAG = "scope-level";
+    // @compat 0.11.3
+    private static final String OLD_OP_TYPE_TAG = "operandType";
+    private static final String OLD_S_LVL_TAG = "scopeLevel";
+    // end @compat 0.11.3
+    
     public static enum OperandType {
         UNITS, BUILDINGS, SETTLEMENTS, FOUNDING_FATHERS, YEAR, OPTION, NONE
     }
@@ -71,14 +75,17 @@ public class Operand extends Scope {
     /**
      * Deliberately empty constructor.
      */
-    public Operand() {}
+    public Operand() {
+    	super();
+    }
 
     /**
      * Creates a new <code>Operand</code> instance.
      *
      * @param value The initial operand value.
      */
-    public Operand(int value) {
+    public Operand(final int value) {
+    	super();
         this.value = value;
     }
 
@@ -88,7 +95,8 @@ public class Operand extends Scope {
      * @param operandType The <code>OperandType</code> to use.
      * @param scopeLevel The <code>ScopeLevel</code> to use.
      */
-    public Operand(OperandType operandType, ScopeLevel scopeLevel) {
+    public Operand(final OperandType operandType, final ScopeLevel scopeLevel) {
+    	super();
         this.operandType = operandType;
         this.scopeLevel = scopeLevel;
     }
@@ -96,11 +104,12 @@ public class Operand extends Scope {
     /**
      * Create a new operand by reading a stream.
      *
-     * @param xr The <code>FreeColXMLReader</code> to read.
+     * @param xReader The <code>FreeColXMLReader</code> to read.
      * @exception XMLStreamException if there is a problem reading the stream.
      */
-    protected Operand(FreeColXMLReader xr) throws XMLStreamException {
-        readFromXML(xr);
+    protected Operand(final FreeColXMLReader xReader) throws XMLStreamException {
+    	super();
+        readFromXML(xReader);
     }
 
 
@@ -164,7 +173,7 @@ public class Operand extends Scope {
      * @param game The <code>Game</code> to check.
      * @return The operand value or null if inapplicable.
      */
-    public Integer getValue(Game game) {
+    public Integer getValue(final Game game) {
         return (this.value != null) ? this.value
             : (this.scopeLevel == ScopeLevel.GAME) ? calculateGameValue(game)
             : null;
@@ -177,8 +186,8 @@ public class Operand extends Scope {
      * @param objects The list of objects to check.
      * @return The number of applicable objects.
      */
-    private Integer ourCount(Collection<? extends FreeColObject> objects) {
-        return count(objects, o -> this.appliesTo(o));
+    private Integer ourCount(final Collection<? extends FreeColObject> objects) {
+        return count(objects, object -> this.appliesTo(object));
     }
 
     /**
@@ -187,7 +196,7 @@ public class Operand extends Scope {
      * @param game The <code>Game</code> to check.
      * @return The operand value.
      */
-    private Integer calculateGameValue(Game game) {
+    private Integer calculateGameValue(final Game game) {
         final String methodName = getMethodName();
         int result = 0;
         switch (this.operandType) {
@@ -201,14 +210,14 @@ public class Operand extends Scope {
             result = game.getSpecification().getInteger(getType());
             break;
         default:
-            for (Player player : game.getLivePlayers(null)) {
+            for (final Player player : game.getLivePlayers(null)) {
                 switch (this.operandType) {
                 case UNITS:
                     result += ourCount(player.getUnits());
                     break;
                 case BUILDINGS:
                     result += sum(player.getColonies(),
-                                  c -> ourCount(c.getBuildings()));
+                                  count -> ourCount(count.getBuildings()));
                     break;
                 case SETTLEMENTS:
                     result += ourCount(player.getSettlements());
@@ -230,8 +239,10 @@ public class Operand extends Scope {
      * @param player The <code>Player</code> to check.
      * @return The operand value, or null if inapplicable.
      */
-    public Integer getValue(Player player) {
-        if (this.value != null) return this.value;
+    public Integer getValue(final Player player) {
+        if (this.value != null) {
+        	return this.value;
+        }
         switch (this.scopeLevel) {
         case GAME:
             return getValue(player.getGame());
@@ -247,7 +258,7 @@ public class Operand extends Scope {
         case UNITS:
             return ourCount(player.getUnits());
         case BUILDINGS:
-            return sum(player.getColonies(), c -> ourCount(c.getBuildings()));
+            return sum(player.getColonies(), count -> ourCount(count.getBuildings()));
         case SETTLEMENTS:
             if (methodName == null) {
                 return ourCount(player.getSettlements())
@@ -255,7 +266,7 @@ public class Operand extends Scope {
             }
             final String methodValue = getMethodValue();
             return count(player.getSettlements(),
-                s -> String.valueOf(s.invokeMethod(methodName,
+                settlement -> String.valueOf(settlement.invokeMethod(methodName,
                         Boolean.class, Boolean.FALSE)).equals(methodValue));
         case FOUNDING_FATHERS:
             return ourCount(player.getFathers());
@@ -271,12 +282,16 @@ public class Operand extends Scope {
      * @param settlement The <code>Settlement</code> to check.
      * @return The operand value, or null if inapplicable.
      */
-    public Integer getValue(Settlement settlement) {
-        if (this.value != null) return this.value;
+    public Integer getValue(final Settlement settlement) {
+        if (this.value != null) {
+        	return this.value;
+        }
         
         // In future, we might expand this to handle native settlements
         if (this.scopeLevel != ScopeLevel.SETTLEMENT
-            || !(settlement instanceof Colony)) return null;
+            || !(settlement instanceof Colony)) {
+        	return null;
+        }
 
         final Colony colony = (Colony)settlement;
         switch (this.operandType) {
@@ -297,39 +312,28 @@ public class Operand extends Scope {
      * {@inheritDoc}
      */
     @Override
-    public boolean equals(Object o) {
-        return this == o
-            || (o instanceof Operand
-                && this.operandType == ((Operand)o).operandType
-                && this.scopeLevel == ((Operand)o).scopeLevel
-                && Utils.equals(this.value, ((Operand)o).value)
-                && super.equals(o));
+    public boolean equals(final Object object) {
+        return this == object
+            || (object instanceof Operand
+                && this.operandType == ((Operand)object).operandType
+                && this.scopeLevel == ((Operand)object).scopeLevel
+                && Utils.equals(this.value, ((Operand)object).value)
+                && super.equals(object));
     }
-
-
-    // Serialization
-
-    private static final String OPERAND_TYPE_TAG = "operand-type";
-    private static final String SCOPE_LEVEL_TAG = "scope-level";
-    // @compat 0.11.3
-    private static final String OLD_OPERAND_TYPE_TAG = "operandType";
-    private static final String OLD_SCOPE_LEVEL_TAG = "scopeLevel";
-    // end @compat 0.11.3
-
 
     /**
      * {@inheritDoc}
      */
     @Override
-    protected void writeAttributes(FreeColXMLWriter xw) throws XMLStreamException {
-        super.writeAttributes(xw);
+    protected void writeAttributes(final FreeColXMLWriter xWriter) throws XMLStreamException {
+        super.writeAttributes(xWriter);
 
-        xw.writeAttribute(OPERAND_TYPE_TAG, this.operandType);
+        xWriter.writeAttribute(OP_TYPE_TAG, this.operandType);
 
-        xw.writeAttribute(SCOPE_LEVEL_TAG, this.scopeLevel);
+        xWriter.writeAttribute(S_LVL_TAG, this.scopeLevel);
 
         if (this.value != null) {
-            xw.writeAttribute(VALUE_TAG, this.value);
+            xWriter.writeAttribute(VALUE_TAG, this.value);
         }
     }
 
@@ -337,29 +341,31 @@ public class Operand extends Scope {
      * {@inheritDoc}
      */
     @Override
-    protected void readAttributes(FreeColXMLReader xr) throws XMLStreamException {
-        super.readAttributes(xr);
+    protected void readAttributes(final FreeColXMLReader xReader) throws XMLStreamException {
+        super.readAttributes(xReader);
 
         // @compat 0.11.3
-        if (xr.hasAttribute(OLD_OPERAND_TYPE_TAG)) {
-            this.operandType = xr.getAttribute(OLD_OPERAND_TYPE_TAG,
+        if (xReader.hasAttribute(OLD_OP_TYPE_TAG)) {
+            this.operandType = xReader.getAttribute(OLD_OP_TYPE_TAG,
                 OperandType.class, OperandType.NONE);
-        } else            
+        } else {           
         // end @compat 0.11.3
-            this.operandType = xr.getAttribute(OPERAND_TYPE_TAG,
+            this.operandType = xReader.getAttribute(OP_TYPE_TAG,
                 OperandType.class, OperandType.NONE);
-
+        }
         // @compat 0.11.3
-        if (xr.hasAttribute(OLD_SCOPE_LEVEL_TAG)) {
-            this.scopeLevel = xr.getAttribute(OLD_SCOPE_LEVEL_TAG,
+        if (xReader.hasAttribute(OLD_S_LVL_TAG)) {
+            this.scopeLevel = xReader.getAttribute(OLD_S_LVL_TAG,
                 ScopeLevel.class, ScopeLevel.NONE);
-        } else
+        } else {
         // end @compat 0.11.3
-            this.scopeLevel = xr.getAttribute(SCOPE_LEVEL_TAG,
+            this.scopeLevel = xReader.getAttribute(S_LVL_TAG,
                 ScopeLevel.class, ScopeLevel.NONE);
-
-        int val = xr.getAttribute(VALUE_TAG, INFINITY);
-        if (val != INFINITY) this.value = val;
+        }
+        final int val = xReader.getAttribute(VALUE_TAG, INFINITY);
+        if (val != INFINITY) {
+        	this.value = val;
+        }
     }
 
     /**
@@ -367,11 +373,13 @@ public class Operand extends Scope {
      */
     @Override
     public String toString() {
-        if (this.value != null) return Integer.toString(value);
-        StringBuffer sb = new StringBuffer();
-        sb.append("[Operand type=").append(this.operandType)
+        if (this.value != null) {
+        	return Integer.toString(value);
+        }
+        final StringBuffer sBuffer = new StringBuffer();
+        sBuffer.append("[Operand type=").append(this.operandType)
             .append(" scopeLevel=").append(this.scopeLevel);
-        return super.toString().replaceFirst("^[^ ]*", sb.toString());
+        return super.toString().replaceFirst("^[^ ]*", sBuffer.toString());
     }
 
     // getTagName apparently not needed, uses parents.

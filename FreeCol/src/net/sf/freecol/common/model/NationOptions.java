@@ -39,7 +39,19 @@ import static net.sf.freecol.common.util.StringUtils.*;
  */
 public class NationOptions extends FreeColSpecObject {
 
-    private static final Logger logger = Logger.getLogger(NationOptions.class.getName());
+    // Serialization
+    // Note: NATION/S_TAG is capitalized to avoid collision with Nation.java.
+
+    private static final String NAT_ADV_TAG = "nationalAdvantages";
+    private static final String NATION_OPTION_TAG = "nationOption";
+    private static final String STATE_TAG = "state";
+    // @compat 0.11.3
+    private static final String OLD_NATION_TAG = "Nation";
+    private static final String OLD_NATIONS_TAG = "Nations";
+    // end @compat 0.11.3
+
+    private static final Logger LOGGER = Logger.getLogger(NationOptions.class.getName());
+    private static final String MODEL = "model.";
 
     /** Type of national advantages for European players. */
     public static enum Advantages implements Named {
@@ -57,7 +69,7 @@ public class NationOptions extends FreeColSpecObject {
         }
 
         public final String getShortDescriptionKey() {
-            return Messages.shortDescriptionKey("model." + getKey());
+            return Messages.shortDescriptionKey(MODEL + getKey());
         }
 
         // Implement Named
@@ -67,7 +79,7 @@ public class NationOptions extends FreeColSpecObject {
          */
         @Override
         public final String getNameKey() {
-            return Messages.nameKey("model." + getKey());
+            return Messages.nameKey(MODEL + getKey());
         }
     };
 
@@ -90,7 +102,7 @@ public class NationOptions extends FreeColSpecObject {
         }
 
         public final String getShortDescriptionKey() {
-            return Messages.shortDescriptionKey("model." + getKey());
+            return Messages.shortDescriptionKey(MODEL + getKey());
         }
 
         // Implement Named
@@ -100,12 +112,12 @@ public class NationOptions extends FreeColSpecObject {
          */
         @Override
         public final String getNameKey() {
-            return Messages.nameKey("model." + getKey());
+            return Messages.nameKey(MODEL + getKey());
         }
     }
 
     /** The type of European national advantages. */
-    private Advantages nationalAdvantages;
+    private Advantages natAdvantages;
 
     /** All nations in the game. */
     private final Map<Nation, NationState> nations = new HashMap<>();
@@ -116,13 +128,14 @@ public class NationOptions extends FreeColSpecObject {
      *
      * @param specification The <code>Specification</code> to refer to.
      */
-    public NationOptions(Specification specification) {
+    public NationOptions(final Specification specification) {
         super(specification);
         
-        this.nationalAdvantages = FreeCol.getAdvantages();
+        this.natAdvantages = FreeCol.getAdvantages();
         if (specification != null) {
-            int counter = 0, maxEuropeans = FreeCol.getEuropeanCount();
-            for (Nation nation : specification.getNations()) {
+            int counter = 0;
+            final int maxEuropeans = FreeCol.getEuropeanCount();
+            for (final Nation nation : specification.getNations()) {
                 if (nation.isUnknownEnemy() || nation.getType().isREF()) {
                     continue;
                 } else if (nation.getType().isEuropean()
@@ -143,15 +156,14 @@ public class NationOptions extends FreeColSpecObject {
     /**
      * Creates a new <code>NationOptions</code> instance by reading a stream.
      *
-     * @param xr The <code>FreeColXMLReader</code> to read from.
+     * @param xReader The <code>FreeColXMLReader</code> to read from.
      * @param specification The <code>Specification</code> to refer to.
      * @exception XMLStreamException if there is a problem reading the stream.
      */
-    public NationOptions(FreeColXMLReader xr,
-                         Specification specification) throws XMLStreamException {
+    public NationOptions(final FreeColXMLReader xReader, final Specification specification) throws XMLStreamException {
         this(specification);
         
-        readFromXML(xr);
+        readFromXML(xReader);
     }
 
 
@@ -170,7 +182,7 @@ public class NationOptions extends FreeColSpecObject {
      * @return The national advantages.
      */
     public final Advantages getNationalAdvantages() {
-        return nationalAdvantages;
+        return natAdvantages;
     }
 
     /**
@@ -179,7 +191,7 @@ public class NationOptions extends FreeColSpecObject {
      * @param nation The <code>Nation</code> to query.
      * @return The corresponding <code>NationState</code>.
      */
-    public final NationState getNationState(Nation nation) {
+    public final NationState getNationState(final Nation nation) {
         return nations.get(nation);
     }
 
@@ -189,50 +201,36 @@ public class NationOptions extends FreeColSpecObject {
      * @param nation The <code>Nation</code> to set the state for.
      * @param state The <code>NationState</code> to set.
      */
-    public final void setNationState(final Nation nation,
-                                     final NationState state) {
+    public final void setNationState(final Nation nation, final NationState state) {
         this.nations.put(nation, state);
     }
 
-
-    // Serialization
-    // Note: NATION/S_TAG is capitalized to avoid collision with Nation.java.
-
-    private static final String NATIONAL_ADVANTAGES_TAG = "nationalAdvantages";
-    private static final String NATION_OPTION_TAG = "nationOption";
-    private static final String STATE_TAG = "state";
-    // @compat 0.11.3
-    private static final String OLD_NATION_TAG = "Nation";
-    private static final String OLD_NATIONS_TAG = "Nations";
-    // end @compat 0.11.3
-
-
     /**
      * {@inheritDoc}
      */
     @Override
-    public void writeAttributes(FreeColXMLWriter xw) throws XMLStreamException {
+    public void writeAttributes(final FreeColXMLWriter xWriter) throws XMLStreamException {
         // The nation options do not use the FreeColObject attributes, so
         // no: super.writeAttributes(out);
 
-        xw.writeAttribute(NATIONAL_ADVANTAGES_TAG, nationalAdvantages);
+        xWriter.writeAttribute(NAT_ADV_TAG, natAdvantages);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void writeChildren(FreeColXMLWriter xw) throws XMLStreamException {
-        super.writeChildren(xw);
+    public void writeChildren(final FreeColXMLWriter xWriter) throws XMLStreamException {
+        super.writeChildren(xWriter);
 
-        for (Nation nation : toSortedList(nations.keySet())) {
-            xw.writeStartElement(NATION_OPTION_TAG);
+        for (final Nation nation : toSortedList(nations.keySet())) {
+            xWriter.writeStartElement(NATION_OPTION_TAG);
 
-            xw.writeAttribute(ID_ATTRIBUTE_TAG, nation);
+            xWriter.writeAttribute(ID_ATTRIBUTE_TAG, nation);
 
-            xw.writeAttribute(STATE_TAG, nations.get(nation));
+            xWriter.writeAttribute(STATE_TAG, nations.get(nation));
             
-            xw.writeEndElement();
+            xWriter.writeEndElement();
         }
     }
 
@@ -240,11 +238,11 @@ public class NationOptions extends FreeColSpecObject {
      * {@inheritDoc}
      */
     @Override
-    protected void readAttributes(FreeColXMLReader xr) throws XMLStreamException {
+    protected void readAttributes(final FreeColXMLReader xReader) throws XMLStreamException {
         // The nation options do not use the FreeColObject attributes, so
         // no: super.readAttributes(in);
 
-        nationalAdvantages = xr.getAttribute(NATIONAL_ADVANTAGES_TAG,
+        natAdvantages = xReader.getAttribute(NAT_ADV_TAG,
             Advantages.class, Advantages.SELECTABLE);
     }
 
@@ -252,11 +250,11 @@ public class NationOptions extends FreeColSpecObject {
      * {@inheritDoc}
      */
     @Override
-    protected void readChildren(FreeColXMLReader xr) throws XMLStreamException {
+    protected void readChildren(final FreeColXMLReader xReader) throws XMLStreamException {
         // Clear containers.
         nations.clear();
 
-        super.readChildren(xr);
+        super.readChildren(xReader);
     }
 
     /**
@@ -264,15 +262,15 @@ public class NationOptions extends FreeColSpecObject {
      * using classic mode (no extra Europeans) but loading a map that
      * contains the extra Europeans.
      *
-     * @param xr The <code>FreeColXMLReader</code> to read from.
+     * @param xReader The <code>FreeColXMLReader</code> to read from.
      * @return A suitable <code>Nation</code> or null on error.
      */
-    private Nation readNation(FreeColXMLReader xr) {
+    private Nation readNation(final FreeColXMLReader xReader) {
         try {
-            return xr.getType(getSpecification(), ID_ATTRIBUTE_TAG,
+            return xReader.getType(getSpecification(), ID_ATTRIBUTE_TAG,
                               Nation.class, (Nation)null);
         } catch (IllegalArgumentException iae) {
-            logger.warning("Bad nation tag: " + xr.readId());
+            LOGGER.warning("Bad nation tag: " + xReader.readId());
         }
         return null;
     }
@@ -281,30 +279,30 @@ public class NationOptions extends FreeColSpecObject {
      * {@inheritDoc}
      */
     @Override
-    protected void readChild(FreeColXMLReader xr) throws XMLStreamException {
-        String tag = xr.getLocalName();
+    protected void readChild(final FreeColXMLReader xReader) throws XMLStreamException {
+        String tag = xReader.getLocalName();
 
         if (NATION_OPTION_TAG.equals(tag)) {
-            Nation nation = readNation(xr);
-            NationState state = xr.getAttribute(STATE_TAG,
+            final Nation nation = readNation(xReader);
+            final NationState state = xReader.getAttribute(STATE_TAG,
                 NationState.class, (NationState)null);
             if (nation != null && state != null) {
                 nations.put(nation, state);
             }
-            xr.closeTag(NATION_OPTION_TAG);
+            xReader.closeTag(NATION_OPTION_TAG);
 
         // @compat 0.11.3
         } else if (OLD_NATIONS_TAG.equals(tag)) {
-            while (xr.nextTag() != XMLStreamConstants.END_ELEMENT) {
-                tag = xr.getLocalName();
+            while (xReader.nextTag() != XMLStreamConstants.END_ELEMENT) {
+                tag = xReader.getLocalName();
                 if (OLD_NATION_TAG.equals(tag)) {
-                    Nation nation = readNation(xr);
-                    NationState state = xr.getAttribute(STATE_TAG,
+                    final Nation nation = readNation(xReader);
+                    final NationState state = xReader.getAttribute(STATE_TAG,
                         NationState.class, (NationState)null);
                     if (nation != null && state != null) {
                         nations.put(nation, state);
                     }
-                    xr.closeTag(OLD_NATION_TAG);
+                    xReader.closeTag(OLD_NATION_TAG);
 
                 } else {
                     throw new XMLStreamException("Bogus " + OLD_NATION_TAG
@@ -314,7 +312,7 @@ public class NationOptions extends FreeColSpecObject {
         // end @compat 0.11.3
 
         } else {
-            super.readChild(xr);
+            super.readChild(xReader);
         }
     }
 
@@ -323,22 +321,24 @@ public class NationOptions extends FreeColSpecObject {
      */
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder(128);
-        sb.append(NATIONAL_ADVANTAGES_TAG).append(": ")
-            .append(nationalAdvantages).append("\n");
-        for (Map.Entry<Nation, NationState> entry : nations.entrySet()) {
-            sb.append(" ").append(entry.getKey().getId())
+        final StringBuilder sBuilder = new StringBuilder(128);
+        sBuilder.append(NAT_ADV_TAG).append(": ")
+            .append(natAdvantages).append("\n");
+        for (final Map.Entry<Nation, NationState> entry : nations.entrySet()) {
+            sBuilder.append(" ").append(entry.getKey().getId())
                 .append(" ").append(entry.getValue())
                 .append("\n");
         }
-        return sb.toString();
+        return sBuilder.toString();
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public String getXMLTagName() { return getTagName(); }
+    public String getXMLTagName() { 
+    	return getTagName(); 
+    }
 
     /**
      * Gets the tag name of the root element representing this object.

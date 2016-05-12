@@ -1065,7 +1065,7 @@ public final class FreeColServer {
         if (unknown == null) {
             establishUnknownEnemy(game);
         } else {
-            unknown.setName(Nation.UNKNOWN_NATION_ID);
+            unknown.setName(Nation.UNKNOWN_NAT_ID);
         }
         // end @compat
 
@@ -1123,7 +1123,7 @@ public final class FreeColServer {
         final Specification spec = game.getSpecification();
 
         ServerPlayer enemy = new ServerPlayer(game, false,
-            spec.getNation(Nation.UNKNOWN_NATION_ID), null, null);
+            spec.getNation(Nation.UNKNOWN_NAT_ID), null, null);
         game.setUnknownEnemy(enemy);
         return enemy;
     }

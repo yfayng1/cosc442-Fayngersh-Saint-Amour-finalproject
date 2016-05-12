@@ -42,8 +42,23 @@ import net.sf.freecol.common.io.FreeColXMLWriter;
  */
 public class PlayerExploredTile extends FreeColGameObject {
 
-    private static final Logger logger = Logger.getLogger(PlayerExploredTile.class.getName());
+    // Serialization
+    
+    private static final String ALARM_TAG = "alarm";
+    private static final String COLONY_UNIT_COUNT_TAG = "colonyUnitCount";
+    private static final String LEARN_SKILL_TAG = "learnableSkill";
+    private static final String MISSIONARY_TAG = "missionary";
+    private static final String MOST_HATED_TAG = "mostHated";
+    private static final String OWNER_TAG = "owner";
+    private static final String OWN_SET_TAG = "owningSettlement";
+    private static final String PLAYER_TAG = "player";
+    private static final String TILE_TAG = "tile";
+    private static final String WANTED_GOODS_TAG = "wantedGoods";
+    // @compat 0.11.3
+    private static final String OLD_TILE_IMP_TAG = "tileimprovement";
+    // end @compat 0.11.3
 
+    private static final Logger LOGGER = Logger.getLogger(PlayerExploredTile.class.getName());
 
     /** The owner of this view. */
     private Player player;
@@ -76,7 +91,7 @@ public class PlayerExploredTile extends FreeColGameObject {
      * @param player The <code>Player</code> that owns this view.
      * @param tile The <code>Tile</code> to view.
      */
-    public PlayerExploredTile(Game game, Player player, Tile tile) {
+    public PlayerExploredTile(final Game game, final Player player, final Tile tile) {
         super(game);
         this.player = player;
         this.tile = tile;
@@ -86,10 +101,10 @@ public class PlayerExploredTile extends FreeColGameObject {
      * Create a new player explored tile.
      *
      * @param game The enclosing <code>Game</code>.
-     * @param id The object identifier.
+     * @param identifier The object identifier.
      */
-    public PlayerExploredTile(Game game, String id) {
-        super(game, id);
+    public PlayerExploredTile(final Game game, final String identifier) {
+        super(game, identifier);
     }
 
 
@@ -109,7 +124,9 @@ public class PlayerExploredTile extends FreeColGameObject {
      * @param item The <code>TileItem</code> to add.
      */
     private void addTileItem(TileItem item) {
-        if (tileItems == null) tileItems = new ArrayList<>();
+        if (tileItems == null) {
+        	tileItems = new ArrayList<>();
+        }
         tileItems.add(item);
     }
 
@@ -126,98 +143,82 @@ public class PlayerExploredTile extends FreeColGameObject {
             return;
         }
 
-        Tile copied = tile.getTileToCache();
-        boolean ok = true;
+        final Tile copied = tile.getTileToCache();
+        boolean acceptable = true;
         if (tile.getOwner() != owner) {
             copied.setOwner(owner);
-            ok = false;
+            acceptable = false;
         }
 
         if (tile.getOwningSettlement() != owningSettlement) {
             copied.setOwningSettlement(owningSettlement);
-            ok = false;
+            acceptable = false;
         }
 
-        List<TileItem> ti = copied.getCompleteItems();
-        if ((ti == null) != (tileItems == null)
-            || (ti != null && ti.size() != tileItems.size())) {
+        List<TileItem> tileItem = copied.getCompleteItems();
+        if ((tileItem == null) != (tileItems == null)
+            || (tileItem != null && tileItem.size() != tileItems.size())) {
             // Not trying too hard to match up the tile items
-            ok = false;
+            acceptable = false;
         }
 
-        Settlement ts = copied.getSettlement();
-        if (ts instanceof Colony) {
-            Colony colony = (Colony)ts;
+        final Settlement settle = copied.getSettlement();
+        if (settle instanceof Colony) {
+            final Colony colony = (Colony)settle;
             if (colonyUnitCount != colony.getUnitCount()) {
                 colony.setDisplayUnitCount(colonyUnitCount);
-                ok = false;
+                acceptable = false;
             }
-        } else if (ts instanceof IndianSettlement) {
+        } else if (settle instanceof IndianSettlement) {
             if (missionary == null && mostHated == null && alarm == null) {
                 copied.setSettlement(null);
             } else {
-                IndianSettlement is = (IndianSettlement)ts;
-                if (missionary != is.getMissionary()) {
+                final IndianSettlement indianSet = (IndianSettlement)settle;
+                if (missionary != indianSet.getMissionary()) {
                     // Do not try to be clever with a unit that might be gone.
-                    is.setMissionary(null);
-                    ok = false;
+                    indianSet.setMissionary(null);
+                    acceptable = false;
                 }
-                if (mostHated != is.getMostHated()) {
-                    is.setMostHated(mostHated);
-                    ok = false;
+                if (mostHated != indianSet.getMostHated()) {
+                    indianSet.setMostHated(mostHated);
+                    acceptable = false;
                 }
-                if (alarm != is.getAlarm(player)) {
-                    is.setAlarm(player, alarm);
-                    ok = false;
+                if (alarm != indianSet.getAlarm(player)) {
+                    indianSet.setAlarm(player, alarm);
+                    acceptable = false;
                 }
             }
         }
-        tile.setCachedTile(player, (ok) ? tile : copied);
+        tile.setCachedTile(player, (acceptable) ? tile : copied);
     }
         
-
-    // Serialization
-    
-    private static final String ALARM_TAG = "alarm";
-    private static final String COLONY_UNIT_COUNT_TAG = "colonyUnitCount";
-    private static final String LEARNABLE_SKILL_TAG = "learnableSkill";
-    private static final String MISSIONARY_TAG = "missionary";
-    private static final String MOST_HATED_TAG = "mostHated";
-    private static final String OWNER_TAG = "owner";
-    private static final String OWNING_SETTLEMENT_TAG = "owningSettlement";
-    private static final String PLAYER_TAG = "player";
-    private static final String TILE_TAG = "tile";
-    private static final String WANTED_GOODS_TAG = "wantedGoods";
-    // @compat 0.11.3
-    private static final String OLD_TILE_IMPROVEMENT_TAG = "tileimprovement";
-    // end @compat 0.11.3
-
-
     /**
      * {@inheritDoc}
      */
     @Override
-    public void writeAttributes(FreeColXMLWriter xw) throws XMLStreamException {
-        super.writeAttributes(xw);
+    public void writeAttributes(final FreeColXMLWriter xWriter) throws XMLStreamException {
+        super.writeAttributes(xWriter);
 
-        xw.writeAttribute(PLAYER_TAG, player);
+        xWriter.writeAttribute(PLAYER_TAG, player);
 
-        xw.writeAttribute(TILE_TAG, tile);
+        xWriter.writeAttribute(TILE_TAG, tile);
 
-        if (owner != null) xw.writeAttribute(OWNER_TAG, owner);
+        if (owner != null) {
+        	xWriter.writeAttribute(OWNER_TAG, owner);
+        }
 
         if (owningSettlement != null) {
-            xw.writeAttribute(OWNING_SETTLEMENT_TAG, owningSettlement);
+            xWriter.writeAttribute(OWN_SET_TAG, owningSettlement);
         }
 
         if (colonyUnitCount > 0) {
-            xw.writeAttribute(COLONY_UNIT_COUNT_TAG, colonyUnitCount);
+            xWriter.writeAttribute(COLONY_UNIT_COUNT_TAG, colonyUnitCount);
         }
 
-        if (alarm != null) xw.writeAttribute(ALARM_TAG, alarm.getValue());
+        if (alarm != null) xWriter.writeAttribute(ALARM_TAG, alarm.getValue());
 
         if (mostHated != null) {
-            xw.writeAttribute(MOST_HATED_TAG, mostHated.getId());
+            xWriter.writeAttribute(MOST_HATED_TAG, mostHated.getId());
         }
     }
 
@@ -225,23 +226,23 @@ public class PlayerExploredTile extends FreeColGameObject {
      * {@inheritDoc}
      */
     @Override
-    public void writeChildren(FreeColXMLWriter xw) throws XMLStreamException {
-        super.writeChildren(xw);
+    public void writeChildren(FreeColXMLWriter xWriter) throws XMLStreamException {
+        super.writeChildren(xWriter);
 
         if (missionary != null
             // Hack to avoid writing now-invalid missionary.
             && tile.getSettlement() != null
             && tile.getSettlement() instanceof IndianSettlement
             && ((IndianSettlement)tile.getSettlement()).getMissionary() == missionary) {
-            xw.writeStartElement(MISSIONARY_TAG);
+            xWriter.writeStartElement(MISSIONARY_TAG);
 
-            missionary.toXML(xw);
+            missionary.toXML(xWriter);
 
-            xw.writeEndElement();
+            xWriter.writeEndElement();
         }
 
         for (TileItem ti : getTileItems()) {
-            ti.toXML(xw);
+            ti.toXML(xWriter);
         }
     }
 
@@ -249,18 +250,18 @@ public class PlayerExploredTile extends FreeColGameObject {
      * {@inheritDoc}
      */
     @Override
-    protected void readAttributes(FreeColXMLReader xr) throws XMLStreamException {
-        super.readAttributes(xr);
+    protected void readAttributes(FreeColXMLReader xReader) throws XMLStreamException {
+        super.readAttributes(xReader);
 
         final Specification spec = getSpecification();
         final Game game = getGame();
 
-        player = xr.makeFreeColGameObject(game, PLAYER_TAG,
+        player = xReader.makeFreeColGameObject(game, PLAYER_TAG,
                                           Player.class, true);
 
-        tile = xr.makeFreeColGameObject(game, TILE_TAG, Tile.class, true);
+        tile = xReader.makeFreeColGameObject(game, TILE_TAG, Tile.class, true);
 
-        owner = xr.makeFreeColGameObject(game, OWNER_TAG, Player.class, false);
+        owner = xReader.makeFreeColGameObject(game, OWNER_TAG, Player.class, false);
 
         // FIXME: makeFreeColGameObject is more logical, but will fail ATM
         // if the settlement has been destroyed while this pet-player can
@@ -268,27 +269,27 @@ public class PlayerExploredTile extends FreeColGameObject {
         // a ServerObject for existing settlements so findFreeColGameObject
         // will do the right thing for now.
         owningSettlement
-            = xr.findFreeColGameObject(game, OWNING_SETTLEMENT_TAG,
+            = xReader.findFreeColGameObject(game, OWN_SET_TAG,
                 Settlement.class, (Settlement)null, false);
 
-        colonyUnitCount = xr.getAttribute(COLONY_UNIT_COUNT_TAG, 0);
+        colonyUnitCount = xReader.getAttribute(COLONY_UNIT_COUNT_TAG, 0);
 
-        alarm = new Tension(xr.getAttribute(ALARM_TAG, 0));
+        alarm = new Tension(xReader.getAttribute(ALARM_TAG, 0));
 
-        mostHated = xr.makeFreeColGameObject(game, MOST_HATED_TAG,
+        mostHated = xReader.makeFreeColGameObject(game, MOST_HATED_TAG,
                                              Player.class, false);
 
 
         // @compat 0.10.7
-        IndianSettlement is = tile.getIndianSettlement();
-        if (is != null) {
-            UnitType skill = xr.getType(spec, LEARNABLE_SKILL_TAG,
+        final IndianSettlement indianSet = tile.getIndianSettlement();
+        if (indianSet != null) {
+            final UnitType skill = xReader.getType(spec, LEARN_SKILL_TAG,
                                         UnitType.class, (UnitType)null);
 
             boolean natives = skill != null;
             GoodsType[] wanted = new GoodsType[IndianSettlement.WANTED_GOODS_COUNT];
             for (int i = 0; i < IndianSettlement.WANTED_GOODS_COUNT; i++) {
-                wanted[i] = xr.getType(spec, WANTED_GOODS_TAG + i,
+                wanted[i] = xReader.getType(spec, WANTED_GOODS_TAG + i,
                                        GoodsType.class, (GoodsType)null);
                 natives |= wanted[i] != null;
             }
@@ -304,19 +305,19 @@ public class PlayerExploredTile extends FreeColGameObject {
      * {@inheritDoc}
      */
     @Override
-    protected void readChildren(FreeColXMLReader xr) throws XMLStreamException {
+    protected void readChildren(final FreeColXMLReader xReader) throws XMLStreamException {
         // Clear containers.
         if (tileItems != null) tileItems.clear();
         missionary = null;
 
-        super.readChildren(xr);
+        super.readChildren(xReader);
 
         // Workaround for BR#2508, problem possibly dates as late as 0.10.5.
         if (tile.getIndianSettlement() == null && missionary != null) {
-            logger.warning("Dropping ghost missionary " + missionary.getId()
+            LOGGER.warning("Dropping ghost missionary " + missionary.getId()
                 + " from " + this.getId());
-            Player p = missionary.getOwner();
-            if (p != null) p.removeUnit(missionary);
+            final Player player = missionary.getOwner();
+            if (player != null) player.removeUnit(missionary);
             missionary = null;
         }           
     }
@@ -325,30 +326,30 @@ public class PlayerExploredTile extends FreeColGameObject {
      * {@inheritDoc}
      */
     @Override
-    protected void readChild(FreeColXMLReader xr) throws XMLStreamException {
+    protected void readChild(FreeColXMLReader xReader) throws XMLStreamException {
         final Game game = getGame();
-        final String tag = xr.getLocalName();
+        final String tag = xReader.getLocalName();
 
         if (MISSIONARY_TAG.equals(tag)) {
-            xr.nextTag(); // advance to the Unit tag
-            missionary = xr.readFreeColGameObject(game, Unit.class);
-            xr.closeTag(MISSIONARY_TAG);
+            xReader.nextTag(); // advance to the Unit tag
+            missionary = xReader.readFreeColGameObject(game, Unit.class);
+            xReader.closeTag(MISSIONARY_TAG);
 
         } else if (LostCityRumour.getTagName().equals(tag)) {
-            addTileItem(xr.readFreeColGameObject(game, LostCityRumour.class));
+            addTileItem(xReader.readFreeColGameObject(game, LostCityRumour.class));
 
         } else if (Resource.getTagName().equals(tag)) {
-            addTileItem(xr.readFreeColGameObject(game, Resource.class));
+            addTileItem(xReader.readFreeColGameObject(game, Resource.class));
 
         } else if (TileImprovement.getTagName().equals(tag)
                    // @compat 0.11.3
-                   || OLD_TILE_IMPROVEMENT_TAG.equals(tag)
+                   || OLD_TILE_IMP_TAG.equals(tag)
                    // end @compat 0.11.3
                    ) {
-            addTileItem(xr.readFreeColGameObject(game, TileImprovement.class));
+            addTileItem(xReader.readFreeColGameObject(game, TileImprovement.class));
 
         } else {
-            super.readChild(xr);
+            super.readChild(xReader);
         }
     }
 

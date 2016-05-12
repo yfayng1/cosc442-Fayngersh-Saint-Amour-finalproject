@@ -40,43 +40,56 @@ import static net.sf.freecol.common.util.RandomUtils.*;
  */
 public class Nation extends FreeColSpecObjectType {
 
+    // Serialization
+
+    private static final String COLOR_TAG = "color";
+    private static final String NATION_TYPE_TAG = "nation-type";
+    private static final String LAT_TAG = "preferred-latitude";
+    private static final String REF_TAG = "ref";
+    private static final String SELECTABLE_TAG = "selectable";
+    private static final String EC_TAG = "starts-on-east-coast";
+    // @compat 0.11.3
+    private static final String OLD_LAT_TAG = "preferredLatitude";
+    private static final String OLD_EC_TAG = "startsOnEastCoast";
+    // end @compat 0.11.3
+
     /** The unknown enemy id. */
-    public static final String UNKNOWN_NATION_ID = "model.nation.unknownEnemy";
+    public static final String UNKNOWN_NAT_ID = "model.nation.unknownEnemy";
 
     /** The last resort unknown nation color. */
-    public static final Color UNKNOWN_NATION_COLOR = Color.BLACK;
+    public static final Color UNKNOWN_NAT_COLOR = Color.BLACK;
 
     // @compat 0.10.x
     // Colours moved back into the spec at 0.11.  We have to tolerate
     // old specs that lack them while 0.10.x is supported.
     /** A map of default nation colours. */
-    private static final Map<String, Color> defaultColors = new HashMap<>();
+    private static final Map<String, Color> DEFAULTCOLORS = new HashMap<>();
     static {
-        defaultColors.put("model.nation.dutch",         new Color(0xff9d3c));
-        defaultColors.put("model.nation.french",        new Color(0x0000ff));
-        defaultColors.put("model.nation.english",       new Color(0xff0000));
-        defaultColors.put("model.nation.spanish",       new Color(0xffff00));
-        defaultColors.put("model.nation.inca",          new Color(0xf4f0c4));
-        defaultColors.put("model.nation.aztec",         new Color(0xc4a020));
-        defaultColors.put("model.nation.arawak",        new Color(0x6888c0));
-        defaultColors.put("model.nation.cherokee",      new Color(0x6c3c18));
-        defaultColors.put("model.nation.iroquois",      new Color(0x74a44c));
-        defaultColors.put("model.nation.sioux",         new Color(0xc0ac84));
-        defaultColors.put("model.nation.apache",        new Color(0x900000));
-        defaultColors.put("model.nation.tupi",          new Color(0x045c04));
-        defaultColors.put("model.nation.dutchREF",      new Color(0xcc5500));
-        defaultColors.put("model.nation.frenchREF",     new Color(0x6050dc));
-        defaultColors.put("model.nation.englishREF",    new Color(0xde3163));
-        defaultColors.put("model.nation.spanishREF",    new Color(0xffdf00));
-        defaultColors.put("model.nation.portuguese",    new Color(0x00ff00));
-        defaultColors.put("model.nation.swedish",       new Color(0x00bfff));
-        defaultColors.put("model.nation.danish",        new Color(0xff00bf));
-        defaultColors.put("model.nation.russian",       new Color(0xffffff));
-        defaultColors.put("model.nation.portugueseREF", new Color(0xbfff00));
-        defaultColors.put("model.nation.swedishREF",    new Color(0x367588));
-        defaultColors.put("model.nation.danishREF",     new Color(0x91006d));
-        defaultColors.put("model.nation.russianREF",    new Color(0xbebebe));
-        defaultColors.put(UNKNOWN_NATION_ID,            UNKNOWN_NATION_COLOR);
+        DEFAULTCOLORS.put("model.nation.dutch",         new Color(0xff9d3c));
+        DEFAULTCOLORS.put("model.nation.french",        new Color(0x0000ff));
+        DEFAULTCOLORS.put("model.nation.english",       new Color(0xff0000));
+        DEFAULTCOLORS.put("model.nation.spanish",       new Color(0xffff00));
+        DEFAULTCOLORS.put("model.nation.inca",          new Color(0xf4f0c4));
+        DEFAULTCOLORS.put("model.nation.aztec",         new Color(0xc4a020));
+        DEFAULTCOLORS.put("model.nation.arawak",        new Color(0x6888c0));
+        DEFAULTCOLORS.put("model.nation.cherokee",      new Color(0x6c3c18));
+        DEFAULTCOLORS.put("model.nation.iroquois",      new Color(0x74a44c));
+        DEFAULTCOLORS.put("model.nation.sioux",         new Color(0xc0ac84));
+        DEFAULTCOLORS.put("model.nation.apache",        new Color(0x900000));
+        DEFAULTCOLORS.put("model.nation.tupi",          new Color(0x045c04));
+        DEFAULTCOLORS.put("model.nation.dutchREF",      new Color(0xcc5500));
+        DEFAULTCOLORS.put("model.nation.frenchREF",     new Color(0x6050dc));
+        DEFAULTCOLORS.put("model.nation.englishREF",    new Color(0xde3163));
+        DEFAULTCOLORS.put("model.nation.spanishREF",    new Color(0xffdf00));
+        DEFAULTCOLORS.put("model.nation.portuguese",    new Color(0x00ff00));
+        DEFAULTCOLORS.put("model.nation.swedish",       new Color(0x00bfff));
+        DEFAULTCOLORS.put("model.nation.danish",        new Color(0xff00bf));
+        DEFAULTCOLORS.put("model.nation.russian",       new Color(0xffffff));
+        DEFAULTCOLORS.put("model.nation.portugueseREF", new Color(0xbfff00));
+        DEFAULTCOLORS.put("model.nation.swedishREF",    new Color(0x367588));
+        DEFAULTCOLORS.put("model.nation.danishREF",     new Color(0x91006d));
+        DEFAULTCOLORS.put("model.nation.russianREF",    new Color(0xbebebe));
+        DEFAULTCOLORS.put(UNKNOWN_NAT_ID,            UNKNOWN_NAT_COLOR);
     }
     // end @compat 0.10.x
 
@@ -102,7 +115,7 @@ public class Nation extends FreeColSpecObjectType {
     private Nation refNation;
 
     /** The preferred starting latitude for this nation. */
-    private int preferredLatitude = 0;
+    private int preferredLatitude;
 
     /** Whether this nation starts on the East coast by default. */
     private boolean startsOnEastCoast = true;
@@ -114,11 +127,11 @@ public class Nation extends FreeColSpecObjectType {
     /**
      * Create a new nation.
      *
-     * @param id The object identifier.
+     * @param identifier The object identifier.
      * @param specification The <code>Specification</code> to refer to.
      */
-    public Nation(String id, Specification specification) {
-        super(id, specification);
+    public Nation(final String identifier, final Specification specification) {
+        super(identifier, specification);
     }
 
 
@@ -128,7 +141,7 @@ public class Nation extends FreeColSpecObjectType {
      * @return True if this is the unknown enemy.
      */
     public final boolean isUnknownEnemy() {
-        return UNKNOWN_NATION_ID.equals(getId());
+        return UNKNOWN_NAT_ID.equals(getId());
     }
 
     /**
@@ -145,7 +158,7 @@ public class Nation extends FreeColSpecObjectType {
      *
      * @param type The new <code>NationType</code>.
      */
-    public final void setType(NationType type) {
+    public final void setType(final NationType type) {
         this.type = type;
     }
 
@@ -174,7 +187,7 @@ public class Nation extends FreeColSpecObjectType {
      */
     public final Nation getRebelNation() {
         return find(getSpecification().getEuropeanNations(),
-            n -> n.getREFNation() == this);
+            nation -> nation.getREFNation() == this);
     }
 
     /**
@@ -228,7 +241,7 @@ public class Nation extends FreeColSpecObjectType {
      *
      * @param color The new nation color.
      */
-    public void setColor(Color color) {
+    public void setColor(final Color color) {
         this.color = color;
     }
 
@@ -240,7 +253,7 @@ public class Nation extends FreeColSpecObjectType {
      * @return The default color for this nation.
      */
     public Color forceDefaultColor() {
-        Color ret = defaultColors.get(getId());
+        final Color ret = DEFAULTCOLORS.get(getId());
         setColor(ret);
         return ret;
     }
@@ -252,12 +265,12 @@ public class Nation extends FreeColSpecObjectType {
      * @param random A pseudo-random number source.
      * @return A player name key, or an empty string on failure.
      */
-    public static String getRandomNonPlayerNationNameKey(Game game,
-                                                         Random random) {
-        int nations = EUROPEAN_NATIONS.size();
-        int start = randomInt(logger, "Random nation", random, nations);
+    public static String getRandomNonPlayerNationNameKey(final Game game, final Random random) {
+        final int nations = EUROPEAN_NATIONS.size();
+        int start;
         for (int index = 0; index < nations; index++) {
-            String nationId = "model.nation."
+        	start = randomInt(logger, "Random nation", random, nations);
+            final String nationId = "model.nation."
                 + EUROPEAN_NATIONS.get((start + index) % nations);
             if (game.getPlayerByNationId(nationId) == null) {
                 return Messages.nameKey(nationId);
@@ -267,72 +280,64 @@ public class Nation extends FreeColSpecObjectType {
         return "";
     }
 
-    // Serialization
-
-    private static final String COLOR_TAG = "color";
-    private static final String NATION_TYPE_TAG = "nation-type";
-    private static final String PREFERRED_LATITUDE_TAG = "preferred-latitude";
-    private static final String REF_TAG = "ref";
-    private static final String SELECTABLE_TAG = "selectable";
-    private static final String STARTS_ON_EAST_COAST_TAG = "starts-on-east-coast";
-    // @compat 0.11.3
-    private static final String OLD_PREFERRED_LATITUDE_TAG = "preferredLatitude";
-    private static final String OLD_STARTS_ON_EAST_COAST_TAG = "startsOnEastCoast";
-    // end @compat 0.11.3
-
-
     /**
      * {@inheritDoc}
      */
     @Override
-    protected void writeAttributes(FreeColXMLWriter xw) throws XMLStreamException {
-        super.writeAttributes(xw);
+    protected void writeAttributes(final FreeColXMLWriter xWriter) throws XMLStreamException {
+        super.writeAttributes(xWriter);
 
-        xw.writeAttribute(NATION_TYPE_TAG, type);
+        xWriter.writeAttribute(NATION_TYPE_TAG, type);
 
-        xw.writeAttribute(SELECTABLE_TAG, selectable);
+        xWriter.writeAttribute(SELECTABLE_TAG, selectable);
 
-        xw.writeAttribute(PREFERRED_LATITUDE_TAG, preferredLatitude);
+        xWriter.writeAttribute(LAT_TAG, preferredLatitude);
 
-        xw.writeAttribute(STARTS_ON_EAST_COAST_TAG, startsOnEastCoast);
+        xWriter.writeAttribute(EC_TAG, startsOnEastCoast);
 
-        if (refNation != null) xw.writeAttribute(REF_TAG, refNation);
+        if (refNation != null) {
+        	xWriter.writeAttribute(REF_TAG, refNation);
+        }
 
-        if (color != null) xw.writeAttribute(COLOR_TAG, color.getRGB());
+        if (color != null) {
+        	xWriter.writeAttribute(COLOR_TAG, color.getRGB());
+        }
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    protected void readAttributes(FreeColXMLReader xr) throws XMLStreamException {
-        super.readAttributes(xr);
+    protected void readAttributes(final FreeColXMLReader xReader) throws XMLStreamException {
+        super.readAttributes(xReader);
 
         final Specification spec = getSpecification();
 
-        type = xr.getType(spec, NATION_TYPE_TAG,
+        type = xReader.getType(spec, NATION_TYPE_TAG,
                           NationType.class, (NationType)null);
 
-        selectable = xr.getAttribute(SELECTABLE_TAG, false);
+        selectable = xReader.getAttribute(SELECTABLE_TAG, false);
 
         // @compat 0.11.3
-        if (xr.hasAttribute(OLD_PREFERRED_LATITUDE_TAG)) {
-            preferredLatitude = xr.getAttribute(OLD_PREFERRED_LATITUDE_TAG, 0);
-        } else
+        if (xReader.hasAttribute(OLD_LAT_TAG)) {
+            preferredLatitude = xReader.getAttribute(OLD_LAT_TAG, 0);
+        } else {
         // end @compat 0.11.3
-            preferredLatitude = xr.getAttribute(PREFERRED_LATITUDE_TAG, 0);
-
+            preferredLatitude = xReader.getAttribute(LAT_TAG, 0);
+        }
         // @compat 0.11.3
-        if (xr.hasAttribute(OLD_STARTS_ON_EAST_COAST_TAG)) {
-            startsOnEastCoast = xr.getAttribute(OLD_STARTS_ON_EAST_COAST_TAG, true);
-        } else
+        if (xReader.hasAttribute(OLD_EC_TAG)) {
+            startsOnEastCoast = xReader.getAttribute(OLD_EC_TAG, true);
+        } else {
         // end @compat 0.11.3
-            startsOnEastCoast = xr.getAttribute(STARTS_ON_EAST_COAST_TAG, true);
+            startsOnEastCoast = xReader.getAttribute(EC_TAG, true);
+        }
+        refNation = xReader.getType(spec, REF_TAG, Nation.class, (Nation)null);
 
-        refNation = xr.getType(spec, REF_TAG, Nation.class, (Nation)null);
-
-        int rgb = xr.getAttribute(COLOR_TAG, UNDEFINED);
-        if (rgb != UNDEFINED) setColor(new Color(rgb));
+        final int rgb = xReader.getAttribute(COLOR_TAG, UNDEFINED);
+        if (rgb != UNDEFINED) {
+        	setColor(new Color(rgb));
+        }
     }
 
     /**

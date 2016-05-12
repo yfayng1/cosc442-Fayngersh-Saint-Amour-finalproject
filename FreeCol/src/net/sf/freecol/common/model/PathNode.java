@@ -20,7 +20,6 @@
 
 package net.sf.freecol.common.model;
 
-import net.sf.freecol.common.model.Direction;
 import net.sf.freecol.common.util.LogBuilder;
 
 
@@ -75,8 +74,8 @@ public class PathNode {
      * @param previous The previous <code>PathNode</code> in the path.
      * @param next The next <code>PathNode</code> in the path.
      */
-    public PathNode(Location location, int movesLeft, int turns,
-                    boolean onCarrier, PathNode previous, PathNode next) {
+    public PathNode(final Location location, final int movesLeft, final int turns,
+                    final boolean onCarrier, final PathNode previous, final PathNode next) {
         this.location = location;
         this.movesLeft = movesLeft;
         this.turns = turns;
@@ -120,7 +119,7 @@ public class PathNode {
      *
      * @param movesLeft The number of moves remaining.
      */
-    public void setMovesLeft(int movesLeft) {
+    public void setMovesLeft(final int movesLeft) {
         this.movesLeft = movesLeft;
     }
 
@@ -142,7 +141,7 @@ public class PathNode {
      *
      * @param turns The new number of turns.
      */
-    public void setTurns(int turns) {
+    public void setTurns(final int turns) {
         this.turns = turns;
     }
 
@@ -151,7 +150,7 @@ public class PathNode {
      *
      * @param turns The number of turns to add.
      */
-    public void addTurns(int turns) {
+    public void addTurns(final int turns) {
         for (PathNode p = this; p != null; p = p.next) {
             p.setTurns(p.getTurns() + turns);
         }
@@ -176,7 +175,7 @@ public class PathNode {
      *     carrier on this path node.
      * @see #getTransportDropTurns
      */
-    public void setOnCarrier(boolean onCarrier) {
+    public void setOnCarrier(final boolean onCarrier) {
         this.onCarrier = onCarrier;
     }
 
@@ -186,9 +185,11 @@ public class PathNode {
      * @return The number of nodes in the path.
      */
     public int getLength() {
-        int n = 0;
-        for (PathNode temp = this; temp != null; temp = temp.next) n++;
-        return n;
+        int nodes = 0;
+        for (PathNode temp = this; temp != null; temp = temp.next) {
+        	nodes++;
+        }
+        return nodes;
     }
         
     /**
@@ -202,8 +203,10 @@ public class PathNode {
     public Direction getDirection() {
         if (previous == null
             || previous.getTile() == null
-            || getTile() == null) return null;
-        Tile prev = previous.getTile();
+            || getTile() == null) {
+        	return null;
+        }
+        final Tile prev = previous.getTile();
         return prev.getMap().getDirection(prev, getTile());
     }
 
@@ -214,9 +217,11 @@ public class PathNode {
      * @return The node where the unit leaves the carrier.
      */
     public PathNode getTransportDropNode() {
-        PathNode p = this;
-        while (p.next != null && p.isOnCarrier()) p = p.next;
-        return p;
+        PathNode path = this;
+        while (path.next != null && path.isOnCarrier()) {
+        	path = path.next;
+        }
+        return path;
     }
 
     /**
@@ -248,10 +253,12 @@ public class PathNode {
      * @return The number of turns, using zero for the first move.
      */
     public int getTotalTurns() {
-        PathNode path = getLastNode();
-        int n = path.getTurns();
-        if (path.getMovesLeft() == 0) n++;
-        return n;
+        final PathNode path = getLastNode();
+        int node = path.getTurns();
+        if (path.getMovesLeft() == 0) {
+        	node++;
+        }
+        return node;
     }
 
     /**
@@ -276,7 +283,7 @@ public class PathNode {
      * @param movesLeft The number of moves left for the moving unit.
      * @return The cost of moving to a <code>PathNode</code>.
      */
-    public static int getCost(int turns, int movesLeft) {
+    public static int getCost(final int turns, final int movesLeft) {
         return (turns >= FreeColObject.INFINITY / (TURN_FACTOR + 1))
             ? FreeColObject.INFINITY
             : TURN_FACTOR * turns + (TURN_FACTOR - movesLeft);
@@ -299,7 +306,9 @@ public class PathNode {
      */
     public PathNode getCarrierMove() {
         for (PathNode p = this; p != null; p = p.next) {
-            if (p.isOnCarrier()) return p;
+            if (p.isOnCarrier()) {
+            	return p;
+            }
         }
         return null;
     }
@@ -319,10 +328,14 @@ public class PathNode {
      * @param turns Paths with fewer turns than this are previous turns.
      * @return True if there was a non-carrier move in the last turn.
      */
-    public boolean embarkedThisTurn(int turns) {
+    public boolean embarkedThisTurn(final int turns) {
         for (PathNode p = this; p != null; p = p.previous) {
-            if (p.getTurns() < turns) return false;
-            if (!p.isOnCarrier()) return true;
+            if (p.getTurns() < turns) {
+            	return false;
+            }
+            if (!p.isOnCarrier()) {
+            	return true;
+            }
         }
         return false;
     }
@@ -333,11 +346,11 @@ public class PathNode {
      * the last node.
      */
     public void convertToGoodsDeliveryPath() {
-        PathNode p;
-        for (p = this; p.next != null; p = p.next) {
-            p.onCarrier = true;
+        PathNode path;
+        for (path = this; path.next != null; path = path.next) {
+            path.onCarrier = true;
         }
-        p.onCarrier = true;
+        path.onCarrier = true;
         ensureDisembark();
     }
 
@@ -345,10 +358,10 @@ public class PathNode {
      * Ensure the last node of this path is no longer on the carrier.
      */
     public void ensureDisembark() {
-        PathNode p = this.getLastNode();
-        if (p.isOnCarrier()) {
-            p.next = new PathNode(p.location, p.movesLeft, p.turns, false,
-                                  p, null);
+        final PathNode path = this.getLastNode();
+        if (path.isOnCarrier()) {
+            path.next = new PathNode(path.location, path.movesLeft, path.turns, false,
+                                  path, null);
         }
     }
            
@@ -357,11 +370,11 @@ public class PathNode {
      */
     @Override
     public String toString() {
-        LogBuilder lb = new LogBuilder(256);
-        lb.add("PathNode loc=", location, " movesLeft=", movesLeft,
+        final LogBuilder logBuilder = new LogBuilder(256);
+        logBuilder.add("PathNode loc=", location, " movesLeft=", movesLeft,
             " turns=", turns, " onCarrier=", onCarrier,
             " direction=", getDirection(), " cost=", getCost());
-        return lb.toString();
+        return logBuilder.toString();
     }
 
     /**
@@ -370,9 +383,11 @@ public class PathNode {
      * @return A string describing the whole path.
      */
     public String fullPathToString() {
-        LogBuilder lb = new LogBuilder(500);
-        PathNode p;
-        for (p = this; p != null; p = p.next) lb.add(p, "\n");
-        return lb.toString();
+        final LogBuilder logBuilder = new LogBuilder(500);
+        PathNode path;
+        for (path = this; path != null; path = path.next) {
+        	logBuilder.add(path, "\n");
+        }
+        return logBuilder.toString();
     }
 }

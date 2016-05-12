@@ -1090,7 +1090,7 @@ public final class ImageLibrary {
         if (player == null || !is.hasContacted(player)) return null;
         Color ownerColor = is.getOwner().getNationColor();
         Player enemy = is.getMostHated();
-        Color enemyColor = (enemy == null) ? Nation.UNKNOWN_NATION_COLOR
+        Color enemyColor = (enemy == null) ? Nation.UNKNOWN_NAT_COLOR
             : enemy.getNationColor();
         // Set amount to [0-4] corresponding to HAPPY, CONTENT,
         // DISPLEASED, ANGRY, HATEFUL but only if the player is the

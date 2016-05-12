@@ -506,7 +506,7 @@ public class Player extends FreeColGameObject implements Nameable {
      * @return True if this player is the unknown enemy.
      */
     public boolean isUnknownEnemy() {
-        return Nation.UNKNOWN_NATION_ID.equals(nationId);
+        return Nation.UNKNOWN_NAT_ID.equals(nationId);
     }
 
     /**

@@ -32,14 +32,14 @@ public interface Ownable {
      *
      * @return The <code>Player</code> controlling this <code>Ownable</code>.
      */
-    public Player getOwner();
+    Player getOwner();
 
     /**
      * Sets the owner of this <code>Ownable</code>.
      *
-     * @param p The <code>Player</code> that should take ownership
+     * @param player The <code>Player</code> that should take ownership
      *     of this <code>Ownable</code>.
      * @exception UnsupportedOperationException if not implemented.
      */
-    public void setOwner(Player p);
+    void setOwner(Player player);
 }

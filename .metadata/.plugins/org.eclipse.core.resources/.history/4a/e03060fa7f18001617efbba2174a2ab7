@@ -1,0 +1,196 @@
+/**
+ *  Copyright (C) 2002-2016   The FreeCol Team
+ *
+ *  This file is part of FreeCol.
+ *
+ *  FreeCol is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  FreeCol is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with FreeCol.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+package net.sf.freecol.common.model;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+import net.sf.freecol.common.util.LogBuilder;
+
+
+/** 
+ * Simple container to define where and what a unit is working on.
+ */
+public class Occupation {
+
+    public WorkLocation workLocation;
+    public ProductionType productionType;
+    public GoodsType workType;
+
+
+    /**
+     * Create an Occupation.
+     *
+     * @param workLocation The <code>WorkLocation</code> to work at.
+     * @param productionType The <code>ProductionType</code> to
+     *     use at the work location.
+     * @param workType The <code>GoodsType</code> to produce at the
+     *     work location with the production type.
+     */
+    public Occupation(final WorkLocation workLocation,
+        final ProductionType productionType,
+        final GoodsType workType) {
+        this.workLocation = workLocation;
+        this.productionType = productionType;
+        this.workType = workType;
+    }
+
+    /**
+     * Install a unit into this occupation.
+     *
+     * @param unit The <code>Unit</code> to establish.
+     * @return True if the unit is installed.
+     */
+    public boolean install(final Unit unit) {
+        if (!unit.setLocation(workLocation)) {
+        	return false;
+        }
+        if (productionType != workLocation.getProductionType()) {
+            workLocation.setProductionType(productionType);
+        }
+        if (workType != unit.getWorkType()) {
+            unit.changeWorkType(workType);
+        }
+        return true;
+    }
+
+    /**
+     * Improve this occupation to the best available production for the
+     * given unit type.
+     *
+     * @param unitType The <code>UnitType</code> to produce the goods.
+     * @param workLocation The <code>WorkLocation</code> to check.
+     * @param bestAmount The best amount of goods produced found so far.
+     * @param workTypes A collection of <code>GoodsType</code> to
+     *     consider producing.
+     * @param alone True if the unit is alone, and can set the
+     *     production type.
+     * @param logBuilder A <code>LogBuilder</code> to log to.
+     * @return The best amount of production found.
+     */
+    private int improve(final UnitType unitType, final WorkLocation workLocation, int bestAmount,
+        final Collection<GoodsType> workTypes, final boolean alone, final LogBuilder logBuilder) {
+
+        logBuilder.add(" alone=", alone);
+        final List<ProductionType> productionTypes = new ArrayList<>();
+        if (alone) {
+            productionTypes.addAll(workLocation.getAvailableProductionTypes(false));
+        } else {
+            productionTypes.add(workLocation.getProductionType());
+        }
+
+        // Try the available production types for the best production.
+        final Colony colony = workLocation.getColony();
+        for (final ProductionType pt : productionTypes) {
+            logBuilder.add("\n      try=", pt);
+            if (pt != null) {
+                for (final GoodsType gt : workTypes) {
+                    if (pt.getOutput(gt) == null) {
+                    	continue;
+                    }
+                    int minInput = FreeColObject.INFINITY;
+                    final List<AbstractGoods> inputs = pt.getInputs();
+                    for (final AbstractGoods ag : inputs) {
+                        final int input = Math.max(colony.getGoodsCount(ag.getType()),
+                            colony.getNetProductionOf(ag.getType()));
+                        minInput = Math.min(minInput, input);
+                    }
+                    final int potential = workLocation.getPotentialProduction(gt, unitType);
+                    final int amount = Math.min(minInput, potential);
+                    logBuilder.add(" ", gt.getSuffix(), "=", amount, "/", minInput,
+                        "/", potential, (bestAmount < amount) ? "!" : "");
+                    if (bestAmount < amount) {
+                        bestAmount = amount;
+                        this.workLocation = workLocation;
+                        this.productionType = pt;
+                        this.workType = gt;
+                    }
+                }
+            }
+        }
+        return bestAmount;   
+    }
+
+    /**
+     * Improve this occupation to the best available production for the
+     * given unit.
+     *
+     * @param unit The <code>Unit</code> to produce the goods.
+     * @param workLocation The <code>WorkLocation</code> to check.
+     * @param bestAmount The best amount of goods produced found so far.
+     * @param workTypes A collection of <code>GoodsType</code> to
+     *     consider producing.
+     * @param logBuilder A <code>LogBuilder</code> to log to.
+     * @return The best amount of production found.
+     */
+    public int improve(final Unit unit, final WorkLocation workLocation, final int bestAmount,
+                       final Collection<GoodsType> workTypes, final LogBuilder logBuilder) {
+        // Can the unit work at the wl?
+        final boolean present = unit.getLocation() == workLocation;
+        logBuilder.add("\n    ", workLocation,
+            ((!present && !workLocation.canAdd(unit)) ? " no-add" : ""));
+        if (!present && !workLocation.canAdd(unit)) {
+        	return bestAmount;
+        }
+
+        // Can the unit determine the production type at this WL?
+        // This will be true if the unit is going to be alone or if
+        // the production type is as yet unset.  Set the
+        // productionTypes list accordingly.
+        final boolean alone = workLocation.getProductionType() == null
+            || workLocation.isEmpty()
+            || (present && workLocation.getUnitCount() == 1);
+        return improve(unit.getType(), workLocation, bestAmount, workTypes, alone, logBuilder);
+    }
+
+    /**
+     * Improve this occupation to the best available production for the
+     * given unit type.
+     *
+     * @param unitType The <code>UnitType</code> to produce the goods.
+     * @param workLocation The <code>WorkLocation</code> to check.
+     * @param bestAmount The best amount of goods produced found so far.
+     * @param workTypes A collection of <code>GoodsType</code> to
+     *     consider producing.
+     * @param logBuilder A <code>LogBuilder</code> to log to.
+     * @return The best amount of production found.
+     */
+    public int improve(final UnitType unitType, final WorkLocation workLocation, final int bestAmount,
+        final Collection<GoodsType> workTypes, final LogBuilder logBuilder) {
+        return improve(unitType, workLocation, bestAmount, workTypes, workLocation.isEmpty(), logBuilder);
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
+        final StringBuilder sBuilder = new StringBuilder(32);
+        sBuilder.append("[Occupation ").append(workLocation);
+            //.append(" ").append(productionType)
+        if (workType != null) {
+        	sBuilder.append(" ").append(workType.getSuffix());
+        }
+        sBuilder.append("]");
+        return sBuilder.toString();
+    }
+}

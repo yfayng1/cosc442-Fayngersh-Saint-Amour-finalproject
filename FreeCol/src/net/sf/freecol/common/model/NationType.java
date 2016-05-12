@@ -35,6 +35,11 @@ import static net.sf.freecol.common.util.StringUtils.*;
  * Represents the type of one of the nations present in the game.
  */
 public abstract class NationType extends FreeColSpecObjectType {
+    // Serialization
+
+    private static final String AGGRESSION_TAG = "aggression";
+    private static final String NUM_SET_TAG = "number-of-settlements";
+    private static final String SETTLEMENT_TAG = "settlement";
 
     public static enum SettlementNumber {
         LOW, AVERAGE, HIGH;
@@ -64,7 +69,7 @@ public abstract class NationType extends FreeColSpecObjectType {
 
 
     /** The number of settlements this Nation has. */
-    private SettlementNumber numberOfSettlements = SettlementNumber.AVERAGE;
+    private SettlementNumber numSettle = SettlementNumber.AVERAGE;
 
     /** The aggression of this Nation. */
     private AggressionLevel aggression = AggressionLevel.AVERAGE;
@@ -76,11 +81,11 @@ public abstract class NationType extends FreeColSpecObjectType {
     /**
      * Default nation type constructor.
      *
-     * @param id The object identifier.
+     * @param identifier The object identifier.
      * @param specification The <code>Specification</code> to refer to.
      */
-    public NationType(String id, Specification specification) {
-        super(id, specification);
+    public NationType(final String identifier, final Specification specification) {
+        super(identifier, specification);
     }
 
 
@@ -100,8 +105,10 @@ public abstract class NationType extends FreeColSpecObjectType {
      *
      * @param settlementType The <code>SettlementType</code> to add.
      */
-    private void addSettlementType(SettlementType settlementType) {
-        if (settlementTypes == null) settlementTypes = new ArrayList<>();
+    private void addSettlementType(final SettlementType settlementType) {
+        if (settlementTypes == null) {
+        	settlementTypes = new ArrayList<>();
+        }
         settlementTypes.add(settlementType);
     }
 
@@ -110,8 +117,10 @@ public abstract class NationType extends FreeColSpecObjectType {
      *
      * @param types A list of <code>SettlementType</code>s to add.
      */
-    private void addSettlementTypes(List<SettlementType> types) {
-        if (settlementTypes == null) settlementTypes = new ArrayList<>();
+    private void addSettlementTypes(final List<SettlementType> types) {
+        if (settlementTypes == null) {
+        	settlementTypes = new ArrayList<>();
+        }
         settlementTypes.addAll(types);
     }
 
@@ -130,18 +139,18 @@ public abstract class NationType extends FreeColSpecObjectType {
      * @param isCapital If true, get the capital type.
      * @return The settlement type.
      */
-    public SettlementType getSettlementType(boolean isCapital) {
-        return find(getSettlementTypes(), s -> s.isCapital() == isCapital);
+    public SettlementType getSettlementType(final boolean isCapital) {
+        return find(getSettlementTypes(), settlement -> settlement.isCapital() == isCapital);
     }
 
     /**
      * Get a settlement type by identifier.
      *
-     * @param id The object identifier.
+     * @param identifier The object identifier.
      * @return The settlement type.
      */
-    public SettlementType getSettlementType(String id) {
-        return find(getSettlementTypes(), s -> id.equals(s.getId()));
+    public SettlementType getSettlementType(final String identifier) {
+        return find(getSettlementTypes(), settlement -> identifier.equals(settlement.getId()));
     }
 
     /**
@@ -150,7 +159,7 @@ public abstract class NationType extends FreeColSpecObjectType {
      * @return The <code>SettlementNumber</code>.
      */
     public final SettlementNumber getNumberOfSettlements() {
-        return numberOfSettlements;
+        return numSettle;
     }
 
     /**
@@ -183,35 +192,27 @@ public abstract class NationType extends FreeColSpecObjectType {
      */
     public abstract boolean isREF();
 
-
-    // Serialization
-
-    private static final String AGGRESSION_TAG = "aggression";
-    private static final String NUMBER_OF_SETTLEMENTS_TAG = "number-of-settlements";
-    private static final String SETTLEMENT_TAG = "settlement";
-
-
     /**
      * {@inheritDoc}
      */
     @Override
-    protected void writeAttributes(FreeColXMLWriter xw) throws XMLStreamException {
-        super.writeAttributes(xw);
+    protected void writeAttributes(final FreeColXMLWriter xWriter) throws XMLStreamException {
+        super.writeAttributes(xWriter);
 
-        xw.writeAttribute(NUMBER_OF_SETTLEMENTS_TAG, numberOfSettlements);
+        xWriter.writeAttribute(NUM_SET_TAG, numSettle);
 
-        xw.writeAttribute(AGGRESSION_TAG, aggression);
+        xWriter.writeAttribute(AGGRESSION_TAG, aggression);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    protected void writeChildren(FreeColXMLWriter xw) throws XMLStreamException {
-        super.writeChildren(xw);
+    protected void writeChildren(final FreeColXMLWriter xWriter) throws XMLStreamException {
+        super.writeChildren(xWriter);
 
-        for (SettlementType settlementType : getSettlementTypes()) {
-            settlementType.toXML(xw, SETTLEMENT_TAG);
+        for (final SettlementType settlementType : getSettlementTypes()) {
+            settlementType.toXML(xWriter, SETTLEMENT_TAG);
         }
     }
 
@@ -219,18 +220,18 @@ public abstract class NationType extends FreeColSpecObjectType {
      * {@inheritDoc}
      */
     @Override
-    protected void readAttributes(FreeColXMLReader xr) throws XMLStreamException {
-        super.readAttributes(xr);
+    protected void readAttributes(final FreeColXMLReader xReader) throws XMLStreamException {
+        super.readAttributes(xReader);
 
         final Specification spec = getSpecification();
 
-        NationType parent = xr.getType(spec, EXTENDS_TAG,
+        final NationType parent = xReader.getType(spec, EXTENDS_TAG,
                                        NationType.class, this);
 
-        numberOfSettlements = xr.getAttribute(NUMBER_OF_SETTLEMENTS_TAG,
-            SettlementNumber.class, parent.numberOfSettlements);
+        numSettle = xReader.getAttribute(NUM_SET_TAG,
+            SettlementNumber.class, parent.numSettle);
 
-        aggression = xr.getAttribute(AGGRESSION_TAG,
+        aggression = xReader.getAttribute(AGGRESSION_TAG,
                                      AggressionLevel.class, parent.aggression);
     }
 
@@ -238,14 +239,14 @@ public abstract class NationType extends FreeColSpecObjectType {
      * {@inheritDoc}
      */
     @Override
-    protected void readChildren(FreeColXMLReader xr) throws XMLStreamException {
+    protected void readChildren(final FreeColXMLReader xReader) throws XMLStreamException {
         // Clear containers.
-        if (xr.shouldClearContainers()) {
+        if (xReader.shouldClearContainers()) {
             settlementTypes = null;
         }
 
         final Specification spec = getSpecification();
-        NationType parent = xr.getType(spec, EXTENDS_TAG,
+        final NationType parent = xReader.getType(spec, EXTENDS_TAG,
                                        NationType.class, this);
         if (parent != this) {
             if (parent.settlementTypes != null) {
@@ -258,22 +259,23 @@ public abstract class NationType extends FreeColSpecObjectType {
             }
         }
 
-        super.readChildren(xr);
+        super.readChildren(xReader);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    protected void readChild(FreeColXMLReader xr) throws XMLStreamException {
-        final Specification spec = getSpecification();
-        final String tag = xr.getLocalName();
+    protected void readChild(final FreeColXMLReader xReader) throws XMLStreamException {
+        Specification spec;
+        final String tag = xReader.getLocalName();
 
         if (SETTLEMENT_TAG.equals(tag)) {
-            addSettlementType(new SettlementType(xr, spec));
+        	spec = getSpecification();
+            addSettlementType(new SettlementType(xReader, spec));
 
         } else {
-            super.readChild(xr);
+            super.readChild(xReader);
         }
     }
 }

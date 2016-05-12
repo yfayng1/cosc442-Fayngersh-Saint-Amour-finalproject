@@ -23,19 +23,29 @@ import javax.xml.stream.XMLStreamException;
 
 import net.sf.freecol.common.io.FreeColXMLReader;
 import net.sf.freecol.common.io.FreeColXMLWriter;
-import net.sf.freecol.common.model.Stance;
-
 
 /**
  * A container class summarizing an enemy nation.
  */
 public class NationSummary extends FreeColObject {
 
+    // Serialization
+
+    private static final String FF_TAG = "foundingFathers";
+    private static final String GOLD_TAG = "gold";
+    private static final String MIL_STR_TAG = "militaryStrength";
+    private static final String NAV_STR_TAG = "navalStrength";
+    private static final String NUM_SETTLE_TAG = "numberOfSettlements";
+    private static final String NUM_UNITS_TAG = "numberOfUnits";
+    private static final String SOL_TAG = "SoL";
+    private static final String STANCE_TAG = "stance";
+    private static final String TAX_TAG = "tax";
+
     /** The stance of the player toward the requesting player. */
     private Stance stance;
 
     /** The number of settlements this player has. */
-    private int numberOfSettlements;
+    private int numSettle;
 
     /** The number of units this (European) player has. */
     private int numberOfUnits;
@@ -63,6 +73,7 @@ public class NationSummary extends FreeColObject {
      * Trivial constructor allowing creation by FreeColObject.newInstance().
      */
     public NationSummary() {
+    	super();
         setId(""); // Identifiers unnecessary
     }
 
@@ -72,21 +83,22 @@ public class NationSummary extends FreeColObject {
      * @param player The <code>Player</code> to create the summary for.
      * @param requester The <code>Player</code> making the request.
      */
-    public NationSummary(Player player, Player requester) {
+    public NationSummary(final Player player, final Player requester) {
         this();
 
         stance = player.getStance(requester);
-        if (stance == Stance.UNCONTACTED) stance = Stance.PEACE;
+        if (stance == Stance.UNCONTACTED) {
+        	stance = Stance.PEACE;
+        }
 
-        numberOfSettlements = player.getSettlements().size();
+        numSettle = player.getSettlements().size();
 
         if (player.isEuropean()) {
             numberOfUnits = player.getUnits().size();
             militaryStrength = player.calculateStrength(false);
             navalStrength = player.calculateStrength(true);
             gold = player.getGold();
-            if (player == requester || requester
-                .hasAbility(Ability.BETTER_FOREIGN_AFFAIRS_REPORT)) {
+            if (player.equals(requester) || requester.hasAbility(Ability.BETTER_FOREIGN_AFFAIRS_REPORT)) {
                 soL = player.getSoL();
                 foundingFathers = player.getFatherCount();
                 tax = player.getTax();
@@ -106,7 +118,7 @@ public class NationSummary extends FreeColObject {
     }
 
     public int getNumberOfSettlements() {
-        return numberOfSettlements;
+        return numSettle;
     }
 
     public int getNumberOfUnits() {
@@ -137,49 +149,35 @@ public class NationSummary extends FreeColObject {
         return tax;
     }
 
-
-    // Serialization
-
-    private static final String FOUNDING_FATHERS_TAG = "foundingFathers";
-    private static final String GOLD_TAG = "gold";
-    private static final String MILITARY_STRENGTH_TAG = "militaryStrength";
-    private static final String NAVAL_STRENGTH_TAG = "navalStrength";
-    private static final String NUMBER_OF_SETTLEMENTS_TAG = "numberOfSettlements";
-    private static final String NUMBER_OF_UNITS_TAG = "numberOfUnits";
-    private static final String SOL_TAG = "SoL";
-    private static final String STANCE_TAG = "stance";
-    private static final String TAX_TAG = "tax";
-
-
     /**
      * {@inheritDoc}
      */
     @Override
-    protected void writeAttributes(FreeColXMLWriter xw) throws XMLStreamException {
-        super.writeAttributes(xw);
+    protected void writeAttributes(final FreeColXMLWriter xWriter) throws XMLStreamException {
+        super.writeAttributes(xWriter);
 
-        xw.writeAttribute(NUMBER_OF_SETTLEMENTS_TAG, numberOfSettlements);
+        xWriter.writeAttribute(NUM_SETTLE_TAG, numSettle);
 
-        xw.writeAttribute(NUMBER_OF_UNITS_TAG, numberOfUnits);
+        xWriter.writeAttribute(NUM_UNITS_TAG, numberOfUnits);
 
-        xw.writeAttribute(MILITARY_STRENGTH_TAG, militaryStrength);
+        xWriter.writeAttribute(MIL_STR_TAG, militaryStrength);
 
-        xw.writeAttribute(NAVAL_STRENGTH_TAG, navalStrength);
+        xWriter.writeAttribute(NAV_STR_TAG, navalStrength);
 
-        xw.writeAttribute(STANCE_TAG, stance);
+        xWriter.writeAttribute(STANCE_TAG, stance);
 
-        xw.writeAttribute(GOLD_TAG, gold);
+        xWriter.writeAttribute(GOLD_TAG, gold);
 
         if (soL >= 0) {
-            xw.writeAttribute(SOL_TAG, soL);
+            xWriter.writeAttribute(SOL_TAG, soL);
         }
 
         if (foundingFathers >= 0) {
-            xw.writeAttribute(FOUNDING_FATHERS_TAG, foundingFathers);
+            xWriter.writeAttribute(FF_TAG, foundingFathers);
         }
 
         if (tax >= 0) {
-            xw.writeAttribute(TAX_TAG, tax);
+            xWriter.writeAttribute(TAX_TAG, tax);
         }
     }
 
@@ -187,26 +185,26 @@ public class NationSummary extends FreeColObject {
      * {@inheritDoc}
      */
     @Override
-    protected void readAttributes(FreeColXMLReader xr) throws XMLStreamException {
-        super.readAttributes(xr);
+    protected void readAttributes(final FreeColXMLReader xReader) throws XMLStreamException {
+        super.readAttributes(xReader);
 
-        stance = xr.getAttribute(STANCE_TAG, Stance.class, Stance.PEACE);
+        stance = xReader.getAttribute(STANCE_TAG, Stance.class, Stance.PEACE);
 
-        numberOfSettlements = xr.getAttribute(NUMBER_OF_SETTLEMENTS_TAG, -1);
+        numSettle = xReader.getAttribute(NUM_SETTLE_TAG, -1);
 
-        numberOfUnits = xr.getAttribute(NUMBER_OF_UNITS_TAG, -1);
+        numberOfUnits = xReader.getAttribute(NUM_UNITS_TAG, -1);
 
-        militaryStrength = xr.getAttribute(MILITARY_STRENGTH_TAG, -1);
+        militaryStrength = xReader.getAttribute(MIL_STR_TAG, -1);
 
-        navalStrength = xr.getAttribute(NAVAL_STRENGTH_TAG, -1);
+        navalStrength = xReader.getAttribute(NAV_STR_TAG, -1);
 
-        gold = xr.getAttribute(GOLD_TAG, -1);
+        gold = xReader.getAttribute(GOLD_TAG, -1);
 
-        soL = xr.getAttribute(SOL_TAG, -1);
+        soL = xReader.getAttribute(SOL_TAG, -1);
 
-        foundingFathers = xr.getAttribute(FOUNDING_FATHERS_TAG, -1);
+        foundingFathers = xReader.getAttribute(FF_TAG, -1);
 
-        tax = xr.getAttribute(TAX_TAG, -1);
+        tax = xReader.getAttribute(TAX_TAG, -1);
     }
 
     /**
