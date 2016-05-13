@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 activeuserprofiles=MSI;Team;Yoshimitsu
+=======
+>>>>>>> 7d44214583ca9dd6334928ca585422a97d4e346d
 eclipse.preferences.version=1
 org.eclipse.rse.systemtype.local.systemType.defaultUserId=FIRMS
 useridperkey=Yoshimitsu.Local\=FIRMS;

@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 content_assist_favorite_static_members=org.hamcrest.MatcherAssert.*;org.hamcrest.CoreMatchers.*;org.junit.matchers.JUnitMatchers.*;org.junit.Assert.*;org.mockito.Matchers.*;org.mockito.Mockito.*
+=======
+>>>>>>> 7d44214583ca9dd6334928ca585422a97d4e346d
 content_assist_number_of_computers=21
 content_assist_proposals_background=255,255,255
 content_assist_proposals_foreground=0,0,0
@@ -12,7 +15,11 @@ org.eclipse.jdt.ui.text.code_templates_migrated=true
 org.eclipse.jdt.ui.text.custom_code_templates=<?xml version\="1.0" encoding\="UTF-8" standalone\="no"?><templates/>
 org.eclipse.jdt.ui.text.custom_templates=<?xml version\="1.0" encoding\="UTF-8" standalone\="no"?><templates/>
 org.eclipse.jdt.ui.text.templates_migrated=true
+<<<<<<< HEAD
 org.eclipse.jface.textfont=1|Consolas|10.0|0|WINDOWS|1|0|0|0|0|0|0|0|0|1|0|0|0|0|Consolas;
+=======
+org.eclipse.jface.textfont=1|Courier New|10.0|0|WINDOWS|1|0|0|0|0|0|0|0|0|1|0|0|0|0|Courier New;
+>>>>>>> 7d44214583ca9dd6334928ca585422a97d4e346d
 proposalOrderMigrated=true
 spelling_locale_initialized=true
 tabWidthPropagated=true

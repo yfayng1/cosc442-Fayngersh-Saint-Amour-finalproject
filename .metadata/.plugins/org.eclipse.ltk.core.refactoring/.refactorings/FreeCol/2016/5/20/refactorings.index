@@ -4,6 +4,7 @@
 1462766904408	Change method 'reduceMinRati'
 1462767318807	Extract method 'filterNonFoods'
 1462767371823	Extract method 'accumalechoices'
+<<<<<<< HEAD
 1463078030244	Rename field 'OLD_PREFERRED_LATITUDE_TAG'
 1463078053070	Rename field 'PREFERRED_LATITUDE_TAG'
 1463078067998	Rename field 'STARTS_ON_EAST_COAST_TAG'
@@ -95,3 +96,5 @@
 1463090450247	Rename local variable 'xr'
 1463090500775	Rename field 'OLD_TILE_IMPROVEMENT_TAG'
 1463090542615	Rename field 'lOGGER'
+=======
+>>>>>>> 7d44214583ca9dd6334928ca585422a97d4e346d

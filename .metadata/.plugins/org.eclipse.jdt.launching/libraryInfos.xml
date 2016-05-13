@@ -19,6 +19,7 @@
 <entry path="C:\Program Files (x86)\Java\jre1.8.0_71\lib\endorsed"/>
 </endorsedDirs>
 </libraryInfo>
+<<<<<<< HEAD
 <libraryInfo home="C:\Program Files (x86)\Java\jre1.8.0_31" version="1.8.0_31">
 <bootpath>
 <entry path="C:\Program Files (x86)\Java\jre1.8.0_31\lib\resources.jar"/>
@@ -38,6 +39,8 @@
 <entry path="C:\Program Files (x86)\Java\jre1.8.0_31\lib\endorsed"/>
 </endorsedDirs>
 </libraryInfo>
+=======
+>>>>>>> 7d44214583ca9dd6334928ca585422a97d4e346d
 <libraryInfo home="C:\Program Files\Java\jdk1.8.0_91" version="1.8.0_91">
 <bootpath>
 <entry path="C:\Program Files\Java\jdk1.8.0_91\jre\lib\resources.jar"/>
@@ -57,6 +60,7 @@
 <entry path="C:\Program Files\Java\jdk1.8.0_91\jre\lib\endorsed"/>
 </endorsedDirs>
 </libraryInfo>
+<<<<<<< HEAD
 <libraryInfo home="C:\Program Files\Java\jdk1.8.0_20" version="1.8.0_20">
 <bootpath>
 <entry path="C:\Program Files\Java\jdk1.8.0_20\jre\lib\resources.jar"/>
@@ -76,6 +80,8 @@
 <entry path="C:\Program Files\Java\jdk1.8.0_20\jre\lib\endorsed"/>
 </endorsedDirs>
 </libraryInfo>
+=======
+>>>>>>> 7d44214583ca9dd6334928ca585422a97d4e346d
 <libraryInfo home="C:\Program Files\Java\jdk1.7.0_79" version="1.7.0_79">
 <bootpath>
 <entry path="C:\Program Files\Java\jdk1.7.0_79\jre\lib\resources.jar"/>
