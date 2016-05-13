@@ -5058,3 +5058,773 @@ This version of EclipsePro Test was compiled for Eclipse 3.7 but is running on E
 This version of Code Coverage was compiled for Eclipse 3.7 but is running on Eclipse 3.10.
 This version of Shared was compiled for Eclipse 3.7 but is running on Eclipse 3.10.
 
+!SESSION 2016-05-09 15:25:11.366 -----------------------------------------------
+eclipse.buildId=4.4.1.M20140925-0400
+java.version=1.8.0_31
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86, WS=win32, NL=en_US
+Framework arguments:  -product org.eclipse.epp.package.jee.product
+Command-line arguments:  -os win32 -ws win32 -arch x86 -product org.eclipse.epp.package.jee.product
+
+!ENTRY org.eclipse.core.resources 2 10035 2016-05-09 15:25:26.255
+!MESSAGE The workspace exited with unsaved changes in the previous session; refreshing workspace to recover changes.
+
+!ENTRY org.eclipse.core.resources 4 567 2016-05-09 15:25:26.416
+!MESSAGE Workspace restored, but some problems occurred.
+!SUBENTRY 1 org.eclipse.core.resources 4 567 2016-05-09 15:25:26.416
+!MESSAGE Could not read metadata for 'FreeCol'.
+!STACK 1
+org.eclipse.core.internal.resources.ResourceException: The project description file (.project) for 'FreeCol' is missing.  This file contains important information about the project.  The project will not function properly until this file is restored.
+	at org.eclipse.core.internal.localstore.FileSystemResourceManager.read(FileSystemResourceManager.java:851)
+	at org.eclipse.core.internal.resources.SaveManager.restoreMetaInfo(SaveManager.java:884)
+	at org.eclipse.core.internal.resources.SaveManager.restoreMetaInfo(SaveManager.java:864)
+	at org.eclipse.core.internal.resources.SaveManager.restore(SaveManager.java:715)
+	at org.eclipse.core.internal.resources.SaveManager.startup(SaveManager.java:1565)
+	at org.eclipse.core.internal.resources.Workspace.startup(Workspace.java:2464)
+	at org.eclipse.core.internal.resources.Workspace.open(Workspace.java:2219)
+	at org.eclipse.core.resources.ResourcesPlugin.start(ResourcesPlugin.java:447)
+	at org.eclipse.osgi.internal.framework.BundleContextImpl$3.run(BundleContextImpl.java:771)
+	at org.eclipse.osgi.internal.framework.BundleContextImpl$3.run(BundleContextImpl.java:1)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at org.eclipse.osgi.internal.framework.BundleContextImpl.startActivator(BundleContextImpl.java:764)
+	at org.eclipse.osgi.internal.framework.BundleContextImpl.start(BundleContextImpl.java:721)
+	at org.eclipse.osgi.internal.framework.EquinoxBundle.startWorker0(EquinoxBundle.java:936)
+	at org.eclipse.osgi.internal.framework.EquinoxBundle$EquinoxModule.startWorker(EquinoxBundle.java:319)
+	at org.eclipse.osgi.container.Module.doStart(Module.java:571)
+	at org.eclipse.osgi.container.Module.start(Module.java:439)
+	at org.eclipse.osgi.framework.util.SecureAction.start(SecureAction.java:454)
+	at org.eclipse.osgi.internal.hooks.EclipseLazyStarter.postFindLocalClass(EclipseLazyStarter.java:107)
+	at org.eclipse.osgi.internal.loader.classpath.ClasspathManager.findLocalClass(ClasspathManager.java:531)
+	at org.eclipse.osgi.internal.loader.ModuleClassLoader.findLocalClass(ModuleClassLoader.java:324)
+	at org.eclipse.osgi.internal.loader.BundleLoader.findLocalClass(BundleLoader.java:320)
+	at org.eclipse.osgi.internal.loader.sources.SingleSourcePackage.loadClass(SingleSourcePackage.java:36)
+	at org.eclipse.osgi.internal.loader.BundleLoader.findClassInternal(BundleLoader.java:391)
+	at org.eclipse.osgi.internal.loader.BundleLoader.findClass(BundleLoader.java:345)
+	at org.eclipse.osgi.internal.loader.BundleLoader.findClass(BundleLoader.java:337)
+	at org.eclipse.osgi.internal.loader.ModuleClassLoader.loadClass(ModuleClassLoader.java:160)
+	at java.lang.ClassLoader.loadClass(Unknown Source)
+	at org.eclipse.ui.internal.ide.application.IDEApplication.start(IDEApplication.java:136)
+	at org.eclipse.equinox.internal.app.EclipseAppHandle.run(EclipseAppHandle.java:196)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.runApplication(EclipseAppLauncher.java:134)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.start(EclipseAppLauncher.java:104)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:380)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:235)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:648)
+	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:603)
+	at org.eclipse.equinox.launcher.Main.run(Main.java:1465)
+!SUBENTRY 2 org.eclipse.core.resources 4 567 2016-05-09 15:25:26.417
+!MESSAGE The project description file (.project) for 'FreeCol' is missing.  This file contains important information about the project.  The project will not function properly until this file is restored.
+
+!ENTRY org.eclipse.m2e.logback.configuration 2 0 2016-05-09 15:25:26.569
+!MESSAGE Exception while setting up logging:org.eclipse.osgi.internal.framework.EquinoxConfiguration$1 cannot be cast to java.lang.String
+!STACK 0
+java.lang.ClassCastException: org.eclipse.osgi.internal.framework.EquinoxConfiguration$1 cannot be cast to java.lang.String
+	at org.eclipse.m2e.logback.configuration.LogHelper.logJavaProperties(LogHelper.java:26)
+	at org.eclipse.m2e.logback.configuration.LogPlugin.loadConfiguration(LogPlugin.java:189)
+	at org.eclipse.m2e.logback.configuration.LogPlugin.configureLogback(LogPlugin.java:144)
+	at org.eclipse.m2e.logback.configuration.LogPlugin.access$2(LogPlugin.java:107)
+	at org.eclipse.m2e.logback.configuration.LogPlugin$1.run(LogPlugin.java:62)
+	at java.util.TimerThread.mainLoop(Unknown Source)
+	at java.util.TimerThread.run(Unknown Source)
+
+!ENTRY org.eclipse.egit.ui 2 0 2016-05-09 15:25:35.371
+!MESSAGE Warning: The environment variable HOME is not set. The following directory will be used to store the Git
+user global configuration and to define the default location to store repositories: 'C:\Users\Fima'. If this is
+not correct please set the HOME environment variable and restart Eclipse. Otherwise Git for Windows and
+EGit might behave differently since they see different configuration options.
+This warning can be switched off on the Team > Git > Confirmations and Warnings preference page.
+
+!ENTRY org.eclipse.e4.ui.workbench 4 0 2016-05-09 15:27:35.871
+!MESSAGE Error setting focus to : org.eclipse.e4.ui.model.application.ui.basic.impl.PartImpl Building.java
+!STACK 0
+org.eclipse.swt.SWTException: Widget is disposed
+	at org.eclipse.swt.SWT.error(SWT.java:4441)
+	at org.eclipse.swt.SWT.error(SWT.java:4356)
+	at org.eclipse.swt.SWT.error(SWT.java:4327)
+	at org.eclipse.swt.widgets.Widget.error(Widget.java:476)
+	at org.eclipse.swt.widgets.Widget.checkWidget(Widget.java:348)
+	at org.eclipse.swt.widgets.Control.setFocus(Control.java:3320)
+	at org.eclipse.swt.widgets.Composite.setFocus(Composite.java:1039)
+	at org.eclipse.swt.widgets.Composite.setFocus(Composite.java:1039)
+	at org.eclipse.ui.texteditor.StatusTextEditor.setFocus(StatusTextEditor.java:120)
+	at org.eclipse.jdt.internal.ui.javaeditor.JavaEditor.setFocus(JavaEditor.java:2389)
+	at org.eclipse.ui.internal.e4.compatibility.CompatibilityPart.delegateSetFocus(CompatibilityPart.java:191)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.eclipse.e4.core.internal.di.MethodRequestor.execute(MethodRequestor.java:55)
+	at org.eclipse.e4.core.internal.di.InjectorImpl.invokeUsingClass(InjectorImpl.java:247)
+	at org.eclipse.e4.core.internal.di.InjectorImpl.invokeUsingClass(InjectorImpl.java:253)
+	at org.eclipse.e4.core.internal.di.InjectorImpl.invoke(InjectorImpl.java:225)
+	at org.eclipse.e4.core.contexts.ContextInjectionFactory.invoke(ContextInjectionFactory.java:107)
+	at org.eclipse.e4.ui.internal.workbench.swt.PartRenderingEngine.focusGui(PartRenderingEngine.java:795)
+	at org.eclipse.e4.ui.workbench.renderers.swt.ContributedPartRenderer$2.setFocus(ContributedPartRenderer.java:100)
+	at org.eclipse.swt.custom.CTabItem.setFocus(CTabItem.java:332)
+	at org.eclipse.swt.custom.CTabFolder.setFocus(CTabFolder.java:2555)
+	at org.eclipse.swt.widgets.Control.fixFocus(Control.java:1052)
+	at org.eclipse.swt.widgets.Control.setVisible(Control.java:3818)
+	at org.eclipse.swt.custom.CTabFolder.setSelection(CTabFolder.java:3098)
+	at org.eclipse.swt.custom.CTabFolder.setSelection(CTabFolder.java:3055)
+	at org.eclipse.e4.ui.workbench.renderers.swt.StackRenderer.showTab(StackRenderer.java:1260)
+	at org.eclipse.e4.ui.workbench.renderers.swt.LazyStackRenderer$1.handleEvent(LazyStackRenderer.java:68)
+	at org.eclipse.e4.ui.services.internal.events.UIEventHandler$1.run(UIEventHandler.java:40)
+	at org.eclipse.swt.widgets.Synchronizer.syncExec(Synchronizer.java:187)
+	at org.eclipse.ui.internal.UISynchronizer.syncExec(UISynchronizer.java:156)
+	at org.eclipse.swt.widgets.Display.syncExec(Display.java:4734)
+	at org.eclipse.e4.ui.internal.workbench.swt.E4Application$1.syncExec(E4Application.java:218)
+	at org.eclipse.e4.ui.services.internal.events.UIEventHandler.handleEvent(UIEventHandler.java:36)
+	at org.eclipse.equinox.internal.event.EventHandlerWrapper.handleEvent(EventHandlerWrapper.java:197)
+	at org.eclipse.equinox.internal.event.EventHandlerTracker.dispatchEvent(EventHandlerTracker.java:197)
+	at org.eclipse.equinox.internal.event.EventHandlerTracker.dispatchEvent(EventHandlerTracker.java:1)
+	at org.eclipse.osgi.framework.eventmgr.EventManager.dispatchEvent(EventManager.java:230)
+	at org.eclipse.osgi.framework.eventmgr.ListenerQueue.dispatchEventSynchronous(ListenerQueue.java:148)
+	at org.eclipse.equinox.internal.event.EventAdminImpl.dispatchEvent(EventAdminImpl.java:135)
+	at org.eclipse.equinox.internal.event.EventAdminImpl.sendEvent(EventAdminImpl.java:78)
+	at org.eclipse.equinox.internal.event.EventComponent.sendEvent(EventComponent.java:39)
+	at org.eclipse.e4.ui.services.internal.events.EventBroker.send(EventBroker.java:81)
+	at org.eclipse.e4.ui.internal.workbench.UIEventPublisher.notifyChanged(UIEventPublisher.java:59)
+	at org.eclipse.emf.common.notify.impl.BasicNotifierImpl.eNotify(BasicNotifierImpl.java:374)
+	at org.eclipse.e4.ui.model.application.ui.impl.ElementContainerImpl.setSelectedElement(ElementContainerImpl.java:171)
+	at org.eclipse.e4.ui.internal.workbench.PartServiceImpl.hidePart(PartServiceImpl.java:1251)
+	at org.eclipse.e4.ui.internal.workbench.PartServiceImpl.hidePart(PartServiceImpl.java:1204)
+	at org.eclipse.e4.ui.workbench.renderers.swt.StackRenderer.closePart(StackRenderer.java:1222)
+	at org.eclipse.e4.ui.workbench.renderers.swt.StackRenderer.access$3(StackRenderer.java:1204)
+	at org.eclipse.e4.ui.workbench.renderers.swt.StackRenderer$12.close(StackRenderer.java:1095)
+	at org.eclipse.swt.custom.CTabFolder.onMouse(CTabFolder.java:1874)
+	at org.eclipse.swt.custom.CTabFolder$1.handleEvent(CTabFolder.java:288)
+	at org.eclipse.swt.widgets.EventTable.sendEvent(EventTable.java:84)
+	at org.eclipse.swt.widgets.Display.sendEvent(Display.java:4353)
+	at org.eclipse.swt.widgets.Widget.sendEvent(Widget.java:1061)
+	at org.eclipse.swt.widgets.Display.runDeferredEvents(Display.java:4172)
+	at org.eclipse.swt.widgets.Display.readAndDispatch(Display.java:3761)
+	at org.eclipse.e4.ui.internal.workbench.swt.PartRenderingEngine$9.run(PartRenderingEngine.java:1151)
+	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:332)
+	at org.eclipse.e4.ui.internal.workbench.swt.PartRenderingEngine.run(PartRenderingEngine.java:1032)
+	at org.eclipse.e4.ui.internal.workbench.E4Workbench.createAndRunUI(E4Workbench.java:148)
+	at org.eclipse.ui.internal.Workbench$5.run(Workbench.java:636)
+	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:332)
+	at org.eclipse.ui.internal.Workbench.createAndRunWorkbench(Workbench.java:579)
+	at org.eclipse.ui.PlatformUI.createAndRunWorkbench(PlatformUI.java:150)
+	at org.eclipse.ui.internal.ide.application.IDEApplication.start(IDEApplication.java:135)
+	at org.eclipse.equinox.internal.app.EclipseAppHandle.run(EclipseAppHandle.java:196)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.runApplication(EclipseAppLauncher.java:134)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.start(EclipseAppLauncher.java:104)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:380)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:235)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:648)
+	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:603)
+	at org.eclipse.equinox.launcher.Main.run(Main.java:1465)
+
+!ENTRY org.eclipse.equinox.preferences 4 2 2016-05-09 15:32:36.461
+!MESSAGE Problems occurred when invoking code from plug-in: "org.eclipse.equinox.preferences".
+!STACK 0
+org.eclipse.swt.SWTException: Invalid thread access
+	at org.eclipse.swt.SWT.error(SWT.java:4441)
+	at org.eclipse.swt.SWT.error(SWT.java:4356)
+	at org.eclipse.swt.SWT.error(SWT.java:4327)
+	at org.eclipse.swt.widgets.Widget.error(Widget.java:476)
+	at org.eclipse.swt.widgets.Widget.checkWidget(Widget.java:367)
+	at org.eclipse.swt.widgets.Tree.getSelection(Tree.java:3446)
+	at org.eclipse.jface.viewers.TreeViewer.getSelection(TreeViewer.java:232)
+	at org.eclipse.jface.viewers.TreeViewer.setSelection(TreeViewer.java:311)
+	at org.eclipse.jface.viewers.AbstractTreeViewer.setSelectionToWidget(AbstractTreeViewer.java:2524)
+	at org.eclipse.jface.viewers.StructuredViewer.setSelectionToWidget(StructuredViewer.java:1751)
+	at org.eclipse.jface.viewers.AbstractTreeViewer.setSelectionToWidget(AbstractTreeViewer.java:2977)
+	at org.eclipse.jface.viewers.StructuredViewer.preservingSelection(StructuredViewer.java:1443)
+	at org.eclipse.jface.viewers.TreeViewer.preservingSelection(TreeViewer.java:366)
+	at org.eclipse.jface.viewers.StructuredViewer.preservingSelection(StructuredViewer.java:1397)
+	at org.eclipse.jface.viewers.StructuredViewer.refresh(StructuredViewer.java:1525)
+	at org.eclipse.jface.viewers.ColumnViewer.refresh(ColumnViewer.java:533)
+	at org.eclipse.jface.viewers.StructuredViewer.refresh(StructuredViewer.java:1481)
+	at org.eclipse.jdt.internal.debug.ui.classpath.RuntimeClasspathViewer$1.preferenceChange(RuntimeClasspathViewer.java:58)
+	at org.eclipse.core.internal.preferences.EclipsePreferences$3.run(EclipsePreferences.java:896)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:42)
+	at org.eclipse.core.internal.preferences.EclipsePreferences.firePreferenceEvent(EclipsePreferences.java:899)
+	at org.eclipse.core.internal.preferences.EclipsePreferences.put(EclipsePreferences.java:912)
+	at org.eclipse.jdt.internal.debug.ui.jres.JREsUpdater$1.run(JREsUpdater.java:91)
+	at org.eclipse.jface.operation.ModalContext$ModalContextThread.run(ModalContext.java:122)
+!SESSION 2016-05-12 11:49:25.463 -----------------------------------------------
+eclipse.buildId=4.4.1.M20140925-0400
+java.version=1.8.0_31
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86, WS=win32, NL=en_US
+Framework arguments:  -product org.eclipse.epp.package.jee.product
+Command-line arguments:  -os win32 -ws win32 -arch x86 -product org.eclipse.epp.package.jee.product
+
+!ENTRY org.eclipse.m2e.logback.configuration 2 0 2016-05-12 11:49:30.106
+!MESSAGE Exception while setting up logging:org.eclipse.osgi.internal.framework.EquinoxConfiguration$1 cannot be cast to java.lang.String
+!STACK 0
+java.lang.ClassCastException: org.eclipse.osgi.internal.framework.EquinoxConfiguration$1 cannot be cast to java.lang.String
+	at org.eclipse.m2e.logback.configuration.LogHelper.logJavaProperties(LogHelper.java:26)
+	at org.eclipse.m2e.logback.configuration.LogPlugin.loadConfiguration(LogPlugin.java:189)
+	at org.eclipse.m2e.logback.configuration.LogPlugin.configureLogback(LogPlugin.java:144)
+	at org.eclipse.m2e.logback.configuration.LogPlugin.access$2(LogPlugin.java:107)
+	at org.eclipse.m2e.logback.configuration.LogPlugin$1.run(LogPlugin.java:62)
+	at java.util.TimerThread.mainLoop(Unknown Source)
+	at java.util.TimerThread.run(Unknown Source)
+
+!ENTRY org.eclipse.egit.ui 2 0 2016-05-12 11:49:47.474
+!MESSAGE Warning: The environment variable HOME is not set. The following directory will be used to store the Git
+user global configuration and to define the default location to store repositories: 'C:\Users\Fima'. If this is
+not correct please set the HOME environment variable and restart Eclipse. Otherwise Git for Windows and
+EGit might behave differently since they see different configuration options.
+This warning can be switched off on the Team > Git > Confirmations and Warnings preference page.
+
+!ENTRY com.instantiations.eclipse 1 0 2016-05-12 11:51:59.118
+!MESSAGE cannot support aboutToShutdown event - 2
+
+!ENTRY org.eclipse.jface 2 0 2016-05-12 11:53:37.398
+!MESSAGE Keybinding conflicts occurred.  They may interfere with normal accelerator operation.
+!SUBENTRY 1 org.eclipse.jface 2 0 2016-05-12 11:53:37.398
+!MESSAGE A conflict occurred for CTRL+J:
+Binding(CTRL+J,
+	ParameterizedCommand(Command(org.eclipse.ui.edit.findIncremental,Incremental Find,
+		Incremental find,
+		Category(org.eclipse.ui.category.edit,Edit,null,true),
+		org.eclipse.ui.internal.WorkbenchHandlerServiceHandler@802d25,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.textEditorScope,,,system)
+Binding(CTRL+J,
+	ParameterizedCommand(Command(org.moreunit.core.commands.jumpCommand,Jump to Test/Source,
+		Jump to the test or source associated to the current file.,
+		Category(org.moreunit.core.commands.category,MoreUnit,null,true),
+		org.eclipse.ui.internal.WorkbenchHandlerServiceHandler@bd3708,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.textEditorScope,,,system)
+Binding(CTRL+J,
+	ParameterizedCommand(Command(org.moreunit.core.commands.jumpCommand,Jump to Test/Source,
+		Jump to the test or source associated to the current file.,
+		Category(org.moreunit.core.commands.category,MoreUnit,null,true),
+		org.eclipse.ui.internal.WorkbenchHandlerServiceHandler@bd3708,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 11:53:43.391
+!MESSAGE 68718 markers applied on 724 files in 2396ms.
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 11:53:43.393
+!MESSAGE Review code command terminated. 347 rules were executed against 684 files. Actual PMD duration is about 133563ms, that is about 195.26755 ms/file, 384.90778 ms/rule, 0.56273067 ms/filerule
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 11:53:43.396
+!MESSAGE Command ReviewCode excecuted in 140248ms
+
+!ENTRY com.instantiations.common.core 2 0 2016-05-12 11:54:14.053
+!MESSAGE This version of CodePro Analytix and PlusPak was compiled for Eclipse 3.7 but is running on Eclipse 3.10.
+This version of CodePro AnalytiX was compiled for Eclipse 3.7 but is running on Eclipse 3.10.
+This version of EclipsePro Audit was compiled for Eclipse 3.7 but is running on Eclipse 3.10.
+This version of EclipsePro Test was compiled for Eclipse 3.7 but is running on Eclipse 3.10.
+This version of Code Coverage was compiled for Eclipse 3.7 but is running on Eclipse 3.10.
+This version of Shared was compiled for Eclipse 3.7 but is running on Eclipse 3.10.
+
+
+!ENTRY net.sf.eclipsecs.core 4 0 2016-05-12 13:51:11.023
+!MESSAGE Checkstyle-Plugin: Exception was thrown while processing C:\Users\Fima\Documents\GitHub\cosc442-Fayngersh-Saint-Amour-finalproject\FreeCol\src\net\sf\freecol\common\networking\UpdateMessage.java
+!STACK 0
+com.puppycrawl.tools.checkstyle.api.CheckstyleException: Exception was thrown while processing C:\Users\Fima\Documents\GitHub\cosc442-Fayngersh-Saint-Amour-finalproject\FreeCol\src\net\sf\freecol\common\networking\UpdateMessage.java
+	at com.puppycrawl.tools.checkstyle.Checker.processFiles(Checker.java:319)
+	at com.puppycrawl.tools.checkstyle.Checker.process(Checker.java:275)
+	at net.sf.eclipsecs.core.builder.Auditor.runAudit(Auditor.java:159)
+	at net.sf.eclipsecs.core.builder.CheckstyleBuilder.handleBuildSelection(CheckstyleBuilder.java:300)
+	at net.sf.eclipsecs.core.builder.CheckstyleBuilder.build(CheckstyleBuilder.java:171)
+	at org.eclipse.core.internal.events.BuildManager$2.run(BuildManager.java:734)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:42)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:206)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:246)
+	at org.eclipse.core.internal.events.BuildManager$1.run(BuildManager.java:299)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:42)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:302)
+	at org.eclipse.core.internal.events.BuildManager.basicBuildLoop(BuildManager.java:358)
+	at org.eclipse.core.internal.events.BuildManager.build(BuildManager.java:381)
+	at org.eclipse.core.internal.events.AutoBuildJob.doBuild(AutoBuildJob.java:143)
+	at org.eclipse.core.internal.events.AutoBuildJob.run(AutoBuildJob.java:241)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:54)
+Caused by: java.lang.ArrayIndexOutOfBoundsException: 108
+	at com.puppycrawl.tools.checkstyle.api.FileText.get(FileText.java:321)
+	at com.puppycrawl.tools.checkstyle.api.FileContents.getLine(FileContents.java:249)
+	at com.puppycrawl.tools.checkstyle.api.AbstractCheck.getLine(AbstractCheck.java:186)
+	at com.puppycrawl.tools.checkstyle.checks.indentation.CommentsIndentationCheck.isTrailingBlockComment(CommentsIndentationCheck.java:794)
+	at com.puppycrawl.tools.checkstyle.checks.indentation.CommentsIndentationCheck.visitBlockComment(CommentsIndentationCheck.java:775)
+	at com.puppycrawl.tools.checkstyle.checks.indentation.CommentsIndentationCheck.visitToken(CommentsIndentationCheck.java:117)
+	at com.puppycrawl.tools.checkstyle.TreeWalker.notifyVisit(TreeWalker.java:363)
+	at com.puppycrawl.tools.checkstyle.TreeWalker.processIter(TreeWalker.java:478)
+	at com.puppycrawl.tools.checkstyle.TreeWalker.walk(TreeWalker.java:305)
+	at com.puppycrawl.tools.checkstyle.TreeWalker.processFiltered(TreeWalker.java:185)
+	at com.puppycrawl.tools.checkstyle.api.AbstractFileSetCheck.process(AbstractFileSetCheck.java:80)
+	at com.puppycrawl.tools.checkstyle.Checker.processFile(Checker.java:339)
+	at com.puppycrawl.tools.checkstyle.Checker.processFiles(Checker.java:309)
+	... 16 more
+
+!ENTRY net.sf.eclipsecs.core 4 0 2016-05-12 13:51:19.600
+!MESSAGE Checkstyle-Plugin: Exception was thrown while processing C:\Users\Fima\Documents\GitHub\cosc442-Fayngersh-Saint-Amour-finalproject\FreeCol\src\net\sf\freecol\common\model\Monarch.java
+!STACK 0
+com.puppycrawl.tools.checkstyle.api.CheckstyleException: Exception was thrown while processing C:\Users\Fima\Documents\GitHub\cosc442-Fayngersh-Saint-Amour-finalproject\FreeCol\src\net\sf\freecol\common\model\Monarch.java
+	at com.puppycrawl.tools.checkstyle.Checker.processFiles(Checker.java:319)
+	at com.puppycrawl.tools.checkstyle.Checker.process(Checker.java:275)
+	at net.sf.eclipsecs.core.builder.Auditor.runAudit(Auditor.java:159)
+	at net.sf.eclipsecs.core.builder.CheckstyleBuilder.handleBuildSelection(CheckstyleBuilder.java:300)
+	at net.sf.eclipsecs.core.jobs.RunCheckstyleOnFilesJob.runInWorkspace(RunCheckstyleOnFilesJob.java:116)
+	at org.eclipse.core.internal.resources.InternalWorkspaceJob.run(InternalWorkspaceJob.java:38)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:54)
+Caused by: java.lang.ArrayIndexOutOfBoundsException: 213
+	at com.puppycrawl.tools.checkstyle.api.FileText.get(FileText.java:321)
+	at com.puppycrawl.tools.checkstyle.api.FileContents.getLine(FileContents.java:249)
+	at com.puppycrawl.tools.checkstyle.api.AbstractCheck.getLine(AbstractCheck.java:186)
+	at com.puppycrawl.tools.checkstyle.checks.indentation.CommentsIndentationCheck.isTrailingBlockComment(CommentsIndentationCheck.java:794)
+	at com.puppycrawl.tools.checkstyle.checks.indentation.CommentsIndentationCheck.visitBlockComment(CommentsIndentationCheck.java:775)
+	at com.puppycrawl.tools.checkstyle.checks.indentation.CommentsIndentationCheck.visitToken(CommentsIndentationCheck.java:117)
+	at com.puppycrawl.tools.checkstyle.TreeWalker.notifyVisit(TreeWalker.java:363)
+	at com.puppycrawl.tools.checkstyle.TreeWalker.processIter(TreeWalker.java:478)
+	at com.puppycrawl.tools.checkstyle.TreeWalker.walk(TreeWalker.java:305)
+	at com.puppycrawl.tools.checkstyle.TreeWalker.processFiltered(TreeWalker.java:185)
+	at com.puppycrawl.tools.checkstyle.api.AbstractFileSetCheck.process(AbstractFileSetCheck.java:80)
+	at com.puppycrawl.tools.checkstyle.Checker.processFile(Checker.java:339)
+	at com.puppycrawl.tools.checkstyle.Checker.processFiles(Checker.java:309)
+	... 6 more
+
+!ENTRY net.sf.eclipsecs.core 4 0 2016-05-12 13:51:19.798
+!MESSAGE Checkstyle-Plugin: Exception was thrown while processing C:\Users\Fima\Documents\GitHub\cosc442-Fayngersh-Saint-Amour-finalproject\FreeCol\src\net\sf\freecol\client\gui\action\ExecuteGotoOrdersAction.java
+!STACK 0
+com.puppycrawl.tools.checkstyle.api.CheckstyleException: Exception was thrown while processing C:\Users\Fima\Documents\GitHub\cosc442-Fayngersh-Saint-Amour-finalproject\FreeCol\src\net\sf\freecol\client\gui\action\ExecuteGotoOrdersAction.java
+	at com.puppycrawl.tools.checkstyle.Checker.processFiles(Checker.java:319)
+	at com.puppycrawl.tools.checkstyle.Checker.process(Checker.java:275)
+	at net.sf.eclipsecs.core.builder.Auditor.runAudit(Auditor.java:159)
+	at net.sf.eclipsecs.core.builder.CheckstyleBuilder.handleBuildSelection(CheckstyleBuilder.java:300)
+	at net.sf.eclipsecs.core.builder.CheckstyleBuilder.build(CheckstyleBuilder.java:171)
+	at org.eclipse.core.internal.events.BuildManager$2.run(BuildManager.java:734)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:42)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:206)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:246)
+	at org.eclipse.core.internal.events.BuildManager$1.run(BuildManager.java:299)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:42)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:302)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:263)
+	at org.eclipse.core.internal.events.BuildManager.build(BuildManager.java:401)
+	at org.eclipse.core.internal.resources.Project$1.run(Project.java:618)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2313)
+	at org.eclipse.core.internal.resources.Project.internalBuild(Project.java:597)
+	at org.eclipse.core.internal.resources.Project.build(Project.java:114)
+	at net.sf.eclipsecs.core.jobs.BuildProjectJob.run(BuildProjectJob.java:97)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:54)
+Caused by: java.util.ConcurrentModificationException
+	at java.util.ArrayList$Itr.checkForComodification(Unknown Source)
+	at java.util.ArrayList$Itr.next(Unknown Source)
+	at com.puppycrawl.tools.checkstyle.Checker.fireErrors(Checker.java:417)
+	at com.puppycrawl.tools.checkstyle.Checker.processFiles(Checker.java:310)
+	... 19 more
+
+!ENTRY org.eclipse.ui 4 4 2016-05-12 13:51:36.301
+!MESSAGE Could not retrieve EHandlerService or ICommandService from context evaluation context fororg.eclipse.wst.xml.ui.disable.grammar.constraints
+
+!ENTRY org.eclipse.ui 4 4 2016-05-12 13:51:36.302
+!MESSAGE Could not retrieve EHandlerService or ICommandService from context evaluation context fororg.eclipse.wst.xml.ui.reload.dependencies
+
+!ENTRY org.eclipse.ui 4 4 2016-05-12 13:51:36.302
+!MESSAGE Could not retrieve EHandlerService or ICommandService from context evaluation context fororg.eclipse.wst.xml.ui.disable.grammar.constraints
+
+!ENTRY org.eclipse.ui 4 4 2016-05-12 13:51:36.302
+!MESSAGE Could not retrieve EHandlerService or ICommandService from context evaluation context fororg.eclipse.wst.xml.ui.reload.dependencies
+
+!ENTRY org.eclipse.ui 4 4 2016-05-12 13:51:36.305
+!MESSAGE Could not retrieve EHandlerService or ICommandService from context evaluation context fororg.eclipse.wst.xml.ui.disable.grammar.constraints
+
+!ENTRY org.eclipse.ui 4 4 2016-05-12 13:51:36.306
+!MESSAGE Could not retrieve EHandlerService or ICommandService from context evaluation context fororg.eclipse.wst.xml.ui.reload.dependencies
+
+!ENTRY org.eclipse.ui 4 4 2016-05-12 14:07:47.067
+!MESSAGE Could not retrieve EHandlerService or ICommandService from context evaluation context fororg.eclipse.wst.xml.ui.disable.grammar.constraints
+
+!ENTRY org.eclipse.ui 4 4 2016-05-12 14:07:47.067
+!MESSAGE Could not retrieve EHandlerService or ICommandService from context evaluation context fororg.eclipse.wst.xml.ui.reload.dependencies
+
+!ENTRY org.eclipse.ui 4 4 2016-05-12 14:07:47.070
+!MESSAGE Could not retrieve EHandlerService or ICommandService from context evaluation context fororg.eclipse.wst.xml.ui.disable.grammar.constraints
+
+!ENTRY org.eclipse.ui 4 4 2016-05-12 14:07:47.071
+!MESSAGE Could not retrieve EHandlerService or ICommandService from context evaluation context fororg.eclipse.wst.xml.ui.reload.dependencies
+
+!ENTRY org.eclipse.ui 4 4 2016-05-12 14:07:47.072
+!MESSAGE Could not retrieve EHandlerService or ICommandService from context evaluation context fororg.eclipse.wst.xml.ui.disable.grammar.constraints
+
+!ENTRY org.eclipse.ui 4 4 2016-05-12 14:07:47.072
+!MESSAGE Could not retrieve EHandlerService or ICommandService from context evaluation context fororg.eclipse.wst.xml.ui.reload.dependencies
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 14:17:38.991
+!MESSAGE 55 markers applied on 1 files in 2ms.
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 14:17:39.160
+!MESSAGE Review code command terminated. 347 rules were executed against 1 files. Actual PMD duration is about 181ms, that is about 181.0 ms/file, 0.52161384 ms/rule, 0.52161384 ms/filerule
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 14:17:39.161
+!MESSAGE Command ReviewCode excecuted in 1108ms
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 14:17:48.696
+!MESSAGE 1 markers applied on 1 files in 0ms.
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 14:17:48.837
+!MESSAGE Review code command terminated. 347 rules were executed against 1 files. Actual PMD duration is about 15ms, that is about 15.0 ms/file, 0.043227665 ms/rule, 0.043227665 ms/filerule
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 14:17:48.838
+!MESSAGE Command ReviewCode excecuted in 569ms
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 14:18:25.886
+!MESSAGE 1 markers applied on 1 files in 0ms.
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 14:18:26.047
+!MESSAGE Review code command terminated. 347 rules were executed against 1 files. Actual PMD duration is about 14ms, that is about 14.0 ms/file, 0.04034582 ms/rule, 0.04034582 ms/filerule
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 14:18:26.047
+!MESSAGE Command ReviewCode excecuted in 586ms
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 14:20:12.268
+!MESSAGE 52 markers applied on 1 files in 2ms.
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 14:20:12.466
+!MESSAGE Review code command terminated. 347 rules were executed against 1 files. Actual PMD duration is about 183ms, that is about 183.0 ms/file, 0.52737755 ms/rule, 0.52737755 ms/filerule
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 14:20:12.467
+!MESSAGE Command ReviewCode excecuted in 792ms
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 14:21:58.110
+!MESSAGE 44 markers applied on 1 files in 1ms.
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 14:21:58.294
+!MESSAGE Review code command terminated. 347 rules were executed against 1 files. Actual PMD duration is about 131ms, that is about 131.0 ms/file, 0.3775216 ms/rule, 0.3775216 ms/filerule
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 14:21:58.321
+!MESSAGE Command ReviewCode excecuted in 803ms
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 14:27:25.299
+!MESSAGE 43 markers applied on 1 files in 2ms.
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 14:27:25.508
+!MESSAGE Review code command terminated. 347 rules were executed against 1 files. Actual PMD duration is about 183ms, that is about 183.0 ms/file, 0.52737755 ms/rule, 0.52737755 ms/filerule
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 14:27:25.508
+!MESSAGE Command ReviewCode excecuted in 797ms
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 14:36:18.823
+!MESSAGE 40 markers applied on 1 files in 2ms.
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 14:36:19.002
+!MESSAGE Review code command terminated. 347 rules were executed against 1 files. Actual PMD duration is about 214ms, that is about 214.0 ms/file, 0.6167147 ms/rule, 0.6167147 ms/filerule
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 14:36:19.003
+!MESSAGE Command ReviewCode excecuted in 767ms
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 14:38:06.830
+!MESSAGE 39 markers applied on 1 files in 2ms.
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 14:38:07.040
+!MESSAGE Review code command terminated. 347 rules were executed against 1 files. Actual PMD duration is about 134ms, that is about 134.0 ms/file, 0.38616714 ms/rule, 0.38616714 ms/filerule
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 14:38:07.040
+!MESSAGE Command ReviewCode excecuted in 811ms
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 14:40:14.918
+!MESSAGE 36 markers applied on 1 files in 1ms.
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 14:40:15.098
+!MESSAGE Review code command terminated. 347 rules were executed against 1 files. Actual PMD duration is about 191ms, that is about 191.0 ms/file, 0.55043226 ms/rule, 0.55043226 ms/filerule
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 14:40:15.099
+!MESSAGE Command ReviewCode excecuted in 784ms
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 14:42:44.566
+!MESSAGE 34 markers applied on 1 files in 1ms.
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 14:42:44.742
+!MESSAGE Review code command terminated. 347 rules were executed against 1 files. Actual PMD duration is about 138ms, that is about 138.0 ms/file, 0.39769453 ms/rule, 0.39769453 ms/filerule
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 14:42:44.742
+!MESSAGE Command ReviewCode excecuted in 813ms
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 14:44:29.994
+!MESSAGE 33 markers applied on 1 files in 1ms.
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 14:44:30.172
+!MESSAGE Review code command terminated. 347 rules were executed against 1 files. Actual PMD duration is about 177ms, that is about 177.0 ms/file, 0.5100865 ms/rule, 0.5100865 ms/filerule
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 14:44:30.173
+!MESSAGE Command ReviewCode excecuted in 645ms
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 14:45:11.148
+!MESSAGE 32 markers applied on 1 files in 1ms.
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 14:45:11.289
+!MESSAGE Review code command terminated. 347 rules were executed against 1 files. Actual PMD duration is about 133ms, that is about 133.0 ms/file, 0.3832853 ms/rule, 0.3832853 ms/filerule
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 14:45:11.289
+!MESSAGE Command ReviewCode excecuted in 567ms
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 14:46:39.505
+!MESSAGE 56 markers applied on 1 files in 2ms.
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 14:46:39.688
+!MESSAGE Review code command terminated. 347 rules were executed against 1 files. Actual PMD duration is about 130ms, that is about 130.0 ms/file, 0.37463978 ms/rule, 0.37463978 ms/filerule
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 14:46:39.689
+!MESSAGE Command ReviewCode excecuted in 1222ms
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 14:48:32.684
+!MESSAGE 54 markers applied on 1 files in 1ms.
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 14:48:32.945
+!MESSAGE Review code command terminated. 347 rules were executed against 1 files. Actual PMD duration is about 161ms, that is about 161.0 ms/file, 0.46397695 ms/rule, 0.46397695 ms/filerule
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 14:48:32.946
+!MESSAGE Command ReviewCode excecuted in 431ms
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 14:49:01.191
+!MESSAGE 55 markers applied on 1 files in 1ms.
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 14:49:01.192
+!MESSAGE Review code command terminated. 347 rules were executed against 1 files. Actual PMD duration is about 132ms, that is about 132.0 ms/file, 0.38040346 ms/rule, 0.38040346 ms/filerule
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 14:49:01.192
+!MESSAGE Command ReviewCode excecuted in 728ms
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 14:51:15.246
+!MESSAGE 55 markers applied on 1 files in 1ms.
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 14:51:15.427
+!MESSAGE Review code command terminated. 347 rules were executed against 1 files. Actual PMD duration is about 160ms, that is about 160.0 ms/file, 0.4610951 ms/rule, 0.4610951 ms/filerule
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 14:51:15.428
+!MESSAGE Command ReviewCode excecuted in 1046ms
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 14:55:12.885
+!MESSAGE 50 markers applied on 1 files in 1ms.
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 14:55:13.066
+!MESSAGE Review code command terminated. 347 rules were executed against 1 files. Actual PMD duration is about 169ms, that is about 169.0 ms/file, 0.4870317 ms/rule, 0.4870317 ms/filerule
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 14:55:13.067
+!MESSAGE Command ReviewCode excecuted in 948ms
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 15:02:24.692
+!MESSAGE 46 markers applied on 1 files in 1ms.
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 15:02:24.861
+!MESSAGE Review code command terminated. 347 rules were executed against 1 files. Actual PMD duration is about 167ms, that is about 167.0 ms/file, 0.48126802 ms/rule, 0.48126802 ms/filerule
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 15:02:24.861
+!MESSAGE Command ReviewCode excecuted in 914ms
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 15:05:37.843
+!MESSAGE 21 markers applied on 1 files in 1ms.
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 15:05:37.996
+!MESSAGE Review code command terminated. 347 rules were executed against 1 files. Actual PMD duration is about 176ms, that is about 176.0 ms/file, 0.5072046 ms/rule, 0.5072046 ms/filerule
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 15:05:37.997
+!MESSAGE Command ReviewCode excecuted in 654ms
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 15:07:17.753
+!MESSAGE 20 markers applied on 1 files in 0ms.
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 15:07:17.938
+!MESSAGE Review code command terminated. 347 rules were executed against 1 files. Actual PMD duration is about 155ms, that is about 155.0 ms/file, 0.44668588 ms/rule, 0.44668588 ms/filerule
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 15:07:17.939
+!MESSAGE Command ReviewCode excecuted in 642ms
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 15:11:12.544
+!MESSAGE 18 markers applied on 1 files in 0ms.
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 15:11:12.738
+!MESSAGE Review code command terminated. 347 rules were executed against 1 files. Actual PMD duration is about 183ms, that is about 183.0 ms/file, 0.52737755 ms/rule, 0.52737755 ms/filerule
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 15:11:12.738
+!MESSAGE Command ReviewCode excecuted in 641ms
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 15:17:37.239
+!MESSAGE 22 markers applied on 1 files in 1ms.
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 15:17:37.409
+!MESSAGE Review code command terminated. 347 rules were executed against 1 files. Actual PMD duration is about 158ms, that is about 158.0 ms/file, 0.45533141 ms/rule, 0.45533141 ms/filerule
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 15:17:37.410
+!MESSAGE Command ReviewCode excecuted in 958ms
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 15:18:56.529
+!MESSAGE 21 markers applied on 1 files in 0ms.
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 15:18:56.530
+!MESSAGE Review code command terminated. 347 rules were executed against 1 files. Actual PMD duration is about 118ms, that is about 118.0 ms/file, 0.34005764 ms/rule, 0.34005764 ms/filerule
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 15:18:56.530
+!MESSAGE Command ReviewCode excecuted in 432ms
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 15:34:56.719
+!MESSAGE 21 markers applied on 1 files in 1ms.
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 15:34:56.887
+!MESSAGE Review code command terminated. 347 rules were executed against 1 files. Actual PMD duration is about 165ms, that is about 165.0 ms/file, 0.4755043 ms/rule, 0.4755043 ms/filerule
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 15:34:56.888
+!MESSAGE Command ReviewCode excecuted in 893ms
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 15:35:11.241
+!MESSAGE 32 markers applied on 1 files in 1ms.
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 15:35:11.433
+!MESSAGE Review code command terminated. 347 rules were executed against 1 files. Actual PMD duration is about 79ms, that is about 79.0 ms/file, 0.22766571 ms/rule, 0.22766571 ms/filerule
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 15:35:11.433
+!MESSAGE Command ReviewCode excecuted in 614ms
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 15:35:30.871
+!MESSAGE 32 markers applied on 1 files in 1ms.
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 15:35:31.031
+!MESSAGE Review code command terminated. 347 rules were executed against 1 files. Actual PMD duration is about 91ms, that is about 91.0 ms/file, 0.26224783 ms/rule, 0.26224783 ms/filerule
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 15:35:31.032
+!MESSAGE Command ReviewCode excecuted in 579ms
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 15:38:22.590
+!MESSAGE 28 markers applied on 1 files in 1ms.
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 15:38:22.757
+!MESSAGE Review code command terminated. 347 rules were executed against 1 files. Actual PMD duration is about 121ms, that is about 121.0 ms/file, 0.34870318 ms/rule, 0.34870318 ms/filerule
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 15:38:22.758
+!MESSAGE Command ReviewCode excecuted in 610ms
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 15:44:12.250
+!MESSAGE 36 markers applied on 1 files in 2ms.
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 15:44:12.421
+!MESSAGE Review code command terminated. 347 rules were executed against 1 files. Actual PMD duration is about 152ms, that is about 152.0 ms/file, 0.43804035 ms/rule, 0.43804035 ms/filerule
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 15:44:12.421
+!MESSAGE Command ReviewCode excecuted in 748ms
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 15:53:13.957
+!MESSAGE 17 markers applied on 1 files in 0ms.
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 15:53:14.120
+!MESSAGE Review code command terminated. 347 rules were executed against 1 files. Actual PMD duration is about 158ms, that is about 158.0 ms/file, 0.45533141 ms/rule, 0.45533141 ms/filerule
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 15:53:14.121
+!MESSAGE Command ReviewCode excecuted in 964ms
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 15:54:27.202
+!MESSAGE 16 markers applied on 1 files in 1ms.
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 15:54:27.367
+!MESSAGE Review code command terminated. 347 rules were executed against 1 files. Actual PMD duration is about 103ms, that is about 103.0 ms/file, 0.29682997 ms/rule, 0.29682997 ms/filerule
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 15:54:27.368
+!MESSAGE Command ReviewCode excecuted in 757ms
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 15:55:00.360
+!MESSAGE 17 markers applied on 1 files in 0ms.
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 15:55:00.522
+!MESSAGE Review code command terminated. 347 rules were executed against 1 files. Actual PMD duration is about 95ms, that is about 95.0 ms/file, 0.27377522 ms/rule, 0.27377522 ms/filerule
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 15:55:00.522
+!MESSAGE Command ReviewCode excecuted in 742ms
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 15:56:01.847
+!MESSAGE 16 markers applied on 1 files in 1ms.
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 15:56:02.025
+!MESSAGE Review code command terminated. 347 rules were executed against 1 files. Actual PMD duration is about 98ms, that is about 98.0 ms/file, 0.28242075 ms/rule, 0.28242075 ms/filerule
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 15:56:02.025
+!MESSAGE Command ReviewCode excecuted in 767ms
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 16:24:39.692
+!MESSAGE 36 markers applied on 1 files in 1ms.
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 16:24:39.857
+!MESSAGE Review code command terminated. 347 rules were executed against 1 files. Actual PMD duration is about 147ms, that is about 147.0 ms/file, 0.42363113 ms/rule, 0.42363113 ms/filerule
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 16:24:39.858
+!MESSAGE Command ReviewCode excecuted in 1255ms
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 16:26:28.305
+!MESSAGE 36 markers applied on 1 files in 2ms.
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 16:26:28.501
+!MESSAGE Review code command terminated. 347 rules were executed against 1 files. Actual PMD duration is about 105ms, that is about 105.0 ms/file, 0.30259365 ms/rule, 0.30259365 ms/filerule
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 16:26:28.501
+!MESSAGE Command ReviewCode excecuted in 1132ms
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 16:55:08.075
+!MESSAGE 36 markers applied on 1 files in 2ms.
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 16:55:08.278
+!MESSAGE Review code command terminated. 347 rules were executed against 1 files. Actual PMD duration is about 180ms, that is about 180.0 ms/file, 0.518732 ms/rule, 0.518732 ms/filerule
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 16:55:08.279
+!MESSAGE Command ReviewCode excecuted in 1159ms
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 17:08:44.414
+!MESSAGE 87 markers applied on 1 files in 3ms.
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 17:08:44.618
+!MESSAGE Review code command terminated. 347 rules were executed against 1 files. Actual PMD duration is about 210ms, that is about 210.0 ms/file, 0.6051873 ms/rule, 0.6051873 ms/filerule
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 17:08:44.619
+!MESSAGE Command ReviewCode excecuted in 1142ms
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 17:17:08.105
+!MESSAGE 68 markers applied on 1 files in 2ms.
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 17:17:08.298
+!MESSAGE Review code command terminated. 347 rules were executed against 1 files. Actual PMD duration is about 200ms, that is about 200.0 ms/file, 0.57636887 ms/rule, 0.57636887 ms/filerule
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 17:17:08.298
+!MESSAGE Command ReviewCode excecuted in 1183ms
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 17:24:48.012
+!MESSAGE 1 markers applied on 1 files in 1ms.
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 17:24:48.165
+!MESSAGE Review code command terminated. 347 rules were executed against 1 files. Actual PMD duration is about 30ms, that is about 30.0 ms/file, 0.08645533 ms/rule, 0.08645533 ms/filerule
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 17:24:48.166
+!MESSAGE Command ReviewCode excecuted in 579ms
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 17:37:46.807
+!MESSAGE 35 markers applied on 1 files in 1ms.
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 17:37:47.000
+!MESSAGE Review code command terminated. 347 rules were executed against 1 files. Actual PMD duration is about 133ms, that is about 133.0 ms/file, 0.3832853 ms/rule, 0.3832853 ms/filerule
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 17:37:47.001
+!MESSAGE Command ReviewCode excecuted in 1092ms
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 17:40:02.944
+!MESSAGE 34 markers applied on 1 files in 2ms.
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 17:40:03.151
+!MESSAGE Review code command terminated. 347 rules were executed against 1 files. Actual PMD duration is about 88ms, that is about 88.0 ms/file, 0.2536023 ms/rule, 0.2536023 ms/filerule
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 17:40:03.151
+!MESSAGE Command ReviewCode excecuted in 910ms
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 18:02:02.051
+!MESSAGE 111 markers applied on 1 files in 4ms.
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 18:02:02.229
+!MESSAGE Review code command terminated. 347 rules were executed against 1 files. Actual PMD duration is about 223ms, that is about 223.0 ms/file, 0.6426513 ms/rule, 0.6426513 ms/filerule
+
+!ENTRY net.sourceforge.pmd.eclipse.plugin 1 0 2016-05-12 18:02:02.229
+!MESSAGE Command ReviewCode excecuted in 1941ms
