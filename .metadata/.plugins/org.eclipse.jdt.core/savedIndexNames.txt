@@ -12,9 +12,9 @@ INDEX VERSION 1.127+C:\Users\FIRMS\Documents\GitHub\cosc442-Fayngersh-Saint-Amou
 2675992698.index
 3987220269.index
 2619944801.index
-1062637288.index
-699374087.index
 3343306253.index
+699374087.index
+1062637288.index
 1685897684.index
 3855499886.index
 3932020233.index

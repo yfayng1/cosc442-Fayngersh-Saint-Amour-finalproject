@@ -73,7 +73,7 @@ public class ColonyTradeItem extends TradeItem {
      * @param xr The <code>FreeColXMLReader</code> to read from.
      * @exception XMLStreamException if there is an error reading the stream.
      */
-    public ColonyTradeItem(Game game, FreeColXMLReader xr) throws XMLStreamException {
+    ColonyTradeItem(Game game, FreeColXMLReader xr) throws XMLStreamException {
         super(game, xr);
     }
 

@@ -47,19 +47,19 @@ public final class Ability extends Feature {
         = "model.ability.alwaysOfferedPeace";
 
     /** The ability to ambush other units. */
-    public static final String AMBUSH_BONUS
+    static final String AMBUSH_BONUS
         = "model.ability.ambushBonus";
 
     /** The susceptibility to ambush from other units. */
-    public static final String AMBUSH_PENALTY
+    static final String AMBUSH_PENALTY
         = "model.ability.ambushPenalty";
 
     /** Terrain in which an ambush may occur. */
-    public static final String AMBUSH_TERRAIN
+    static final String AMBUSH_TERRAIN
         = "model.ability.ambushTerrain";
 
     /** Equipment type ability denoting the holder is armed. */
-    public static final String ARMED
+    static final String ARMED
         = "model.ability.armed";
 
     /** The ability of a colony to automatocally arm defenders (Revere). */
@@ -145,18 +145,18 @@ public final class Ability extends Feature {
         = "model.ability.canRecruitUnit";
 
     /** The ability of certain armed units to capture equipment.*/
-    public static final String CAPTURE_EQUIPMENT
+    static final String CAPTURE_EQUIPMENT
         = "model.ability.captureEquipment";
 
     /**
      * The ability of certain units (e.g. privateers) to capture goods
      * carried by another player's units.
      */
-    public static final String CAPTURE_GOODS
+    static final String CAPTURE_GOODS
         = "model.ability.captureGoods";
 
     /** The ability of certain armed units to capture another player's units.*/
-    public static final String CAPTURE_UNITS
+    static final String CAPTURE_UNITS
         = "model.ability.captureUnits";
 
     /** The ability of certain units (e.g. wagon trains) to carry goods. */
@@ -171,7 +171,7 @@ public final class Ability extends Feature {
         = "model.ability.carryTreasure";
 
     /** The ability of certain units (e.g. ships) to carry other units. */
-    public static final String CARRY_UNITS
+    static final String CARRY_UNITS
         = "model.ability.carryUnits";
 
     /** Restrict some buildings to only be buildable on the coast. */
@@ -182,11 +182,11 @@ public final class Ability extends Feature {
      * The ability of certain consumers (e.g. BuildQueues) to consume
      * a large amount of goods at once instead of turn by turn.
      */
-    public static final String CONSUME_ALL_OR_NOTHING
+    static final String CONSUME_ALL_OR_NOTHING
         = "model.ability.consumeAllOrNothing";
 
     /** The ability of customs houses to trade with other players. */
-    public static final String CUSTOM_HOUSE_TRADES_WITH_FOREIGN_COUNTRIES
+    static final String CUSTOM_HOUSE_TRADES_WITH_FOREIGN_COUNTRIES
         = "model.ability.customHouseTradesWithForeignCountries";
 
     /** The ability to demand tribute even when unarmed. */
@@ -194,7 +194,7 @@ public final class Ability extends Feature {
         = "model.ability.demandTribute";
     
     /** Units with this ability are demoted on losing all equipment. */
-    public static final String DEMOTE_ON_ALL_EQUIPMENT_LOST
+    static final String DEMOTE_ON_ALL_EQUIPMENT_LOST
         = "model.ability.demoteOnAllEquipLost";
 
     /** The ability to denounce heresy. */
@@ -202,11 +202,11 @@ public final class Ability extends Feature {
         = "model.ability.denounceHeresy";
 
     /** Units with this ability die on losing all equipment. */
-    public static final String DISPOSE_ON_ALL_EQUIPMENT_LOST
+    static final String DISPOSE_ON_ALL_EQUIPMENT_LOST
         = "model.ability.disposeOnAllEquipLost";
 
     /** Units with this ability die on losing a combat. */
-    public static final String DISPOSE_ON_COMBAT_LOSS
+    static final String DISPOSE_ON_COMBAT_LOSS
         = "model.ability.disposeOnCombatLoss";
 
     /** The ability to bless a missionary. */
@@ -214,7 +214,7 @@ public final class Ability extends Feature {
         = "model.ability.dressMissionary";
 
     /** The ability to elect founding fathers. */
-    public static final String ELECT_FOUNDING_FATHER
+    static final String ELECT_FOUNDING_FATHER
         = "model.ability.electFoundingFather";
 
     /** The ability to establish a mission. */
@@ -222,7 +222,7 @@ public final class Ability extends Feature {
         = "model.ability.establishMission";
 
     /** The ability to evade naval attack. */
-    public static final String EVADE_ATTACK
+    static final String EVADE_ATTACK
         = "model.ability.evadeAttack";
 
     /**
@@ -266,15 +266,15 @@ public final class Ability extends Feature {
         = "model.ability.foundInLostCity";
 
     /** The ability of a player to found colonies. */
-    public static final String FOUNDS_COLONIES
+    static final String FOUNDS_COLONIES
         = "model.ability.foundsColonies";
 
     /** The ability of a colony which is a port. */
-    public static final String HAS_PORT
+    static final String HAS_PORT
         = "model.ability.hasPort";
 
     /** The ability to ignore the monarchs wars. */
-    public static final String IGNORE_EUROPEAN_WARS
+    static final String IGNORE_EUROPEAN_WARS
         = "model.ability.ignoreEuropeanWars";
 
     /** The ability of a unit to make terrain improvements. */
@@ -297,19 +297,19 @@ public final class Ability extends Feature {
      * Note: this differs from INDEPENDENCE_DECLARED in that
      * the REF is also (representing) an independent nation.
      */
-    public static final String INDEPENDENT_NATION
+    static final String INDEPENDENT_NATION
         = "model.ability.independentNation";
 
     /** Units with this ability can be chosen as mercenaries support units. */
-    public static final String MERCENARY_UNIT
+    static final String MERCENARY_UNIT
         = "model.ability.mercenaryUnit";
 
     /** Equipment type ability denoting the holder is mounted. */
-    public static final String MOUNTED
+    static final String MOUNTED
         = "model.ability.mounted";
 
     /** The ability to move to Europe from a tile. */
-    public static final String MOVE_TO_EUROPE
+    static final String MOVE_TO_EUROPE
         = "model.ability.moveToEurope";
 
     /** The ability to attack multiple times. */
@@ -317,7 +317,7 @@ public final class Ability extends Feature {
         = "model.ability.multipleAttacks";
 
     /** The ability of being a native unit. */
-    public static final String NATIVE
+    static final String NATIVE
         = "model.ability.native";
 
     /** The ability of ships to move across water tiles. */
@@ -390,7 +390,7 @@ public final class Ability extends Feature {
      * Units with this ability can be chosen as support units from
      * the crown.
      */
-    public static final String SUPPORT_UNIT
+    static final String SUPPORT_UNIT
         = "model.ability.supportUnit";
 
     /** Buildings with this ability can be used to teach. */
@@ -415,7 +415,7 @@ public final class Ability extends Feature {
      *
      * @param specification The <code>Specification</code> to use.
      */
-    protected Ability(Specification specification) {
+    private Ability(Specification specification) {
         super(specification);
     }
 
@@ -426,7 +426,7 @@ public final class Ability extends Feature {
      * @param source The source <code>FreeColSpecObjectType</code>.
      * @param value The ability value.
      */
-    public Ability(String id, FreeColSpecObjectType source, boolean value) {
+    Ability(String id, FreeColSpecObjectType source, boolean value) {
         this((source == null) ? null : source.getSpecification());
 
         setId(id);

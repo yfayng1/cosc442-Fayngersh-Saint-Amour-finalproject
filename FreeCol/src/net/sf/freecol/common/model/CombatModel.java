@@ -67,11 +67,11 @@ public abstract class CombatModel {
      * Odds a particular outcome will occur in combat.
      */
     public static class CombatOdds {
-        public static final double UNKNOWN_ODDS = -1.0;
+        static final double UNKNOWN_ODDS = -1.0;
 
         public final double win;
 
-        public CombatOdds(double win) {
+        CombatOdds(double win) {
             this.win = win;
         }
     }
@@ -90,7 +90,7 @@ public abstract class CombatModel {
      * @param defender The defender.
      * @return True if no defender is provided.
      */
-    public boolean combatIsAttackMeasurement(FreeColGameObject attacker,
+    boolean combatIsAttackMeasurement(FreeColGameObject attacker,
                                              FreeColGameObject defender) {
         return attacker instanceof Unit && defender == null;
     }
@@ -102,7 +102,7 @@ public abstract class CombatModel {
      * @param defender The defender.
      * @return True if no attacker is provided.
      */
-    public boolean combatIsDefenceMeasurement(FreeColGameObject attacker,
+    boolean combatIsDefenceMeasurement(FreeColGameObject attacker,
                                               FreeColGameObject defender) {
         return attacker == null && defender instanceof Unit;
     }
@@ -154,7 +154,7 @@ public abstract class CombatModel {
      * @param defender The defender.
      * @return True if the attack is amphibious.
      */
-    public boolean combatIsAmphibious(FreeColGameObject attacker,
+    boolean combatIsAmphibious(FreeColGameObject attacker,
                                       FreeColGameObject defender) {
         return attacker instanceof Unit
             && ((Unit)attacker).hasTile()
@@ -171,7 +171,7 @@ public abstract class CombatModel {
      * @param defender The defender object.
      * @return True if the attack is a war of independence battle for a colony.
      */
-    public boolean combatIsWarOfIndependence(FreeColGameObject attacker,
+    boolean combatIsWarOfIndependence(FreeColGameObject attacker,
                                              FreeColGameObject defender) {
         if (attacker instanceof Unit
             && defender instanceof Ownable) {

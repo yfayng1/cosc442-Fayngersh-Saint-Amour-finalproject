@@ -71,6 +71,7 @@ public final class BuildingType extends BuildableType {
      * @param id The object identifier.
      * @param specification The <code>Specification</code> to refer to.
      */
+    
     public BuildingType(String id, Specification specification) {
         super(id, specification);
     }
@@ -123,7 +124,7 @@ public final class BuildingType extends BuildableType {
      * @param unitType The <code>UnitType</code> to test.
      * @return The reason why adding would fail.
      */
-    public NoAddReason getNoAddReason(UnitType unitType) {
+    NoAddReason getNoAddReason(UnitType unitType) {
         return (workPlaces == 0) ? NoAddReason.CAPACITY_EXCEEDED
             : (!unitType.hasSkill()) ? NoAddReason.MISSING_SKILL
             : (unitType.getSkill() < minSkill) ? NoAddReason.MINIMUM_SKILL
@@ -196,7 +197,7 @@ public final class BuildingType extends BuildableType {
      *
      * @param productionType The <code>ProductionType</code> to add.
      */
-    public void addProductionType(ProductionType productionType) {
+    void addProductionType(ProductionType productionType) {
         if (productionType != null) productionTypes.add(productionType);
     }
 
@@ -223,7 +224,7 @@ public final class BuildingType extends BuildableType {
      * @param level The production level (NYI).
      * @return A list of <code>ProductionType</code>s.
      */
-    public List<ProductionType> getAvailableProductionTypes(boolean unattended,
+    private List<ProductionType> getAvailableProductionTypes(boolean unattended,
                                                             String level) {
         return transform(productionTypes,
             pt -> pt.isUnattended() == unattended && pt.appliesTo(level),
@@ -272,7 +273,7 @@ public final class BuildingType extends BuildableType {
      *     the work, if null the unattended production is considered.
      * @return True if this tile type produces the goods.
      */
-    public boolean canProduce(GoodsType goodsType, UnitType unitType) {
+    boolean canProduce(GoodsType goodsType, UnitType unitType) {
         return goodsType != null
             && ProductionType.canProduce(goodsType,
                 getAvailableProductionTypes(unitType == null));
@@ -289,7 +290,7 @@ public final class BuildingType extends BuildableType {
      *     the work, if null the unattended production is considered.
      * @return The amount of goods produced.
      */
-    public int getBaseProduction(ProductionType productionType,
+    int getBaseProduction(ProductionType productionType,
                                  GoodsType goodsType, UnitType unitType) {
         if (goodsType == null) return 0;
         if (productionType == null) {
@@ -301,23 +302,24 @@ public final class BuildingType extends BuildableType {
         return (best == null) ? 0 : best.getAmount();
     }
 
-    /** 
-     * Get the amount of goods of a given goods type the given unit
-     * type could produce on a tile of this tile type.
-     *
-     * @param goodsType The <code>GoodsType</code> to produce.
-     * @param unitType An optional <code>UnitType</code> that is to do
-     *     the work, if null the unattended production is considered.
-     * @return The amount of goods produced.
-     */
-    public int getPotentialProduction(GoodsType goodsType,
-                                      UnitType unitType) {
-        if (goodsType == null) return 0;
-        int amount = getBaseProduction(null, goodsType, unitType);
-        amount = (int)applyModifiers(amount, null, goodsType.getId(),
-                                     unitType);
-        return (amount < 0) ? 0 : amount;
-    }
+
+     /** 
+      * Get the amount of goods of a given goods type the given unit
+      * type could produce on a tile of this tile type.
+      *
+      * @param goodsType The <code>GoodsType</code> to produce.
+      * @param unitType An optional <code>UnitType</code> that is to do
+      *     the work, if null the unattended production is considered.
+      * @return The amount of goods produced.
+      */
+     public int getPotentialProduction(GoodsType goodsType,
+                                       UnitType unitType) {
+         if (goodsType == null) return 0;
+         int amount = getBaseProduction(null, goodsType, unitType);
+         amount = (int)applyModifiers(amount, null, goodsType.getId(),
+                                      unitType);
+         return (amount < 0) ? 0 : amount;
+     }
 
 
     // Override FreeColObject
