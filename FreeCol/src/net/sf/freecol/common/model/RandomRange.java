@@ -39,7 +39,16 @@ import static net.sf.freecol.common.util.RandomUtils.*;
  */
 public class RandomRange {
 
-    private static final Logger logger = Logger.getLogger(RandomRange.class.getName());
+    // Serialization
+
+    private static final String FACTOR_TAG = "factor";
+    private static final String MAXIMUM_TAG = "maximum";
+    private static final String MINIMUM_TAG = "minimum";
+    private static final String PROBABILITY_TAG = "probability";
+    private static final String SCOPE_TAG = "scope";
+
+	
+    private static final Logger LOGGER = Logger.getLogger(RandomRange.class.getName());
 
     /** Percentage probability that the result is not zero. */
     private int probability = 0;
@@ -65,7 +74,7 @@ public class RandomRange {
      * @param maximum The range inclusive maximum.
      * @param factor The result multiplier.
      */
-    public RandomRange(int probability, int minimum, int maximum, int factor) {
+    public RandomRange(final int probability, final int minimum, final int maximum, final int factor) {
         if (probability < 0) {
             throw new IllegalArgumentException("Negative probability "
                 + probability);
@@ -83,12 +92,12 @@ public class RandomRange {
     /**
      * Read a new <code>RandomRange</code> instance from a stream.
      *
-     * @param xr The <code>FreeColXMLReader</code> to read from.
+     * @param xReader The <code>FreeColXMLReader</code> to read from.
      * @exception XMLStreamException if there is a problem reading the
      *     stream.
      */
-    public RandomRange(FreeColXMLReader xr) throws XMLStreamException {
-        readFromXML(xr);
+    public RandomRange(final FreeColXMLReader xReader) throws XMLStreamException {
+        readFromXML(xReader);
     }
 
 
@@ -143,8 +152,10 @@ public class RandomRange {
      *
      * @param scope The <code>Scope</code> to add.
      */
-    private void addScope(Scope scope) {
-        if (scopes == null) scopes = new ArrayList<>();
+    private void addScope(final Scope scope) {
+        if (scopes == null) {
+        	scopes = new ArrayList<>();
+        }
         scopes.add(scope);
     }
 
@@ -154,9 +165,9 @@ public class RandomRange {
      * @param fco The <code>FreeColObject</code> to test.
      * @return True if the scopes are satisfied.
      */
-    public boolean appliesTo(FreeColObject fco) {
-        List<Scope> scs = getScopes();
-        return scs.isEmpty() || any(scs, s -> s.appliesTo(fco));
+    public boolean appliesTo(final FreeColObject fco) {
+        final List<Scope> scs = getScopes();
+        return scs.isEmpty() || any(scs, scope -> scope.appliesTo(fco));
     }
     
     /**
@@ -168,84 +179,78 @@ public class RandomRange {
      * @return A random amount of plunder as defined by this
      *     <code>RandomRange</code>.
      */
-    public int getAmount(String prefix, Random random, boolean continuous) {
+    public int getAmount(final String prefix, final Random random, final boolean continuous) {
         if (probability >= 100
             || (probability > 0
-                && randomInt(logger, prefix + " check-probability",
+                && randomInt(LOGGER, prefix + " check-probability",
                              random, 100) < probability)) {
-            int range = maximum - minimum + 1;
+            final int range = maximum - minimum + 1;
             if (continuous) {
-                int r = randomInt(logger, prefix + " random-range",
+                final int rand = randomInt(LOGGER, prefix + " random-range",
                                   random, range * factor);
-                return r + minimum * factor;
+                return rand + minimum * factor;
             } else {
-                int r = randomInt(logger, prefix + " random-range",
+                final int rand = randomInt(LOGGER, prefix + " random-range",
                                   random, range);
-                return (r + minimum) * factor;
+                return (rand + minimum) * factor;
             }
         }
         return 0;
     }
 
-
-    // Serialization
-
-    private static final String FACTOR_TAG = "factor";
-    private static final String MAXIMUM_TAG = "maximum";
-    private static final String MINIMUM_TAG = "minimum";
-    private static final String PROBABILITY_TAG = "probability";
-    private static final String SCOPE_TAG = "scope";
-
-
     /**
      * This method writes an XML-representation of this object to
      * the given stream.
      *
-     * @param xw The <code>FreeColXMLWriter</code> to write to.
+     * @param xWriter The <code>FreeColXMLWriter</code> to write to.
      * @param tag The tag for this range.
      * @exception XMLStreamException if there are any problems writing
      *     to the stream.
      */
-    public void toXML(FreeColXMLWriter xw, String tag) throws XMLStreamException {
-        xw.writeStartElement(tag);
+    public void toXML(final FreeColXMLWriter xWriter, final String tag) throws XMLStreamException {
+        xWriter.writeStartElement(tag);
 
-        xw.writeAttribute(PROBABILITY_TAG, probability);
+        xWriter.writeAttribute(PROBABILITY_TAG, probability);
 
-        xw.writeAttribute(MINIMUM_TAG, minimum);
+        xWriter.writeAttribute(MINIMUM_TAG, minimum);
 
-        xw.writeAttribute(MAXIMUM_TAG, maximum);
+        xWriter.writeAttribute(MAXIMUM_TAG, maximum);
 
-        xw.writeAttribute(FACTOR_TAG, factor);
+        xWriter.writeAttribute(FACTOR_TAG, factor);
 
-        for (Scope scope : getScopes()) scope.toXML(xw);
+        for (final Scope scope : getScopes()) {
+        	scope.toXML(xWriter);
+        }
 
-        xw.writeEndElement();
+        xWriter.writeEndElement();
     }
 
     /**
      * Initializes this object from an XML-representation of this object.
      *
-     * @param xr The input stream with the XML.
+     * @param xReader The input stream with the XML.
      * @exception XMLStreamException if there are any problems reading
      *     from the stream.
      */
-    public void readFromXML(FreeColXMLReader xr) throws XMLStreamException {
-        probability = xr.getAttribute(PROBABILITY_TAG, 0);
+    public void readFromXML(final FreeColXMLReader xReader) throws XMLStreamException {
+        probability = xReader.getAttribute(PROBABILITY_TAG, 0);
 
-        minimum = xr.getAttribute(MINIMUM_TAG, 0);
+        minimum = xReader.getAttribute(MINIMUM_TAG, 0);
 
-        maximum = xr.getAttribute(MAXIMUM_TAG, 0);
+        maximum = xReader.getAttribute(MAXIMUM_TAG, 0);
 
-        factor = xr.getAttribute(FACTOR_TAG, 0);
+        factor = xReader.getAttribute(FACTOR_TAG, 0);
 
         // Clear containers
-        if (scopes != null) scopes.clear();
+        if (scopes != null) {
+        	scopes.clear();
+        }
 
-        while (xr.nextTag() != XMLStreamConstants.END_ELEMENT) {
-            final String tag = xr.getLocalName();
+        while (xReader.nextTag() != XMLStreamConstants.END_ELEMENT) {
+            final String tag = xReader.getLocalName();
 
             if (SCOPE_TAG.equals(tag)) {
-                addScope(new Scope(xr));
+                addScope(new Scope(xReader));
 
             } else {
                 throw new XMLStreamException("Bogus RandomRange tag: " + tag);

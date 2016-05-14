@@ -22,7 +22,6 @@ package net.sf.freecol.common.model;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.logging.Logger;
 
 import javax.xml.stream.XMLStreamException;
 
@@ -38,10 +37,24 @@ import static net.sf.freecol.common.util.StringUtils.*;
  */
 public class Region extends FreeColGameObject implements Nameable {
 
-    private static final Logger logger = Logger.getLogger(Region.class.getName());
+    // Serialization
 
+    private static final String CHILD_TAG = "child";
+    private static final String CLAIMABLE_TAG = "claimable";
+    private static final String DISCOVERABLE_TAG = "discoverable";
+    private static final String DISCOVERED_BY_TAG = "discoveredBy";
+    private static final String DISCOVERED_IN_TAG = "discoveredIn";
+    private static final String KEY_TAG = "key";
+    private static final String NAME_TAG = "name";
+    private static final String PARENT_TAG = "parent";
+    private static final String SCORE_VALUE_TAG = "scoreValue";
+    private static final String TYPE_TAG = "type";
+    // @compat 0.11.3
+    private static final String NAME_KEY_TAG = "nameKey";
+    // end @compat 0.11.3
+    
     /** The keys for the valid predefined regions. */
-    public static final List<String> predefinedRegionKeys
+    public static final List<String> PREREGKEYS
         = makeUnmodifiableList("model.region.arctic", "model.region.antarctic",
             "model.region.northWest", "model.region.north", "model.region.northEast",
             "model.region.west", "model.region.center", "model.region.east",
@@ -71,7 +84,7 @@ public class Region extends FreeColGameObject implements Nameable {
          *
          * @param claimable The default claimability of this region type.
          */
-        RegionType(boolean claimable) {
+        RegionType(final boolean claimable) {
             this.claimable = claimable;
         }
         
@@ -80,7 +93,7 @@ public class Region extends FreeColGameObject implements Nameable {
          *
          * @return True if this region type is normally claimable.
          */
-        public boolean getClaimable() {
+        public boolean isClaimable() {
             return this.claimable;
         }
 
@@ -166,7 +179,7 @@ public class Region extends FreeColGameObject implements Nameable {
      *
      * @param game The enclosing <code>Game</code>.
      */
-    public Region(Game game) {
+    public Region(final Game game) {
         super(game);
     }
 
@@ -174,10 +187,10 @@ public class Region extends FreeColGameObject implements Nameable {
      * Creates a new <code>Region</code> instance.
      *
      * @param game The enclosing <code>Game</code>.
-     * @param id The object identifier.
+     * @param identifier The object identifier.
      */
-    public Region(Game game, String id) {
-        super(game, id);
+    public Region(final Game game, final String identifier) {
+        super(game, identifier);
     }
 
 
@@ -276,8 +289,10 @@ public class Region extends FreeColGameObject implements Nameable {
      *
      * @param child The child <code>Region</code> to add.
      */
-    public void addChild(Region child) {
-        if (this.children == null) this.children = new ArrayList<>();
+    public void addChild(final Region child) {
+        if (this.children == null) {
+        	this.children = new ArrayList<>();
+        }
         this.children.add(child);
     }
 
@@ -295,7 +310,7 @@ public class Region extends FreeColGameObject implements Nameable {
      *
      * @return True if the region can be claimed.
      */
-    public final boolean getClaimable() {
+    public final boolean isClaimable() {
         return this.claimable;
     }
 
@@ -313,7 +328,7 @@ public class Region extends FreeColGameObject implements Nameable {
      *
      * @return True if the region can be discovered.
      */
-    public final boolean getDiscoverable() {
+    public final boolean isDiscoverable() {
         return this.discoverable;
     }
 
@@ -340,7 +355,7 @@ public class Region extends FreeColGameObject implements Nameable {
      *
      * @param discoverer The unit identifier to set.
      */
-    public synchronized void setDiscoverer(String discoverer) {
+    public synchronized void setDiscoverer(final String discoverer) {
         this.discoverer = discoverer;
     }
 
@@ -354,7 +369,7 @@ public class Region extends FreeColGameObject implements Nameable {
      * @return A discoverable a region, or null if none found.
      */
     public Region getDiscoverableRegion() {
-        return (getDiscoverable()) ? this
+        return (isDiscoverable()) ? this
             : (getParent() != null) ? getParent().getDiscoverableRegion()
             : null;
     }
@@ -420,14 +435,16 @@ public class Region extends FreeColGameObject implements Nameable {
      * @param turn The <code>Turn</code> of discovery.
      * @return A list of discovered <code>Region</code>s.
      */
-    public List<Region> discover(Player player, Turn turn) {
-        List<Region> result = new ArrayList<>();
+    public List<Region> discover(final Player player, final Turn turn) {
+        final List<Region> result = new ArrayList<>();
         this.discoveredBy = player;
         this.discoveredIn = turn;
         this.discoverable = false;
         result.add(this);
-        for (Region r : getChildren()) {
-            if (!r.getDiscoverable()) continue;
+        for (final Region r : getChildren()) {
+            if (!r.isDiscoverable()) {
+            	continue;
+            }
             r.discoveredBy = player;
             r.discoveredIn = turn;
             r.discoverable = false;
@@ -443,9 +460,11 @@ public class Region extends FreeColGameObject implements Nameable {
      * @param key The key to check.
      * @return A valid key or null if already null or invalid.
      */
-    private String fixRegionKey(String key) {
-        if (key == null) return key;
-        for (String r : predefinedRegionKeys) {
+    private String fixRegionKey(final String key) {
+        if (key == null) {
+        	return key;
+        }
+        for (final String r : PREREGKEYS) {
             if (key.equals(r)) {
                 return r;
             } else if (key.equals(Messages.nameKey(r))) {
@@ -475,59 +494,41 @@ public class Region extends FreeColGameObject implements Nameable {
         this.name = newName;
     }
 
-
-    // Serialization
-
-    private static final String CHILD_TAG = "child";
-    private static final String CLAIMABLE_TAG = "claimable";
-    private static final String DISCOVERABLE_TAG = "discoverable";
-    private static final String DISCOVERED_BY_TAG = "discoveredBy";
-    private static final String DISCOVERED_IN_TAG = "discoveredIn";
-    private static final String KEY_TAG = "key";
-    private static final String NAME_TAG = "name";
-    private static final String PARENT_TAG = "parent";
-    private static final String SCORE_VALUE_TAG = "scoreValue";
-    private static final String TYPE_TAG = "type";
-    // @compat 0.11.3
-    private static final String NAME_KEY_TAG = "nameKey";
-    // end @compat 0.11.3
-    
-
     /**
      * {@inheritDoc}
      */
     @Override
-    protected void writeAttributes(FreeColXMLWriter xw) throws XMLStreamException {
-        super.writeAttributes(xw);
+    protected void writeAttributes(final FreeColXMLWriter xWriter) throws XMLStreamException {
+        super.writeAttributes(xWriter);
 
         if (name != null) {
-            xw.writeAttribute(NAME_TAG, name);
+            xWriter.writeAttribute(NAME_TAG, name);
         }
 
         if (key != null) {
-            xw.writeAttribute(KEY_TAG, key);
+            xWriter.writeAttribute(KEY_TAG, key);
         }
 
-        xw.writeAttribute(TYPE_TAG, type);
+        xWriter.writeAttribute(TYPE_TAG, type);
 
-        xw.writeAttribute(CLAIMABLE_TAG, claimable);
+        xWriter.writeAttribute(CLAIMABLE_TAG, claimable);
 
-        xw.writeAttribute(DISCOVERABLE_TAG, discoverable);
+        xWriter.writeAttribute(DISCOVERABLE_TAG, discoverable);
 
         if (parent != null) {
-            xw.writeAttribute(PARENT_TAG, parent);
+            xWriter.writeAttribute(PARENT_TAG, parent);
         }
 
         if (discoveredIn != null) {
-            xw.writeAttribute(DISCOVERED_IN_TAG, discoveredIn.getNumber());
+            xWriter.writeAttribute(DISCOVERED_IN_TAG, discoveredIn.getNumber());
         }
 
         if (discoveredBy != null) {
-            xw.writeAttribute(DISCOVERED_BY_TAG, discoveredBy);
+            xWriter.writeAttribute(DISCOVERED_BY_TAG, discoveredBy);
         }
 
         if (scoreValue > 0) {
-            xw.writeAttribute(SCORE_VALUE_TAG, scoreValue);
+            xWriter.writeAttribute(SCORE_VALUE_TAG, scoreValue);
         }
     }
 
@@ -535,16 +536,16 @@ public class Region extends FreeColGameObject implements Nameable {
      * {@inheritDoc}
      */
     @Override
-    protected void writeChildren(FreeColXMLWriter xw) throws XMLStreamException {
-        super.writeChildren(xw);
+    protected void writeChildren(final FreeColXMLWriter xWriter) throws XMLStreamException {
+        super.writeChildren(xWriter);
 
-        for (Region child : getChildren()) {
+        for (final Region child : getChildren()) {
 
-            xw.writeStartElement(CHILD_TAG);
+            xWriter.writeStartElement(CHILD_TAG);
 
-            xw.writeAttribute(ID_ATTRIBUTE_TAG, child);
+            xWriter.writeAttribute(ID_ATTRIBUTE_TAG, child);
 
-            xw.writeEndElement();
+            xWriter.writeEndElement();
         }
     }
 
@@ -552,34 +553,34 @@ public class Region extends FreeColGameObject implements Nameable {
      * {@inheritDoc}
      */
     @Override
-    public void readAttributes(FreeColXMLReader xr) throws XMLStreamException {
-        super.readAttributes(xr);
+    public void readAttributes(final FreeColXMLReader xReader) throws XMLStreamException {
+        super.readAttributes(xReader);
 
-        name = xr.getAttribute(NAME_TAG, (String)null);
+        name = xReader.getAttribute(NAME_TAG, (String)null);
 
         // @compat 0.11.3
-        if (xr.hasAttribute(NAME_KEY_TAG)) {
-            key = xr.getAttribute(NAME_KEY_TAG, (String)null);
+        if (xReader.hasAttribute(NAME_KEY_TAG)) {
+            key = xReader.getAttribute(NAME_KEY_TAG, (String)null);
             key = fixRegionKey(key);
-        } else
+        } else {
         // @end compat 0.11.3
-            key = xr.getAttribute(KEY_TAG, (String)null);
+            key = xReader.getAttribute(KEY_TAG, (String)null);
+        }
+        type = xReader.getAttribute(TYPE_TAG, RegionType.class, (RegionType)null);
 
-        type = xr.getAttribute(TYPE_TAG, RegionType.class, (RegionType)null);
+        claimable = xReader.getAttribute(CLAIMABLE_TAG, false);
 
-        claimable = xr.getAttribute(CLAIMABLE_TAG, false);
+        discoverable = xReader.getAttribute(DISCOVERABLE_TAG, false);
 
-        discoverable = xr.getAttribute(DISCOVERABLE_TAG, false);
+        scoreValue = xReader.getAttribute(SCORE_VALUE_TAG, 0);
 
-        scoreValue = xr.getAttribute(SCORE_VALUE_TAG, 0);
-
-        int turn = xr.getAttribute(DISCOVERED_IN_TAG, UNDEFINED);
+        final int turn = xReader.getAttribute(DISCOVERED_IN_TAG, UNDEFINED);
         discoveredIn = (turn == UNDEFINED) ? null : new Turn(turn);
 
-        discoveredBy = xr.findFreeColGameObject(getGame(), DISCOVERED_BY_TAG,
+        discoveredBy = xReader.findFreeColGameObject(getGame(), DISCOVERED_BY_TAG,
             Player.class, (Player)null, false);
 
-        parent = xr.makeFreeColGameObject(getGame(), PARENT_TAG,
+        parent = xReader.makeFreeColGameObject(getGame(), PARENT_TAG,
                                           Region.class, false);
     }
 
@@ -587,27 +588,27 @@ public class Region extends FreeColGameObject implements Nameable {
      * {@inheritDoc}
      */
     @Override
-    public void readChildren(FreeColXMLReader xr) throws XMLStreamException {
+    public void readChildren(final FreeColXMLReader xReader) throws XMLStreamException {
         // Clear containers.
         children = null;
 
-        super.readChildren(xr);
+        super.readChildren(xReader);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void readChild(FreeColXMLReader xr) throws XMLStreamException {
-        final String tag = xr.getLocalName();
+    public void readChild(final FreeColXMLReader xReader) throws XMLStreamException {
+        final String tag = xReader.getLocalName();
 
         if (CHILD_TAG.equals(tag)) {
-            addChild(xr.makeFreeColGameObject(getGame(), ID_ATTRIBUTE_TAG,
+            addChild(xReader.makeFreeColGameObject(getGame(), ID_ATTRIBUTE_TAG,
                                               Region.class, true));
-            xr.closeTag(CHILD_TAG);
+            xReader.closeTag(CHILD_TAG);
         
         } else {
-            super.readChild(xr);
+            super.readChild(xReader);
         }
     }
 
@@ -616,14 +617,16 @@ public class Region extends FreeColGameObject implements Nameable {
      */
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder(32);
-        sb.append("[").append(getId())
+        final StringBuilder sBuilder = new StringBuilder(32);
+        sBuilder.append("[").append(getId())
             .append(" ").append((key != null) ? key : (name != null) ? name
                 : "<unnamed>")
             .append(" ").append(type);
-        if (getDiscoverable()) sb.append("!");
-        sb.append("]");
-        return sb.toString();
+        if (isDiscoverable()) {
+        	sBuilder.append("!");
+        }
+        sBuilder.append("]");
+        return sBuilder.toString();
     }
 
     /**

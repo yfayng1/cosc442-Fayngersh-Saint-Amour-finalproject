@@ -20,8 +20,6 @@
 package net.sf.freecol.common.model;
 
 import java.util.Comparator;
-import java.util.Map.Entry;
-import java.util.stream.Collectors;
 
 import javax.xml.stream.XMLStreamException;
 
@@ -35,6 +33,11 @@ import static net.sf.freecol.common.util.CollectionUtils.*;
  */
 public final class ResourceType extends FreeColSpecObjectType {
 
+    // Serialization
+
+    private static final String MAXIMUM_VALUE_TAG = "maximum-value";
+    private static final String MINIMUM_VALUE_TAG = "minimum-value";
+	
     /** Maximum and minimum values for this resource type. */
     private int maxValue, minValue;
 
@@ -42,11 +45,11 @@ public final class ResourceType extends FreeColSpecObjectType {
     /**
      * Creates a new resource type.
      *
-     * @param id The object identifier.
+     * @param identifier The object identifier.
      * @param specification The <code>Specification</code> to refer to.
      */
-    public ResourceType(String id, Specification specification) {
-        super(id, specification);
+    public ResourceType(final String identifier, final Specification specification) {
+        super(identifier, specification);
     }
 
 
@@ -76,30 +79,23 @@ public final class ResourceType extends FreeColSpecObjectType {
      */
     public GoodsType getBestGoodsType() {
         final Specification spec = getSpecification();
-        final Comparator<Modifier> comp = cachingDoubleComparator(m ->
-            spec.getInitialPrice(spec.getGoodsType(m.getId()))
-                * (double)m.applyTo(100));
-        Modifier best = maximize(getModifiers(), comp);
+        final Comparator<Modifier> comp = cachingDoubleComparator(mod ->
+            spec.getInitialPrice(spec.getGoodsType(mod.getId()))
+                * (double)mod.applyTo(100));
+        final Modifier best = maximize(getModifiers(), comp);
         return (best == null) ? null : spec.getGoodsType(best.getId());
     }
-
-
-    // Serialization
-
-    private static final String MAXIMUM_VALUE_TAG = "maximum-value";
-    private static final String MINIMUM_VALUE_TAG = "minimum-value";
-
 
     /**
      * {@inheritDoc}
      */
     @Override
-    protected void writeAttributes(FreeColXMLWriter xw) throws XMLStreamException {
-        super.writeAttributes(xw);
+    protected void writeAttributes(final FreeColXMLWriter xWriter) throws XMLStreamException {
+        super.writeAttributes(xWriter);
 
         if (maxValue > -1) {
-            xw.writeAttribute(MAXIMUM_VALUE_TAG, maxValue);
-            xw.writeAttribute(MINIMUM_VALUE_TAG, minValue);
+            xWriter.writeAttribute(MAXIMUM_VALUE_TAG, maxValue);
+            xWriter.writeAttribute(MINIMUM_VALUE_TAG, minValue);
         }
     }
 
@@ -107,11 +103,11 @@ public final class ResourceType extends FreeColSpecObjectType {
      * {@inheritDoc}
      */
     @Override
-    protected void readAttributes(FreeColXMLReader xr) throws XMLStreamException {
-        super.readAttributes(xr);
+    protected void readAttributes(final FreeColXMLReader xReader) throws XMLStreamException {
+        super.readAttributes(xReader);
 
-        maxValue = xr.getAttribute(MAXIMUM_VALUE_TAG, -1);
-        minValue = xr.getAttribute(MINIMUM_VALUE_TAG, -1);
+        maxValue = xReader.getAttribute(MAXIMUM_VALUE_TAG, -1);
+        minValue = xReader.getAttribute(MINIMUM_VALUE_TAG, -1);
     }
 
     /**

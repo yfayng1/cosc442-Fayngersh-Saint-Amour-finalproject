@@ -41,7 +41,7 @@ import net.sf.freecol.common.util.Utils;
 public class AbstractGoods extends FreeColObject implements Named {
 
     /** Compare the amount of abstract goods. */
-    public static final Comparator<AbstractGoods> amountComparator
+    static final Comparator<AbstractGoods> amountComparator
         = Comparator.comparingInt(AbstractGoods::getAmount);
 
     /**
@@ -86,7 +86,7 @@ public class AbstractGoods extends FreeColObject implements Named {
      *
      * @param other Another <code>AbstractGoods</code> to copy.
      */
-    public AbstractGoods(AbstractGoods other) {
+    AbstractGoods(AbstractGoods other) {
         setId(other.type.getId());
         this.type = other.type;
         this.amount = other.amount;
@@ -171,7 +171,7 @@ public class AbstractGoods extends FreeColObject implements Named {
      * @param amount The amount of goods.
      * @return The goods label.
      */
-    public static StringTemplate getLabel(String key, int amount) {
+    static StringTemplate getLabel(String key, int amount) {
         return StringTemplate.template("model.abstractGoods.label")
             .add("%goods%", key)
             .addAmount("%amount%", amount);
@@ -223,7 +223,7 @@ public class AbstractGoods extends FreeColObject implements Named {
      * @param player The <code>Player</code> to evaluate for.
      * @return A value for the goods.
      */
-    public int evaluateFor(Player player) {
+    int evaluateFor(Player player) {
         final Market market = player.getMarket();
         return (market == null) ? getAmount() * 2 // FIXME: magic#
             : market.getSalePrice(getType(), getAmount());
@@ -292,7 +292,7 @@ public class AbstractGoods extends FreeColObject implements Named {
      * @param amount The amount of goods.
      * @return A string version of the goods.
      */     
-    public static String toString(GoodsType goodsType, int amount) {
+    private static String toString(GoodsType goodsType, int amount) {
         return amount + " "
             + ((goodsType == null) ? "(null)" : goodsType.getSuffix());
     }

@@ -78,8 +78,8 @@ public class ServerRegion extends Region {
         this.key = region.getKey();
         this.type = region.getType();
         this.parent = null; // Has to be fixed up elsewhere
-        this.claimable = region.getClaimable();
-        this.discoverable = region.getDiscoverable();
+        this.claimable = region.isClaimable();
+        this.discoverable = region.isDiscoverable();
         this.discoveredIn = region.getDiscoveredIn();
         this.discoveredBy = region.getDiscoveredBy();
         this.scoreValue = region.getScoreValue();
@@ -94,7 +94,7 @@ public class ServerRegion extends Region {
     public ServerRegion(Game game, RegionType type) {
         this(game, null, type, null);
 
-        this.setClaimable(type.getClaimable());
+        this.setClaimable(type.isClaimable());
         this.setDiscoverable(true);
     }
     
@@ -221,7 +221,7 @@ public class ServerRegion extends Region {
      */
     public void csDiscover(Player player, Turn turn, String newName,
                            ChangeSet cs) {
-        if (!getDiscoverable()) return;
+        if (!isDiscoverable()) return;
         final int score = (getSpecification().getBoolean(GameOptions.EXPLORATION_POINTS)) 
             ? this.scoreValue
             : 0;

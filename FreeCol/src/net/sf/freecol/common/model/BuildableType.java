@@ -66,7 +66,7 @@ public abstract class BuildableType extends FreeColSpecObjectType {
      * @param id The object identifier.
      * @param specification The <code>Specification</code> to refer to.
      */
-    public BuildableType(String id, Specification specification) {
+    BuildableType(String id, Specification specification) {
         super(id, specification);
     }
 
@@ -100,7 +100,7 @@ public abstract class BuildableType extends FreeColSpecObjectType {
             : new HashMap<>(requiredAbilities);
     }
 
-    public boolean requiresAbility(String key) {
+    boolean requiresAbility(String key) {
         return (requiredAbilities == null) ? false
             : (!requiredAbilities.containsKey(key)) ? false
             : requiredAbilities.get(key);
@@ -161,6 +161,7 @@ public abstract class BuildableType extends FreeColSpecObjectType {
      * @param type The <code>GoodsType</code> to check.
      * @return The amount of goods required.
      */
+    @SuppressWarnings("ucd")
     public int getRequiredAmountOf(GoodsType type) {
         return AbstractGoods.getCount(type, getRequiredGoods());
     }
@@ -228,7 +229,7 @@ public abstract class BuildableType extends FreeColSpecObjectType {
     private static final String REQUIRED_ABILITY_TAG = "required-ability";
     private static final String REQUIRED_GOODS_TAG = "required-goods";
     // Subclasses need to check this.
-    public static final String REQUIRED_POPULATION_TAG = "required-population";
+    static final String REQUIRED_POPULATION_TAG = "required-population";
 
 
    /**

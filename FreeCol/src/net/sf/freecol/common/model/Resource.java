@@ -39,7 +39,13 @@ import net.sf.freecol.common.model.Map.Layer;
  */
 public class Resource extends TileItem {
 
-    private static final Logger logger = Logger.getLogger(Resource.class.getName());
+    // Serialization
+
+    private static final String QUANTITY_TAG = "quantity";
+    private static final String TILE_TAG = "tile";
+    private static final String TYPE_TAG = "type";
+
+    private static final Logger LOGGER = Logger.getLogger(Resource.class.getName());
 
     /** Some resources are unlimited. */
     private static final int UNLIMITED = -1;
@@ -61,7 +67,8 @@ public class Resource extends TileItem {
      * @param type The <code>ResourceType</code> of this Resource.
      * @param quantity The quantity of resource.
      */
-    public Resource(Game game, Tile tile, ResourceType type, int quantity) {
+    public Resource(final Game game, final Tile tile, final ResourceType type, 
+    		final int quantity) {
         super(game, tile);
 
         if (type == null) {
@@ -80,7 +87,7 @@ public class Resource extends TileItem {
      * @param tile The <code>Tile</code> on which this object sits.
      * @param type The <code>ResourceType</code> of this Resource.
      */
-    public Resource(Game game, Tile tile, ResourceType type) {
+    public Resource(final Game game, final Tile tile, final ResourceType type) {
         this(game, tile, type, type.getMaxValue());
     }
 
@@ -88,10 +95,10 @@ public class Resource extends TileItem {
      * Creates new <code>Resource</code>.
      *
      * @param game The enclosing <code>Game</code>.
-     * @param id The object identifier.
+     * @param identifier The object identifier.
      */
-    public Resource(Game game, String id) {
-        super(game, id);
+    public Resource(final Game game, final String identifier) {
+        super(game, identifier);
     }
 
 
@@ -127,7 +134,7 @@ public class Resource extends TileItem {
      *
      * @param newQuantity The new resource quantity.
      */
-    public void setQuantity(int newQuantity) {
+    public void setQuantity(final int newQuantity) {
         quantity = newQuantity;
     }
 
@@ -149,8 +156,8 @@ public class Resource extends TileItem {
      * @param potential The base potential of the tile.
      * @return The new quantity of resource.
      */
-    public int useQuantity(GoodsType goodsType, UnitType unitType,
-                           int potential) {
+    public int useQuantity(final GoodsType goodsType, final UnitType unitType,
+                           final int potential) {
         // Return UNLIMITED here if not limited resource?
         return useQuantity(applyBonus(goodsType, unitType, potential)
             - potential);
@@ -162,14 +169,14 @@ public class Resource extends TileItem {
      * @param usedQuantity The quantity that was used up.
      * @return The final value of quantity.
      */
-    public int useQuantity(int usedQuantity) {
+    public int useQuantity(final int usedQuantity) {
         if (quantity == UNLIMITED) {
-            ; // No change
+             ; // No change
         } else if (quantity >= usedQuantity) {
             quantity -= usedQuantity;
         } else {
             // Shouldn't generally happen.  Do something more drastic here?
-            logger.severe("Insufficient quantity in " + this);
+            LOGGER.severe("Insufficient quantity in " + this);
             quantity = 0;
         }
         return quantity;
@@ -201,7 +208,7 @@ public class Resource extends TileItem {
      * {@inheritDoc}
      */
     @Override
-    public boolean isTileTypeAllowed(TileType tileType) {
+    public boolean isTileTypeAllowed(final TileType tileType) {
         return tileType.canHaveResourceType(getType());
     }
 
@@ -209,10 +216,10 @@ public class Resource extends TileItem {
      * {@inheritDoc}
      */
     @Override
-    public int applyBonus(GoodsType goodsType, UnitType unitType,
-                          int potential) {
-        Set<Modifier> bonus = type.getModifiers(goodsType.getId(), unitType);
-        int amount = (int)applyModifiers(potential, null, bonus) - potential;
+    public int applyBonus(final GoodsType goodsType, final UnitType unitType,
+                          final int potential) {
+        final Set<Modifier> bonus = type.getModifiers(goodsType.getId(), unitType);
+        final int amount = (int)applyModifiers(potential, null, bonus) - potential;
         return potential
             + ((quantity == UNLIMITED || quantity > amount) ? amount
                 : quantity);
@@ -222,8 +229,10 @@ public class Resource extends TileItem {
      * {@inheritDoc}
      */
     @Override
-    public boolean canProduce(GoodsType goodsType, UnitType unitType) {
-        if (goodsType == null) return false;
+    public boolean canProduce(final GoodsType goodsType, final UnitType unitType) {
+        if (goodsType == null) {
+        	return false;
+        }
         // The presence of a resource can give a tile the ability to
         // produce a goods type.
         return (int)applyModifiers(0f, getGame().getTurn(),
@@ -234,8 +243,8 @@ public class Resource extends TileItem {
      * {@inheritDoc}
      */
     @Override
-    public List<Modifier> getProductionModifiers(GoodsType goodsType,
-                                                 UnitType unitType) {
+    public List<Modifier> getProductionModifiers(final GoodsType goodsType,
+                                                 final UnitType unitType) {
         return (goodsType == null) ? Collections.<Modifier>emptyList()
             : new ArrayList<>(getType()
                 .getModifiers(goodsType.getId(), unitType));
@@ -272,48 +281,40 @@ public class Resource extends TileItem {
      * {@inheritDoc}
      */
     @Override
-    public int checkIntegrity(boolean fix) {
+    public int checkIntegrity(final boolean fix) {
         return (type == null) ? -1 : 1;
     }
 
-
-    // Serialization
-
-    private static final String QUANTITY_TAG = "quantity";
-    private static final String TILE_TAG = "tile";
-    private static final String TYPE_TAG = "type";
-
-
     /**
      * {@inheritDoc}
      */
     @Override
-    protected void writeAttributes(FreeColXMLWriter xw) throws XMLStreamException {
-        super.writeAttributes(xw);
+    protected void writeAttributes(final FreeColXMLWriter xWriter) throws XMLStreamException {
+        super.writeAttributes(xWriter);
 
-        xw.writeAttribute(TILE_TAG, getTile());
+        xWriter.writeAttribute(TILE_TAG, getTile());
 
-        xw.writeAttribute(TYPE_TAG, getType());
+        xWriter.writeAttribute(TYPE_TAG, getType());
 
-        xw.writeAttribute(QUANTITY_TAG, quantity);
+        xWriter.writeAttribute(QUANTITY_TAG, quantity);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    protected void readAttributes(FreeColXMLReader xr) throws XMLStreamException {
+    protected void readAttributes(final FreeColXMLReader xReader) throws XMLStreamException {
         final Specification spec = getSpecification();
 
-        super.readAttributes(xr);
+        super.readAttributes(xReader);
 
-        tile = xr.findFreeColGameObject(getGame(), TILE_TAG,
+        tile = xReader.findFreeColGameObject(getGame(), TILE_TAG,
                                         Tile.class, (Tile)null, true);
 
-        type = xr.getType(spec, TYPE_TAG,
+        type = xReader.getType(spec, TYPE_TAG,
                           ResourceType.class, (ResourceType)null);
 
-        quantity = xr.getAttribute(QUANTITY_TAG, 0);
+        quantity = xReader.getAttribute(QUANTITY_TAG, 0);
     }
 
     /**

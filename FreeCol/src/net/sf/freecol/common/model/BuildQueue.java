@@ -49,12 +49,13 @@ public class BuildQueue<T extends BuildableType> implements Consumer {
          * queue.
          */
         SHUFFLE,
-        /**
-         * Remove the completed item and add a random new item. This
-         * is the strategy of the immigration queue (which is not
-         * implemented as a build queue at the moment, however).
-         */
-        ADD_RANDOM
+ 
+         /**
+          * Remove the completed item and add a random new item. This
+          * is the strategy of the immigration queue (which is not
+          * implemented as a build queue at the moment, however).
+          */
+         ADD_RANDOM
     };
 
 
@@ -77,7 +78,7 @@ public class BuildQueue<T extends BuildableType> implements Consumer {
      * @param action The action on build completion.
      * @param priority The build priority.
      */
-    public BuildQueue(Colony colony, CompletionAction action, int priority) {
+    BuildQueue(Colony colony, CompletionAction action, int priority) {
         this.colony = colony;
         this.completionAction = action;
         this.priority = priority;
@@ -162,7 +163,7 @@ public class BuildQueue<T extends BuildableType> implements Consumer {
      * @param input A list of input <code>AbstractGoods</code>.
      * @return The <code>ProductionInfo</code> for this BuildQueue.
      */
-    public ProductionInfo getProductionInfo(List<AbstractGoods> input) {
+    ProductionInfo getProductionInfo(List<AbstractGoods> input) {
         ProductionInfo result = new ProductionInfo();
         T current = getCurrentlyBuilding();
         if (current != null) {

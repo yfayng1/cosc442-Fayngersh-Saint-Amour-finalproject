@@ -223,7 +223,7 @@ public class MapGeneratorTest extends FreeColTestCase {
 
         Region southPacific = map.getRegionByKey("model.region.southPacific");
         assertNotNull(southPacific);
-        assertFalse(southPacific.getDiscoverable());
+        assertFalse(southPacific.isDiscoverable());
         assertTrue(southPacific.isPacific());
         assertEquals(pacific, southPacific.getParent());
         assertEquals(pacific, southPacific.getDiscoverableRegion());
@@ -233,9 +233,9 @@ public class MapGeneratorTest extends FreeColTestCase {
             spec().getUnitType("model.unit.caravel"));
         pacific.discover(player, new Turn(1));
 
-        assertFalse(pacific.getDiscoverable());
+        assertFalse(pacific.isDiscoverable());
         assertNull(pacific.getDiscoverableRegion());
-        assertFalse(southPacific.getDiscoverable());
+        assertFalse(southPacific.isDiscoverable());
         assertTrue(southPacific.isPacific());
         assertEquals(pacific, southPacific.getParent());
         assertNull(southPacific.getDiscoverableRegion());
@@ -243,13 +243,13 @@ public class MapGeneratorTest extends FreeColTestCase {
         Region atlantic = map.getRegionByKey("model.region.atlantic");
         assertNotNull(atlantic);
         assertFalse(atlantic.isPacific());
-        assertFalse(atlantic.getDiscoverable());
+        assertFalse(atlantic.isDiscoverable());
         assertNull(atlantic.getDiscoverableRegion());
 
         Region northAtlantic = map.getRegionByKey("model.region.northAtlantic");
         assertNotNull(northAtlantic);
         assertFalse(northAtlantic.isPacific());
-        assertFalse(northAtlantic.getDiscoverable());
+        assertFalse(northAtlantic.isDiscoverable());
         assertNull(northAtlantic.getDiscoverableRegion());
     }
 }

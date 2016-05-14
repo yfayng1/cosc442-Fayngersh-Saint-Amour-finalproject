@@ -2304,7 +2304,7 @@ public class Map extends FreeColGameObject implements Location {
             // Mountains and Rivers were setting their parent to the
             // discoverable land region they are created within.  Move them
             // up to being children of the geographic region.
-            if (r.getDiscoverable() && p != null && p.getDiscoverable()) {
+            if (r.isDiscoverable() && p != null && p.isDiscoverable()) {
                 p = p.getParent();
                 r.setParent(p);
             }

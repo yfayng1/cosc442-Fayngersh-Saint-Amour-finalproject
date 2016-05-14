@@ -30,7 +30,7 @@ import java.util.Set;
  * other Goods, or buildings that store Goods.
  *
  */
-public interface Consumer {
+interface Consumer {
 
     /** Compare consumers by descending priority. */
     public static final Comparator<Consumer> COMPARATOR
