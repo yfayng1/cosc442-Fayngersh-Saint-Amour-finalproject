@@ -39,7 +39,7 @@ public final class Ability extends Feature {
      * The ability to add the current tax as a bonus to the production
      * of bells.  Provided by the {@link FoundingFather} Thomas Paine.
      */
-    public static final String ADD_TAX_TO_BELLS
+    static final String ADD_TAX_TO_BELLS
         = "model.ability.addTaxToBells";
 
     /** The ability to always receive a peace offer (Franklin). */
@@ -63,7 +63,7 @@ public final class Ability extends Feature {
         = "model.ability.armed";
 
     /** The ability of a colony to automatocally arm defenders (Revere). */
-    public static final String AUTOMATIC_EQUIPMENT
+    static final String AUTOMATIC_EQUIPMENT
         = "model.ability.automaticEquipment";
 
     /** The ability to automatically promote combat winners (Washington). */
@@ -74,7 +74,7 @@ public final class Ability extends Feature {
      * The ability of certain buildings (e.g. the stables) to produce
      * goods even if no units are present.
      */
-    public static final String AUTO_PRODUCTION
+    static final String AUTO_PRODUCTION
         = "model.ability.autoProduction";
 
     /**
@@ -125,7 +125,7 @@ public final class Ability extends Feature {
         = "model.ability.buildCustomHouse";
 
     /** The ability to build a factories. */
-    public static final String BUILD_FACTORY
+    static final String BUILD_FACTORY
         = "model.ability.buildFactory";
 
     /**
