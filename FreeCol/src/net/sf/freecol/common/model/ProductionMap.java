@@ -31,6 +31,8 @@ import java.util.Map.Entry;
  */
 public class ProductionMap {
 
+	private final Map<GoodsType, Object> cache = new HashMap<>();
+	   
     public static class ProductionTree {
 
         /**
@@ -45,11 +47,11 @@ public class ProductionMap {
         private List<AbstractGoods> leafs;
 
 
-        public ProductionTree(AbstractGoods root, AbstractGoods... leafs) {
+        public ProductionTree(final AbstractGoods root, final AbstractGoods... leafs) {
             if (leafs.length > 0) {
                 this.leafs = new ArrayList<>();
                 int amount = root.getAmount();
-                for (AbstractGoods leaf : leafs) {
+                for (final AbstractGoods leaf : leafs) {
                     this.leafs.add(new AbstractGoods(leaf));
                     amount += leaf.getAmount();
                 }
@@ -76,12 +78,12 @@ public class ProductionMap {
             this.leafs = newLeafs;
         }
 
-        public void add(AbstractGoods goods) {
+        public void add(final AbstractGoods goods) {
             if (goods.getType().getStoredAs() != root.getType()) {
                 throw new IllegalArgumentException(goods.getType().getId() + " is not stored as "
                                                    + root.getType());
             } else {
-                AbstractGoods leaf = AbstractGoods.findByType(goods.getType(), leafs);
+                final AbstractGoods leaf = AbstractGoods.findByType(goods.getType(), leafs);
                 if (leaf != null) {
                     leaf.setAmount(leaf.getAmount() + goods.getAmount());
                     root.setAmount(root.getAmount() + goods.getAmount());
@@ -92,15 +94,15 @@ public class ProductionMap {
             }
         }
 
-        public int remove(AbstractGoods goods) {
-            int consumed = goods.getAmount();
+        public int remove(final AbstractGoods goods) {
+            final int consumed = goods.getAmount();
             if (goods.getType() == root.getType()) {
                 root.setAmount(root.getAmount() - consumed);
-                for (AbstractGoods leaf : leafs) {
+                for (final AbstractGoods leaf : leafs) {
                     leaf.setAmount(Math.min(leaf.getAmount(), root.getAmount()));
                 }
             } else {
-                AbstractGoods leaf = AbstractGoods.findByType(goods.getType(), leafs);
+                final AbstractGoods leaf = AbstractGoods.findByType(goods.getType(), leafs);
                 if (leaf != null) {
                     leaf.setAmount(leaf.getAmount() - consumed);
                     root.setAmount(root.getAmount() - consumed);
@@ -109,11 +111,11 @@ public class ProductionMap {
             return consumed;
         }
 
-        public AbstractGoods get(GoodsType type) {
+        public AbstractGoods get(final GoodsType type) {
             if (root.getType() == type) {
                 return root;
             } else {
-                AbstractGoods leaf = AbstractGoods.findByType(type, leafs);
+                final AbstractGoods leaf = AbstractGoods.findByType(type, leafs);
                 if (leaf != null) {
                     return new AbstractGoods(type, leaf.getAmount());
                 }
@@ -126,22 +128,18 @@ public class ProductionMap {
          */
         @Override
         public String toString() {
-            StringBuilder sb = new StringBuilder(32);
-            sb.append("[").append(root.getSuffix()).append(":");
-            for (AbstractGoods ag : leafs) {
-                sb.append(" ").append(ag.toString());
+            final StringBuilder sBuilder = new StringBuilder(32);
+            sBuilder.append("[").append(root.getSuffix()).append(":");
+            for (final AbstractGoods ag : leafs) {
+                sBuilder.append(" ").append(ag.toString());
             }
-            sb.append(" ]");
-            return sb.toString();
+            sBuilder.append(" ]");
+            return sBuilder.toString();
         }
     }
 
-
-    private final Map<GoodsType, Object> cache = new HashMap<>();
-
-
-    public AbstractGoods get(GoodsType type) {
-        Object value = cache.get(type);
+    public AbstractGoods get(final GoodsType type) {
+        final Object value = cache.get(type);
         if (value == null) {
             return new AbstractGoods(type, 0);
         } else if (value instanceof Integer) {
@@ -151,13 +149,13 @@ public class ProductionMap {
         }
     }
 
-    public void add(AbstractGoods goods) {
-        GoodsType goodsType = goods.getType();
+    public void add(final AbstractGoods goods) {
+        final GoodsType goodsType = goods.getType();
         Object value = cache.get(goodsType);
         if (value == null) {
             // no entry yet
-            GoodsType rootType = goodsType.getStoredAs();
-            if (rootType == goodsType) {
+            final GoodsType rootType = goodsType.getStoredAs();
+            if (rootType.equals(goodsType)) {
                 cache.put(goodsType, goods.getAmount());
             } else {
                 // is leaf of production tree
@@ -167,7 +165,7 @@ public class ProductionMap {
                     ((ProductionTree) value).add(goods);
                 } else {
                     // add new root entry
-                    int amount = (value == null) ? 0 : (Integer)value;
+                    final int amount = (value == null) ? 0 : (Integer)value;
                     value = new ProductionTree(new AbstractGoods(rootType, amount), goods);
                     cache.put(rootType, value);
                 }
@@ -181,8 +179,8 @@ public class ProductionMap {
         }
     }
 
-    public void remove(AbstractGoods goods) {
-        Object value = cache.get(goods.getType());
+    public void remove(final AbstractGoods goods) {
+        final Object value = cache.get(goods.getType());
         if (value instanceof ProductionTree) {
             ((ProductionTree) value).remove(goods);
         } else {
@@ -191,14 +189,14 @@ public class ProductionMap {
     }
 
 
-    public void add(List<AbstractGoods> goods) {
-        for (AbstractGoods g : goods) {
+    public void add(final List<AbstractGoods> goods) {
+        for (final AbstractGoods g : goods) {
             add(g);
         }
     }
 
-    public void remove(List<AbstractGoods> goods) {
-        for (AbstractGoods g : goods) {
+    public void remove(final List<AbstractGoods> goods) {
+        for (final AbstractGoods g : goods) {
             remove(g);
         }
     }
@@ -208,13 +206,13 @@ public class ProductionMap {
      */
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder(64);
-        sb.append("[");
-        for (Entry<GoodsType, Object> e : cache.entrySet()) {
-            sb.append(" ").append(e.getKey().getSuffix())
+        final StringBuilder sBuilder = new StringBuilder(64);
+        sBuilder.append("[");
+        for (final Entry<GoodsType, Object> e : cache.entrySet()) {
+            sBuilder.append(" ").append(e.getKey().getSuffix())
                 .append(":").append(e.getValue().toString());
         }
-        sb.append(" ]");
-        return sb.toString();
+        sBuilder.append(" ]");
+        return sBuilder.toString();
     }
 }

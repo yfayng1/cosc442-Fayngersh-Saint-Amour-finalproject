@@ -208,7 +208,7 @@ public class ColonyTile extends WorkLocation {
         final TileType newType = ti.getChange(oldType);
 
         // Unattended production is the hard case.
-        if (productionType.getUnattended()) {
+        if (productionType.isUnattended()) {
             if (newType == null) {
                 // Tile type stays the same, return the sum of any food bonues.
                 return sum(getSpecification().getFoodGoodsTypeList(),

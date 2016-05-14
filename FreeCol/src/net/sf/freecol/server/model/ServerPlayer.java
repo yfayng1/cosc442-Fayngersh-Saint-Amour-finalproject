@@ -415,7 +415,7 @@ public class ServerPlayer extends Player implements ServerModelObject {
 
         // Set initial immigration target
         int i0 = spec.getInteger(GameOptions.INITIAL_IMMIGRATION);
-        immigrationRequired = (int)applyModifiers((float)i0, null,
+        immReq = (int)applyModifiers((float)i0, null,
             Modifier.RELIGIOUS_UNREST_BONUS);
 
         // Add initial gold
@@ -1574,7 +1574,7 @@ public class ServerPlayer extends Player implements ServerModelObject {
         int upkeep = sum(getSettlements(), Settlement::getUpkeep);
         if (checkGold(upkeep)) {
             modifyGold(-upkeep);
-            if (getBankrupt()) {
+            if (isBankrupt()) {
                 setBankrupt(false);
                 changed = true;
                 // the only effects of a disaster that can be reversed
@@ -1591,7 +1591,7 @@ public class ServerPlayer extends Player implements ServerModelObject {
             }
         } else {
             modifyGold(-getGold());
-            if (!getBankrupt()) {
+            if (!isBankrupt()) {
                 setBankrupt(true);
                 changed = true;
                 csApplyDisaster(random, null, bankruptcy, cs);
@@ -2769,7 +2769,7 @@ outer:  for (Effect effect : effects) {
         //     changes in Tension can drive Stance, however this is
         //     decided by the native AI in their turn so just adjust tension.
         if (attacker.hasAbility(Ability.PIRACY)) {
-            if (!defenderPlayer.getAttackedByPrivateers()) {
+            if (!defenderPlayer.isAttackedByPrivateers()) {
                 defenderPlayer.setAttackedByPrivateers(true);
                 cs.addPartial(See.only(defenderPlayer), defenderPlayer,
                               "attackedByPrivateers");

@@ -1086,7 +1086,7 @@ public final class FreeColServer {
         }
         game.setFreeColGameObjectListener(aiMain);
 
-        Collections.sort(game.getPlayers(), Player.playerComparator);
+        Collections.sort(game.getPlayers(), Player.PLAYERCOMPARATOR);
         for (Player player : game.getLivePlayers(null)) {
             if (player.isAI()) {
                 ServerPlayer serverPlayer = (ServerPlayer)player;
@@ -1163,7 +1163,7 @@ public final class FreeColServer {
                 && e.getValue() != NationState.NOT_AVAILABLE
                 && game.getPlayerByNationId(e.getKey().getId()) == null,
             e -> makeAIPlayer(e.getKey()),
-            Player.playerComparator, Collectors.toList());
+            Player.PLAYERCOMPARATOR, Collectors.toList());
         game.updatePlayers(newAI);
 
         // We need a fake unknown enemy player

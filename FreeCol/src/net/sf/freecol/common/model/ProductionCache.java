@@ -51,7 +51,7 @@ public class ProductionCache {
         = new TypeCountMap<>();
 
     /** A map of production info for various producers and consumers. */
-    private final Map<Object, ProductionInfo> productionAndConsumption
+    private final Map<Object, ProductionInfo> prodCon
         = new HashMap<>();
 
     /** A set of the goods used by the colony. */
@@ -69,7 +69,7 @@ public class ProductionCache {
      *
      * @param colony a <code>Colony</code> value
      */
-    public ProductionCache(Colony colony) {
+    public ProductionCache(final Colony colony) {
         this.colony = colony;
     }
 
@@ -91,20 +91,22 @@ public class ProductionCache {
      * arguments.
      */
     private synchronized void update() {
-        if (upToDate) return; // nothing to do
+        if (upToDate) {
+        	return; // nothing to do
+        }
         final Specification spec = colony.getSpecification();
         final GoodsType bells = spec.getGoodsType("model.goods.bells");
 
-        productionAndConsumption.clear();
+        prodCon.clear();
         netProduction.clear();
         goodsUsed.clear();
-        ProductionMap production = new ProductionMap();
+        final ProductionMap production = new ProductionMap();
 
-        for (ColonyTile colonyTile : colony.getColonyTiles()) {
-            ProductionInfo info = colonyTile.getBasicProductionInfo();
+        for (final ColonyTile colonyTile : colony.getColonyTiles()) {
+            final ProductionInfo info = colonyTile.getBasicProductionInfo();
             production.add(info.getProduction());
-            productionAndConsumption.put(colonyTile, info);
-            for (AbstractGoods goods : info.getProduction()) {
+            prodCon.put(colonyTile, info);
+            for (final AbstractGoods goods : info.getProduction()) {
                 goodsUsed.add(goods.getType());
                 netProduction.incrementCount(goods.getType().getStoredAs(),
                                              goods.getAmount());
@@ -113,22 +115,22 @@ public class ProductionCache {
 
         // Add bell production to compensate for the units-that-use-no-bells
         // as this is not handled by the unit conumption.
-        int unitsThatUseNoBells
+        final int noBells
             = spec.getInteger(GameOptions.UNITS_THAT_USE_NO_BELLS);
-        int amount = Math.min(unitsThatUseNoBells, colony.getUnitCount());
-        ProductionInfo bellsInfo = new ProductionInfo();
+        final int amount = Math.min(noBells, colony.getUnitCount());
+        final ProductionInfo bellsInfo = new ProductionInfo();
         bellsInfo.addProduction(new AbstractGoods(bells, amount));
-        productionAndConsumption.put(this, bellsInfo);
+        prodCon.put(this, bellsInfo);
         netProduction.incrementCount(bells, amount);
 
-        List<AbstractGoods> goods = new ArrayList<>();
-        for (Consumer consumer : colony.getConsumers()) {
-            Set<Modifier> modifiers = consumer
+        final List<AbstractGoods> goods = new ArrayList<>();
+        for (final Consumer consumer : colony.getConsumers()) {
+            final Set<Modifier> modifiers = consumer
                 .getModifiers(Modifier.CONSUME_ONLY_SURPLUS_PRODUCTION);
             goods.clear();
-            for (AbstractGoods g : consumer.getConsumedGoods()) {
+            for (final AbstractGoods g : consumer.getConsumedGoods()) {
                 goodsUsed.add(g.getType());
-                AbstractGoods surplus
+                final AbstractGoods surplus
                     = new AbstractGoods(production.get(g.getType()));
                 if (modifiers.isEmpty()) {
                     surplus.setAmount(surplus.getAmount()
@@ -140,13 +142,13 @@ public class ProductionCache {
                 goods.add(surplus);
             }
             ProductionInfo info = null;
+            final List<AbstractGoods> outputs = new ArrayList<>();
             if (consumer instanceof Building) {
-                Building building = (Building)consumer;
-                List<AbstractGoods> outputs = new ArrayList<>();
-                for (AbstractGoods output : building.getOutputs()) {
-                    GoodsType outputType = output.getType();
+                final Building building = (Building)consumer; 
+                for (final AbstractGoods output : building.getOutputs()) {
+                    final GoodsType outputType = output.getType();
                     goodsUsed.add(outputType);
-                    AbstractGoods newOutput
+                    final AbstractGoods newOutput
                         = new AbstractGoods(production.get(outputType));
                     newOutput.setAmount(newOutput.getAmount()
                         + getGoodsCount(outputType));
@@ -161,15 +163,15 @@ public class ProductionCache {
             if (info != null) {
                 production.add(info.getProduction());
                 production.remove(info.getConsumption());
-                for (AbstractGoods g : info.getProduction()) {
+                for (final AbstractGoods g : info.getProduction()) {
                     netProduction.incrementCount(g.getType().getStoredAs(),
                                                  g.getAmount());
                 }
-                for (AbstractGoods g : info.getConsumption()) {
+                for (final AbstractGoods g : info.getConsumption()) {
                     netProduction.incrementCount(g.getType().getStoredAs(),
                                                  -g.getAmount());
                 }
-                productionAndConsumption.put(consumer, info);
+                prodCon.put(consumer, info);
             }
         }
         upToDate = true;
@@ -183,7 +185,7 @@ public class ProductionCache {
      * @param type a <code>GoodsType</code> value
      * @return an <code>int</code> value
      */
-    private int getGoodsCount(GoodsType type) {
+    private int getGoodsCount(final GoodsType type) {
         return colony.getGoodsCount(type);
     }
 
@@ -205,7 +207,7 @@ public class ProductionCache {
      *
      * @param goodsType a <code>GoodsType</code> value
      */
-    public synchronized void invalidate(GoodsType goodsType) {
+    public synchronized void invalidate(final GoodsType goodsType) {
         if (goodsUsed.contains(goodsType)) {
             upToDate = false;
         }
@@ -217,10 +219,10 @@ public class ProductionCache {
      * @param goodsType The <code>GoodsType</code> to check.
      * @return True if there is a production entry for the given type.
      */
-    public boolean isProducing(GoodsType goodsType) {
+    public boolean isProducing(final GoodsType goodsType) {
         update();
-        return any(productionAndConsumption.values(),
-            pi -> AbstractGoods.containsType(goodsType, pi.getProduction()));
+        return any(prodCon.values(),
+            prodInfo -> AbstractGoods.containsType(goodsType, prodInfo.getProduction()));
     }
 
     /**
@@ -229,10 +231,10 @@ public class ProductionCache {
      * @param goodsType The <code>GoodsType</code> to check.
      * @return True if there is a consumption entry for the given type.
      */
-    public boolean isConsuming(GoodsType goodsType) {
+    public boolean isConsuming(final GoodsType goodsType) {
         update();
-        return any(productionAndConsumption.values(),
-            pi -> AbstractGoods.containsType(goodsType, pi.getConsumption()));
+        return any(prodCon.values(),
+            prodInfo -> AbstractGoods.containsType(goodsType, prodInfo.getConsumption()));
     }
     
     /**
@@ -242,7 +244,7 @@ public class ProductionCache {
      * @param type a <code>GoodsType</code> value
      * @return an <code>int</code> value
      */
-    public int getNetProductionOf(GoodsType type) {
+    public int getNetProductionOf(final GoodsType type) {
         update();
         return netProduction.getCount(type);
     }
@@ -254,9 +256,9 @@ public class ProductionCache {
      * @param object an <code>Object</code> value
      * @return a <code>ProductionInfo</code> value
      */
-    public ProductionInfo getProductionInfo(Object object) {
+    public ProductionInfo getProductionInfo(final Object object) {
         update();
-        return productionAndConsumption.get(object);
+        return prodCon.get(object);
     }
 
     /**
@@ -266,7 +268,7 @@ public class ProductionCache {
      */
     public TypeCountMap<GoodsType> getProductionMap() {
         update();
-        TypeCountMap<GoodsType> result = new TypeCountMap<>();
+        final TypeCountMap<GoodsType> result = new TypeCountMap<>();
         result.putAll(netProduction);
         return result;
     }

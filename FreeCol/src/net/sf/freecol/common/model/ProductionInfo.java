@@ -35,12 +35,11 @@ public class ProductionInfo {
     private List<AbstractGoods> production = new ArrayList<>();
 
     /** The maximum consumption possible given unlimited input. */
-    private List<AbstractGoods> maximumConsumption = new ArrayList<>();
+    private List<AbstractGoods> maxConsump = new ArrayList<>();
 
     /** The actual consumption. */
     private List<AbstractGoods> consumption = new ArrayList<>();
-
-
+    
     public final List<AbstractGoods> getConsumption() {
         return consumption;
     }
@@ -49,7 +48,7 @@ public class ProductionInfo {
         this.consumption = newConsumption;
     }
 
-    public void addConsumption(AbstractGoods goods) {
+    public void addConsumption(final AbstractGoods goods) {
         consumption.add(goods);
     }
 
@@ -61,11 +60,11 @@ public class ProductionInfo {
         this.production = newProduction;
     }
 
-    public void addProduction(AbstractGoods goods) {
+    public void addProduction(final AbstractGoods goods) {
         production.add(goods);
     }
 
-    public void addProduction(List<AbstractGoods> goods) {
+    public void addProduction(final List<AbstractGoods> goods) {
         production.addAll(goods);
     }
 
@@ -77,7 +76,7 @@ public class ProductionInfo {
         this.maximumProduction = newMaximumProduction;
     }
 
-    public void addMaximumProduction(AbstractGoods goods) {
+    public void addMaximumProduction(final AbstractGoods goods) {
         maximumProduction.add(goods);
     }
 
@@ -91,12 +90,14 @@ public class ProductionInfo {
         if (this.maximumProduction.isEmpty()) {
             return WorkLocation.EMPTY_LIST;
         }
-        List<AbstractGoods> result = new ArrayList<>();
-        for (AbstractGoods ag : this.production) {
-            AbstractGoods agMax = AbstractGoods.findByType(ag.getType(),
+        final List<AbstractGoods> result = new ArrayList<>();
+        for (final AbstractGoods ag : this.production) {
+            final AbstractGoods agMax = AbstractGoods.findByType(ag.getType(),
                 this.maximumProduction);
-            if (agMax == null) continue;
-            int amount = agMax.getAmount() - ag.getAmount();
+            if (agMax == null) {
+            	continue;
+            }
+            final int amount = agMax.getAmount() - ag.getAmount();
             if (amount != 0) {
                 result.add(new AbstractGoods(ag.getType(), amount));
             }
@@ -111,15 +112,17 @@ public class ProductionInfo {
      * @return A list of <code>AbstractGoods</code>.
      */
     public List<AbstractGoods> getConsumptionDeficit() {
-        if (this.maximumConsumption.isEmpty()) {
+        if (this.maxConsump.isEmpty()) {
             return WorkLocation.EMPTY_LIST;
         }
-        List<AbstractGoods> result = new ArrayList<>();
-        for (AbstractGoods ag : this.consumption) {
-            AbstractGoods agMax = AbstractGoods.findByType(ag.getType(),
-                this.maximumConsumption);
-            if (agMax == null) continue;
-            int amount = agMax.getAmount() - ag.getAmount();
+        final List<AbstractGoods> result = new ArrayList<>();
+        for (final AbstractGoods ag : this.consumption) {
+            final AbstractGoods agMax = AbstractGoods.findByType(ag.getType(),
+                this.maxConsump);
+            if (agMax == null) {
+            	continue;
+            }
+            final int amount = agMax.getAmount() - ag.getAmount();
             if (amount != 0) {
                 result.add(new AbstractGoods(ag.getType(), amount));
             }
@@ -133,35 +136,43 @@ public class ProductionInfo {
      * @return True if at maximum production.
      */
     public boolean hasMaximumProduction() {
-        if (maximumProduction.isEmpty()) return true;
+        if (maximumProduction.isEmpty()) {
+        	return true;
+        }
 
         for (int index = 0; index < production.size(); index++) {
-            if (maximumProduction.size() < index) return true;
+            if (maximumProduction.size() < index) {
+            	return true;
+            }
 
             if (maximumProduction.get(index).getAmount()
-                > production.get(index).getAmount()) return false;
+                > production.get(index).getAmount()) {
+            	return false;
+            }
         }
         return true;
     }
 
     public final List<AbstractGoods> getMaximumConsumption() {
-        return maximumConsumption;
+        return maxConsump;
     }
 
-    public final void setMaximumConsumption(final List<AbstractGoods> newMaximumConsumption) {
-        this.maximumConsumption = newMaximumConsumption;
+    public final void setMaximumConsumption(final List<AbstractGoods> newMaxCon) {
+        this.maxConsump = newMaxCon;
     }
 
-    public void addMaximumConsumption(AbstractGoods goods) {
-        maximumConsumption.add(goods);
+    public void addMaximumConsumption(final AbstractGoods goods) {
+        maxConsump.add(goods);
     }
 
-    private void append(StringBuilder result, String key,
-                        List<AbstractGoods> list) {
-        if (list.isEmpty()) return;
+    private void append(final StringBuilder result, final String key,
+                        final List<AbstractGoods> list) {
+        if (list.isEmpty()) {
+        	return;
+        }
 
         result.append(key).append(": ");
-        for (AbstractGoods goods : list) {
+        for (final AbstractGoods goods : list) {
             result.append(goods);
             if (goods.getType().getStoredAs() != goods.getType()) {
                 result.append(" [")
@@ -170,7 +181,7 @@ public class ProductionInfo {
             }
             result.append(", ");
         }
-        int length = result.length();
+        final int length = result.length();
         result.replace(length - 2, length, "\n");
     }
 
@@ -179,11 +190,11 @@ public class ProductionInfo {
      */
     @Override
     public String toString() {
-        StringBuilder result = new StringBuilder();
+        final StringBuilder result = new StringBuilder();
         append(result, "Production", production);
         append(result, "Consumption", consumption);
         append(result, "Maximum Production", maximumProduction);
-        append(result, "Maximum Consumption", maximumConsumption);
+        append(result, "Maximum Consumption", maxConsump);
         return result.toString();
     }
 }

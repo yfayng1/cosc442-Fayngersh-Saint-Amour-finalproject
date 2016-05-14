@@ -22,16 +22,12 @@ package net.sf.freecol.common.model;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
-import java.util.Map.Entry;
-import java.util.stream.Collectors;
 
 import javax.xml.stream.XMLStreamException;
 
 import net.sf.freecol.common.io.FreeColXMLReader;
 import net.sf.freecol.common.io.FreeColXMLWriter;
-import net.sf.freecol.common.model.AbstractGoods;
 import static net.sf.freecol.common.util.CollectionUtils.*;
 import net.sf.freecol.common.util.Utils;
 
@@ -41,6 +37,18 @@ import net.sf.freecol.common.util.Utils;
  */
 public class ProductionType extends FreeColSpecObject {
 
+    // Serialization
+
+    private static final String UNATTENDED_TAG = "unattended";
+    private static final String GOODS_TYPE_TAG = "goods-type";
+    private static final String INPUT_TAG = "input";
+    private static final String OUTPUT_TAG = "output";
+    private static final String PRODUCTION_LEVEL_TAG = "production-level";
+    // @compat 0.11.3
+    private static final String OLD_PRODUCTION_LEVEL_TAG = "productionLevel";
+    // end @compat 0.11.3
+
+	
     /** Whether this production type applies only to colony center tiles. */
     private boolean unattended;
 
@@ -62,7 +70,7 @@ public class ProductionType extends FreeColSpecObject {
      *
      * @param specification The <code>Specification</code> to refer to.
      */
-    public ProductionType(Specification specification) {
+    public ProductionType(final Specification specification) {
         super(specification);
     }
 
@@ -72,7 +80,7 @@ public class ProductionType extends FreeColSpecObject {
      *
      * @param outputs A list of the <code>AbstractGoods</code> produced.
      */
-    public ProductionType(List<AbstractGoods> outputs) {
+    public ProductionType(final List<AbstractGoods> outputs) {
         this((Specification)null);
 
         this.outputs = outputs;
@@ -85,8 +93,8 @@ public class ProductionType extends FreeColSpecObject {
      * @param inputs A list of the <code>AbstractGoods</code> consumed.
      * @param outputs A list of the <code>AbstractGoods</code> produced.
      */
-    public ProductionType(List<AbstractGoods> inputs,
-                          List<AbstractGoods> outputs) {
+    public ProductionType(final List<AbstractGoods> inputs,
+                          final List<AbstractGoods> outputs) {
         this(outputs);
 
         this.inputs = inputs;
@@ -99,8 +107,8 @@ public class ProductionType extends FreeColSpecObject {
      * @param unattended True if this is unattended production.
      * @param level The difficulty level key.
      */
-    public ProductionType(AbstractGoods output, boolean unattended,
-                          String level) {
+    public ProductionType(final AbstractGoods output, final boolean unattended,
+                          final String level) {
         this(new ArrayList<AbstractGoods>());
 
         this.outputs.add(output);
@@ -116,7 +124,7 @@ public class ProductionType extends FreeColSpecObject {
      * @param output The <code>GoodsType</code> produced.
      * @param amount The amount of goods both produced and consumed.
      */
-    public ProductionType(GoodsType input, GoodsType output, int amount) {
+    public ProductionType(final GoodsType input, final GoodsType output, final int amount) {
         this((Specification)null);
         
         if (input != null) {
@@ -132,14 +140,14 @@ public class ProductionType extends FreeColSpecObject {
     /**
      * Creates a new <code>ProductionType</code> instance.
      *
-     * @param xr The <code>FreeColXMLReader</code> to read from.
+     * @param xReader The <code>FreeColXMLReader</code> to read from.
      * @param specification The <code>Specification</code> to refer to.
      * @exception XMLStreamException if there is a problem reading the stream.
      */
-    public ProductionType(FreeColXMLReader xr, Specification specification) throws XMLStreamException {
+    public ProductionType(final FreeColXMLReader xReader, final Specification specification) throws XMLStreamException {
         this(specification);
 
-        readFromXML(xr);
+        readFromXML(xReader);
     }
 
 
@@ -168,8 +176,10 @@ public class ProductionType extends FreeColSpecObject {
      * @param type The <code>GoodsType</code> to add.
      * @param amount The amount of goods.
      */
-    private void addInput(GoodsType type, int amount) {
-        if (inputs == null) inputs = new ArrayList<>(1);
+    private void addInput(final GoodsType type, final int amount) {
+        if (inputs == null) {
+        	inputs = new ArrayList<>(1);
+        }
         inputs.add(new AbstractGoods(type, amount));
     }
 
@@ -198,8 +208,10 @@ public class ProductionType extends FreeColSpecObject {
      * @param type The <code>GoodsType</code> to add.
      * @param amount The amount of goods.
      */
-    private void addOutput(GoodsType type, int amount) {
-        if (outputs == null) outputs = new ArrayList<>(1);
+    private void addOutput(final GoodsType type, final int amount) {
+        if (outputs == null) {
+        	outputs = new ArrayList<>(1);
+        }
         outputs.add(new AbstractGoods(type, amount));
     }
 
@@ -210,10 +222,12 @@ public class ProductionType extends FreeColSpecObject {
      * @return The <code>AbstractGoods</code> output if any, otherwise
      *     null.
      */
-    public AbstractGoods getOutput(GoodsType goodsType) {
+    public AbstractGoods getOutput(final GoodsType goodsType) {
         if (outputs != null) {
-            AbstractGoods output = AbstractGoods.findByType(goodsType, outputs);
-            if (output != null) return output;
+            final AbstractGoods output = AbstractGoods.findByType(goodsType, outputs);
+            if (output != null) {
+            	return output;
+            }
         }
         return null;
     }
@@ -236,7 +250,7 @@ public class ProductionType extends FreeColSpecObject {
      *
      * @return True if this is unattended production.
      */
-    public final boolean getUnattended() {
+    public final boolean isUnattended() {
         return unattended;
     }
 
@@ -245,7 +259,7 @@ public class ProductionType extends FreeColSpecObject {
      *
      * @param unattended The new unattended production state.
      */
-    public final void setUnattended(boolean unattended) {
+    public final void setUnattended(final boolean unattended) {
         this.unattended = unattended;
     }
 
@@ -265,7 +279,7 @@ public class ProductionType extends FreeColSpecObject {
      * @param level The difficulty level key to check.
      * @return True if this production applies.
      */
-    public boolean appliesTo(String level) {
+    public boolean appliesTo(final String level) {
         return level == null
             || productionLevel == null
             || level.equals(productionLevel);
@@ -278,7 +292,7 @@ public class ProductionType extends FreeColSpecObject {
      * @param level The difficulty level key to check.
      * @return True if this production applies.
      */
-    public boolean appliesExactly(String level) {
+    public boolean appliesExactly(final String level) {
         return level != null && level.equals(productionLevel);
     }
 
@@ -292,10 +306,10 @@ public class ProductionType extends FreeColSpecObject {
      * @return The most productive output that produces the goods type,
      *     or null if none found.
      */
-    public static boolean canProduce(GoodsType goodsType,
-                                     Collection<ProductionType> types) {
-        return any(types, pt -> AbstractGoods.containsType(goodsType,
-                pt.getOutputs()));
+    public static boolean canProduce(final GoodsType goodsType,
+                                     final Collection<ProductionType> types) {
+        return any(types, prodType -> AbstractGoods.containsType(goodsType,
+                prodType.getOutputs()));
     }
 
     /**
@@ -307,13 +321,13 @@ public class ProductionType extends FreeColSpecObject {
      * @param types A collection of <code>ProductionType</code>s to consider.
      * @return The most productive <code>ProductionType</code>.
      */
-    public static ProductionType getBestProductionType(GoodsType goodsType,
-        Collection<ProductionType> types) {
+    public static ProductionType getBestProductionType(final GoodsType goodsType,
+        final Collection<ProductionType> types) {
         ProductionType best = null;
         int bestSum = 0;
-        for (ProductionType pt : types) {
-            int sum = pt.getOutputs().stream()
-                .filter(o -> goodsType == null || goodsType == o.getType())
+        for (final ProductionType pt : types) {
+            final int sum = pt.getOutputs().stream()
+                .filter(optType -> goodsType == null || goodsType == optType.getType())
                 .mapToInt(AbstractGoods::getAmount).sum();
             if (bestSum < sum) {
                 bestSum = sum;
@@ -332,11 +346,11 @@ public class ProductionType extends FreeColSpecObject {
      * @return The most productive output that produces the goods type,
      *     or null if none found.
      */
-    public static AbstractGoods getBestOutputFor(GoodsType goodsType,
-                                                 Collection<ProductionType> types) {
+    public static AbstractGoods getBestOutputFor(final GoodsType goodsType,
+                                                 final Collection<ProductionType> types) {
         AbstractGoods best = null;
-        for (ProductionType productionType : types) {
-            for (AbstractGoods output : productionType.getOutputs()) {
+        for (final ProductionType productionType : types) {
+            for (final AbstractGoods output : productionType.getOutputs()) {
                 if (output.getType() == goodsType
                     && (best == null
                         || output.getAmount() > best.getAmount())) {
@@ -354,15 +368,17 @@ public class ProductionType extends FreeColSpecObject {
      * {@inheritDoc}
      */
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o instanceof ProductionType) {
-            ProductionType pt = (ProductionType)o;
-            return super.equals(o)
-                && this.unattended == pt.unattended
-                && Utils.equals(this.productionLevel, pt.productionLevel)
-                && listEquals(this.outputs, pt.outputs)
-                && listEquals(this.inputs, pt.inputs);
+    public boolean equals(final Object object) {
+        if (this == object) {
+        	return true;
+        }
+        if (object instanceof ProductionType) {
+            final ProductionType prodType = (ProductionType)object;
+            return super.equals(object)
+                && this.unattended == prodType.unattended
+                && Utils.equals(this.productionLevel, prodType.productionLevel)
+                && listEquals(this.outputs, prodType.outputs)
+                && listEquals(this.inputs, prodType.inputs);
         }
         return false;
     }
@@ -376,45 +392,32 @@ public class ProductionType extends FreeColSpecObject {
         hash = 31 * hash + ((this.unattended) ? 1 : 0);
         hash = 31 * hash + Utils.hashCode(this.productionLevel);
         if (this.outputs != null) {
-            for (AbstractGoods ag : this.outputs) {
+            for (final AbstractGoods ag : this.outputs) {
                 hash = 31 * hash + Utils.hashCode(ag);
             }
         }
         if (this.inputs != null) {
-            for (AbstractGoods ag : this.inputs) {
+            for (final AbstractGoods ag : this.inputs) {
                 hash = 31 * hash + Utils.hashCode(ag);
             }
         }
         return hash;
     }
-
-
-    // Serialization
-
-    private static final String UNATTENDED_TAG = "unattended";
-    private static final String GOODS_TYPE_TAG = "goods-type";
-    private static final String INPUT_TAG = "input";
-    private static final String OUTPUT_TAG = "output";
-    private static final String PRODUCTION_LEVEL_TAG = "production-level";
-    // @compat 0.11.3
-    private static final String OLD_PRODUCTION_LEVEL_TAG = "productionLevel";
-    // end @compat 0.11.3
-
     
     /**
      * {@inheritDoc}
      */
     @Override
-    protected void writeAttributes(FreeColXMLWriter xw) throws XMLStreamException {
+    protected void writeAttributes(final FreeColXMLWriter xWriter) throws XMLStreamException {
         // ProductionType does not need an id.
         // No need for: super.writeAttributes(out);
 
         if (unattended) {
-            xw.writeAttribute(UNATTENDED_TAG, unattended);
+            xWriter.writeAttribute(UNATTENDED_TAG, unattended);
         }
 
         if (productionLevel != null) {
-            xw.writeAttribute(PRODUCTION_LEVEL_TAG, productionLevel);
+            xWriter.writeAttribute(PRODUCTION_LEVEL_TAG, productionLevel);
         }
     }
 
@@ -422,30 +425,30 @@ public class ProductionType extends FreeColSpecObject {
      * {@inheritDoc}
      */
     @Override
-    protected void writeChildren(FreeColXMLWriter xw) throws XMLStreamException {
-        super.writeChildren(xw);
+    protected void writeChildren(final FreeColXMLWriter xWriter) throws XMLStreamException {
+        super.writeChildren(xWriter);
 
         if (inputs != null) {
-            for (AbstractGoods input : inputs) {
-                xw.writeStartElement(INPUT_TAG);
+            for (final AbstractGoods input : inputs) {
+                xWriter.writeStartElement(INPUT_TAG);
 
-                xw.writeAttribute(GOODS_TYPE_TAG, input.getType());
+                xWriter.writeAttribute(GOODS_TYPE_TAG, input.getType());
 
-                xw.writeAttribute(VALUE_TAG, input.getAmount());
+                xWriter.writeAttribute(VALUE_TAG, input.getAmount());
 
-                xw.writeEndElement();
+                xWriter.writeEndElement();
             }
         }
 
         if (outputs != null) {
-            for (AbstractGoods output : outputs) {
-                xw.writeStartElement(OUTPUT_TAG);
+            for (final AbstractGoods output : outputs) {
+                xWriter.writeStartElement(OUTPUT_TAG);
 
-                xw.writeAttribute(GOODS_TYPE_TAG, output.getType());
+                xWriter.writeAttribute(GOODS_TYPE_TAG, output.getType());
 
-                xw.writeAttribute(VALUE_TAG, output.getAmount());
+                xWriter.writeAttribute(VALUE_TAG, output.getAmount());
 
-                xw.writeEndElement();
+                xWriter.writeEndElement();
             }
         }
     }
@@ -454,18 +457,18 @@ public class ProductionType extends FreeColSpecObject {
      * {@inheritDoc}
      */
     @Override
-    public void readAttributes(FreeColXMLReader xr) throws XMLStreamException {
+    public void readAttributes(final FreeColXMLReader xReader) throws XMLStreamException {
         // ProductionType does not need an id.
         // No need for: super.readAttributes(in);
         // FIXME: as soon as we allow the user to select a production type,
         // we will need an id
 
-        unattended = xr.getAttribute(UNATTENDED_TAG, false);
+        unattended = xReader.getAttribute(UNATTENDED_TAG, false);
 
-        productionLevel = xr.getAttribute(PRODUCTION_LEVEL_TAG, (String)null);
+        productionLevel = xReader.getAttribute(PRODUCTION_LEVEL_TAG, (String)null);
         // @compat 0.11.3
         if (productionLevel == null) {
-            productionLevel = xr.getAttribute(OLD_PRODUCTION_LEVEL_TAG, (String)null);
+            productionLevel = xReader.getAttribute(OLD_PRODUCTION_LEVEL_TAG, (String)null);
         }
         // end @compat 0.11.3
     }
@@ -474,46 +477,50 @@ public class ProductionType extends FreeColSpecObject {
      * {@inheritDoc}
      */
     @Override
-    public void readChildren(FreeColXMLReader xr) throws XMLStreamException {
+    public void readChildren(final FreeColXMLReader xReader) throws XMLStreamException {
         // Clear containers.
-        if (inputs != null) inputs.clear();
-        if (outputs != null) outputs.clear();
+        if (inputs != null) {
+        	inputs.clear();
+        }
+        if (outputs != null) {
+        	outputs.clear();
+        }
 
-        super.readChildren(xr);
+        super.readChildren(xReader);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void readChild(FreeColXMLReader xr) throws XMLStreamException {
+    public void readChild(final FreeColXMLReader xReader) throws XMLStreamException {
         final Specification spec = getSpecification();
-        final String tag = xr.getLocalName();
+        final String tag = xReader.getLocalName();
 
         if (INPUT_TAG.equals(tag)) {
-            GoodsType type = xr.getType(spec, GOODS_TYPE_TAG,
+            final GoodsType type = xReader.getType(spec, GOODS_TYPE_TAG,
                                         GoodsType.class, (GoodsType)null);
             if (type == null) {
                 logger.warning("Skipping input with null type: "
-                    + xr.getAttribute(GOODS_TYPE_TAG, (String)null));
+                    + xReader.getAttribute(GOODS_TYPE_TAG, (String)null));
             } else {
-                addInput(type, xr.getAttribute(VALUE_TAG, -1));
+                addInput(type, xReader.getAttribute(VALUE_TAG, -1));
             }
-            xr.closeTag(INPUT_TAG);
+            xReader.closeTag(INPUT_TAG);
 
         } else if (OUTPUT_TAG.equals(tag)) {
-            GoodsType type = xr.getType(spec, GOODS_TYPE_TAG,
+            final GoodsType type = xReader.getType(spec, GOODS_TYPE_TAG,
                                         GoodsType.class, (GoodsType)null);
             if (type == null) {
                 logger.warning("Skipping output with null type: "
-                    + xr.getAttribute(GOODS_TYPE_TAG, (String)null));
+                    + xReader.getAttribute(GOODS_TYPE_TAG, (String)null));
             } else {
-                addOutput(type, xr.getAttribute(VALUE_TAG, -1));
+                addOutput(type, xReader.getAttribute(VALUE_TAG, -1));
             }
-            xr.closeTag(OUTPUT_TAG);
+            xReader.closeTag(OUTPUT_TAG);
 
         } else {
-            super.readChild(xr);
+            super.readChild(xReader);
         }
     }
 
@@ -522,7 +529,7 @@ public class ProductionType extends FreeColSpecObject {
      */
     @Override
     public String toString() {
-        StringBuilder result = new StringBuilder(64);
+        final StringBuilder result = new StringBuilder(64);
         result.append("[").append(getId()).append(":");
         if (productionLevel != null) {
             result.append(" ").append(productionLevel);
@@ -532,18 +539,18 @@ public class ProductionType extends FreeColSpecObject {
         }
         if (!(inputs == null || inputs.isEmpty())) {
             result.append(" [inputs: ");
-            for (AbstractGoods input : inputs) {
+            for (final AbstractGoods input : inputs) {
                 result.append(input).append(", ");
             }
-            int length = result.length();
+            final int length = result.length();
             result.replace(length - 2, length, "]");
         }
         if (!(outputs == null || outputs.isEmpty())) {
             result.append(" [outputs: ");
-            for (AbstractGoods output : outputs) {
+            for (final AbstractGoods output : outputs) {
                 result.append(output).append(", ");
             }
-            int length = result.length();
+            final int length = result.length();
             result.replace(length - 2, length, "]");
         }
         result.append("]");

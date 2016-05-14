@@ -301,7 +301,7 @@ public final class TileType extends FreeColSpecObjectType {
         List<ProductionType> good = new ArrayList<>(),
             better = new ArrayList<>();
         for (ProductionType productionType : productionTypes) {
-            if (productionType.getUnattended() != unattended) continue;
+            if (productionType.isUnattended() != unattended) continue;
             if (productionType.appliesExactly(level)) {
                 better.add(productionType);
             } else if (productionType.appliesTo(level)) {
