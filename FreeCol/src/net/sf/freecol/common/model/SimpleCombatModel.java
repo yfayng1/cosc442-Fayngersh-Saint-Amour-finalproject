@@ -26,7 +26,6 @@ import java.util.Random;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
 import net.sf.freecol.common.model.Modifier.ModifierType;
 import net.sf.freecol.common.model.UnitTypeChange.ChangeType;
@@ -44,7 +43,7 @@ import static net.sf.freecol.common.util.RandomUtils.*;
  */
 public class SimpleCombatModel extends CombatModel {
 
-    private static final Logger logger = Logger.getLogger(SimpleCombatModel.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(SimpleCombatModel.class.getName());
 
     /**
      * The maximum attack power of a Colony's fortifications against a
@@ -73,7 +72,7 @@ public class SimpleCombatModel extends CombatModel {
      * @return The combat odds.
      */
     @Override
-    public CombatOdds calculateCombatOdds(FreeColGameObject attacker,
+    public CombatOdds calculateCombatOdds(final FreeColGameObject attacker,
                                           FreeColGameObject defender) {
         return calculateCombatOdds(attacker, defender, null);
     }
@@ -95,8 +94,10 @@ public class SimpleCombatModel extends CombatModel {
         }
 
         if (lb != null) lb.add(" attacker=", attacker, " ");
-        double attackPower = getOffencePower(attacker, defender, lb);
-        if (lb != null) lb.add(" defender=", defender, " ");
+        final double attackPower = getOffencePower(attacker, defender, lb);
+        if (lb != null) {
+        	lb.add(" defender=", defender, " ");
+        }
         double defencePower = getDefencePower(attacker, defender, lb);
         if (attackPower == 0.0 && defencePower == 0.0) {
             if (lb != null) lb.add(" odds=unknown");
@@ -115,7 +116,7 @@ public class SimpleCombatModel extends CombatModel {
      * @return The offensive power.
      */
     @Override
-    public double getOffencePower(FreeColGameObject attacker,
+    public double getOffencePower(final FreeColGameObject attacker,
                                   FreeColGameObject defender) {
         return getOffencePower(attacker, defender, null);
     }
@@ -139,7 +140,7 @@ public class SimpleCombatModel extends CombatModel {
      * @return The offensive power.
      */
     private double getOffencePower(FreeColGameObject attacker,
-                                   FreeColGameObject defender,
+                                   final FreeColGameObject defender,
                                    LogBuilder lb) {
         double result = 0.0;
         if (attacker == null) {
@@ -149,7 +150,7 @@ public class SimpleCombatModel extends CombatModel {
             || combatIsAttack(attacker, defender)
             || combatIsSettlementAttack(attacker, defender)) {
             Set<Modifier> mods = getOffensiveModifiers(attacker, defender);
-            Turn turn = attacker.getGame().getTurn(); 
+            final Turn turn = attacker.getGame().getTurn(); 
             result = FeatureContainer.applyModifiers(0.0f, turn, mods);
             if (lb != null) {
                 logModifiers(lb, mods);
@@ -163,7 +164,9 @@ public class SimpleCombatModel extends CombatModel {
                                     u -> u.hasAbility(Ability.BOMBARD),
                                     u -> u.getType().getOffence());
             }
-            if (result > MAXIMUM_BOMBARD_POWER) result = MAXIMUM_BOMBARD_POWER;
+            if (result > MAXIMUM_BOMBARD_POWER) {
+            	result = MAXIMUM_BOMBARD_POWER;
+            }
             if (lb != null) lb.add(" bombard=", result);
 
         } else {
@@ -180,7 +183,7 @@ public class SimpleCombatModel extends CombatModel {
      * @return The defensive power.
      */
     @Override
-    public double getDefencePower(FreeColGameObject attacker,
+    public double getDefencePower(final FreeColGameObject attacker,
                                   FreeColGameObject defender) {
         return getDefencePower(attacker, defender, null);
     }
@@ -195,13 +198,13 @@ public class SimpleCombatModel extends CombatModel {
      */
     public double getDefencePower(FreeColGameObject attacker,
                                   FreeColGameObject defender,
-                                  LogBuilder lb) {
+                                  final LogBuilder lb) {
         double result;
         if (combatIsDefenceMeasurement(attacker, defender)
             || combatIsAttack(attacker, defender)
             || combatIsSettlementAttack(attacker, defender)
             || combatIsBombard(attacker, defender)) {
-            Set<Modifier> mods = getDefensiveModifiers(attacker, defender);
+            final Set<Modifier> mods = getDefensiveModifiers(attacker, defender);
             Turn turn = defender.getGame().getTurn();
             result = FeatureContainer.applyModifiers(0.0f, turn, mods);
             if (lb != null) {
@@ -252,7 +255,7 @@ public class SimpleCombatModel extends CombatModel {
 
             // Special bonuses against certain nation types
             if (defender instanceof Ownable) {
-                Player owner = ((Ownable)defender).getOwner();
+                final Player owner = ((Ownable)defender).getOwner();
                 result.addAll(attackerUnit
                     .getModifiers(Modifier.OFFENCE_AGAINST,
                                   owner.getNationType()));
@@ -372,7 +375,7 @@ public class SimpleCombatModel extends CombatModel {
             }
 
         } else if (combatIsAttack(attacker, defender)) {
-            Unit defenderUnit = (Unit) defender;
+            final Unit defenderUnit = (Unit) defender;
             Tile tile = defenderUnit.getTile();
             if (tile != null) {
                 if (tile.hasSettlement()) {
@@ -390,7 +393,7 @@ public class SimpleCombatModel extends CombatModel {
                     // bonus, if defender is REF, or attacker is indian.
                     if (isAmbush(attacker, defender)) {
                         for (Modifier m : tile.getDefenceModifiers()) {
-                            Modifier mod = new Modifier(Modifier.OFFENCE, m);
+                            final Modifier mod = new Modifier(Modifier.OFFENCE, m);
                             mod.setSource(Specification.AMBUSH_BONUS_SOURCE);
                             result.add(mod);
                         }
@@ -451,7 +454,7 @@ public class SimpleCombatModel extends CombatModel {
             }
 
         } else if (combatIsSettlementAttack(attacker, defender)) {
-            Settlement settlement = (Settlement)defender;
+            final Settlement settlement = (Settlement)defender;
             // Tile defence bonus
             Tile tile = settlement.getTile();
             result.addAll(tile.getType().getDefenceModifiers());
@@ -470,7 +473,7 @@ public class SimpleCombatModel extends CombatModel {
 
         // @compat 0.11.0
         // Any modifier with the default modifier index needs to be fixed
-        for (Modifier r : result) {
+        for (final Modifier r : result) {
             if (r.getModifierIndex() == Modifier.DEFAULT_MODIFIER_INDEX) {
                 r.setModifierIndex(Modifier.GENERAL_COMBAT_INDEX);
             }
@@ -507,7 +510,7 @@ public class SimpleCombatModel extends CombatModel {
      * @param fco The <code>FreeColObject</code> to check.
      * @return True if a strong defence bonus is present.
      */
-    private boolean hasStrongDefenceModifier(FreeColObject fco) {
+    private boolean hasStrongDefenceModifier(final FreeColObject fco) {
         return any(fco.getDefenceModifiers(),
             m -> m.getType() == ModifierType.PERCENTAGE
                 && m.getValue() >= STRONG_DEFENCE_THRESHOLD);
@@ -557,7 +560,7 @@ public class SimpleCombatModel extends CombatModel {
                 }
 
                 // Automatic defensive role (e.g. Revere)
-                Role autoRole = defender.getAutomaticRole();
+                final Role autoRole = defender.getAutomaticRole();
                 if (autoRole != null) {
                     result.addAll(autoRole.getDefenceModifiers());
                 }
@@ -588,20 +591,20 @@ public class SimpleCombatModel extends CombatModel {
      * @return The results of the combat.
      */
     @Override
-    public List<CombatResult> generateAttackResult(Random random,
+    public List<CombatResult> generateAttackResult(final Random random,
         FreeColGameObject attacker, FreeColGameObject defender) {
-        LogBuilder lb = new LogBuilder(256);
+        final LogBuilder lb = new LogBuilder(256);
         lb.add("Combat");
         ArrayList<CombatResult> crs = new ArrayList<>();
         CombatOdds odds = calculateCombatOdds(attacker, defender, lb);
-        double r = randomDouble(logger, "AttackResult", random);
-        lb.add(" random(1.0)=", r);
+        double rand = randomDouble(LOGGER, "AttackResult", random);
+        lb.add(" random(1.0)=", rand);
         boolean great = false; // Great win or loss?
         String action;
 
         if (combatIsAttack(attacker, defender)) {
-            Unit attackerUnit = (Unit) attacker;
-            Unit defenderUnit = (Unit) defender;
+            final Unit attackerUnit = (Unit) attacker;
+            final Unit defenderUnit = (Unit) defender;
             action = "Attack";
 
             // For random double 0 <= r < 1.0:
@@ -619,23 +622,23 @@ public class SimpleCombatModel extends CombatModel {
             //     = 0.1 * odds.win + 0.9 => loss
             //   else => great loss
             // ...and beached ships always lose.
-            if (r < odds.win || defenderUnit.isBeached()) {
-                great = r < 0.1 * odds.win; // Great Win
+            if (rand < odds.win || defenderUnit.isBeached()) {
+                great = rand < 0.1 * odds.win; // Great Win
                 crs.add(CombatResult.WIN);
                 resolveAttack(attackerUnit, defenderUnit, great,
                     // Rescale to 0 <= r < 1
-                    r / (0.1 * odds.win), crs);
-            } else if (r < 0.8 * odds.win + 0.2
+                    rand / (0.1 * odds.win), crs);
+            } else if (rand < 0.8 * odds.win + 0.2
                     && defenderUnit.hasAbility(Ability.EVADE_ATTACK)) {
                 crs.add(CombatResult.NO_RESULT);
                 crs.add(CombatResult.EVADE_ATTACK);
             } else {
-                great = r >= 0.1 * odds.win + 0.9; // Great Loss
+                great = rand >= 0.1 * odds.win + 0.9; // Great Loss
                 crs.add(CombatResult.LOSE);
                 resolveAttack(defenderUnit, attackerUnit, great,
                     // Rescaling to 0 <= r < 1
                     // (rearrange: 0.8 * odds.win + 0.2 <= r < 1.0)
-                    (1.25 * r - 0.25 - odds.win)/(1.0 - odds.win), crs);
+                    (1.25 * rand - 0.25 - odds.win)/(1.0 - odds.win), crs);
             }
 
         } else if (combatIsBombard(attacker, defender)) {
@@ -648,7 +651,7 @@ public class SimpleCombatModel extends CombatModel {
             action = "Bombard";
 
             // The bombard succeeds.
-            if (r <= odds.win) {
+            if (rand <= odds.win) {
                 crs.add(CombatResult.WIN);
 
                 // Great wins occur at most in 1 in 3 of successful bombards,
@@ -656,7 +659,7 @@ public class SimpleCombatModel extends CombatModel {
                 double offencePower = getOffencePower(attacker, defender);
                 double defencePower = getDefencePower(attacker, defender);
                 double diff = Math.max(3.0, defencePower * 2.0 - offencePower);
-                great = r < odds.win / diff;
+                great = rand < odds.win / diff;
 
                 // Sink the defender on great wins or lack of repair
                 // location, otherwise just damage.
@@ -683,7 +686,7 @@ public class SimpleCombatModel extends CombatModel {
         // `I just lost N combats' complaints.
         lb.add(" great=", great, " ", action);
         for (CombatResult cr : crs) lb.add(" ", cr);
-        lb.log(logger, Level.INFO);
+        lb.log(LOGGER, Level.INFO);
 
         return crs;
     }
@@ -699,9 +702,9 @@ public class SimpleCombatModel extends CombatModel {
      */
     private void resolveAttack(Unit winner, Unit loser, boolean great,
                                double r, List<CombatResult> crs) {
-        Player loserPlayer = loser.getOwner();
+        final Player loserPlayer = loser.getOwner();
         Tile tile = loser.getTile();
-        Player winnerPlayer = winner.getOwner();
+        final Player winnerPlayer = winner.getOwner();
         boolean attackerWon = crs.get(0) == CombatResult.WIN;
         boolean loserMustDie = loser.hasAbility(Ability.DISPOSE_ON_COMBAT_LOSS);
 
@@ -882,10 +885,10 @@ public class SimpleCombatModel extends CombatModel {
      * @param defender The defender.
      * @return True if the attack can be an ambush.
      */
-    private boolean isAmbush(FreeColGameObject attacker,
+    private boolean isAmbush(final FreeColGameObject attacker,
                              FreeColGameObject defender) {
         if (attacker instanceof Unit && defender instanceof Unit) {
-            Unit attackerUnit = (Unit)attacker;
+            final Unit attackerUnit = (Unit)attacker;
             Unit defenderUnit = (Unit)defender;
             return attackerUnit.getSettlement() == null
                 && attackerUnit.hasTile()

@@ -20,20 +20,15 @@
 package net.sf.freecol.common.model;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
-import java.util.function.Predicate;
-import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
 import javax.xml.stream.XMLStreamException;
 
 import net.sf.freecol.common.io.FreeColXMLReader;
 import net.sf.freecol.common.io.FreeColXMLWriter;
-import net.sf.freecol.common.model.Tile;
 import static net.sf.freecol.common.util.CollectionUtils.*;
 
 
@@ -44,8 +39,13 @@ import static net.sf.freecol.common.util.CollectionUtils.*;
 public abstract class Settlement extends GoodsLocation
     implements Nameable, Ownable {
 
-    private static final Logger logger = Logger.getLogger(Settlement.class.getName());
+    // Serialization
 
+    private static final String NAME_TAG = "name";
+    private static final String OWNER_TAG = "owner";
+    private static final String S_TYPE_TAG = "settlementType";
+    private static final String TILE_TAG = "tile";
+	
     public static final int FOOD_PER_COLONIST = 200;
 
     /** The <code>Player</code> owning this <code>Settlement</code>. */
@@ -75,7 +75,8 @@ public abstract class Settlement extends GoodsLocation
      * @param name The settlement name.
      * @param tile The containing <code>Tile</code>.
      */
-    public Settlement(Game game, Player owner, String name, Tile tile) {
+    public Settlement(final Game game, final Player owner, 
+    		final String name, final Tile tile) {
         super(game);
 
         this.owner = owner;
@@ -90,10 +91,10 @@ public abstract class Settlement extends GoodsLocation
      * The object should be initialized later.
      *
      * @param game The enclosing <code>Game</code>.
-     * @param id The object identifier.
+     * @param identifier The object identifier.
      */
-    public Settlement(Game game, String id) {
-        super(game, id);
+    public Settlement(final Game game, final String identifier) {
+        super(game, identifier);
     }
 
 
@@ -130,9 +131,13 @@ public abstract class Settlement extends GoodsLocation
      * @param newType The new <code>SettlementType</code>.
      */
     private final void changeType(final SettlementType newType) {
-        if (type != null) removeFeatures(type);
+        if (type != null) {
+        	removeFeatures(type);
+        }
         setType(newType);
-        if (newType != null) addFeatures(newType);
+        if (newType != null) {
+        	addFeatures(newType);
+        }
     }
 
     /**
@@ -144,7 +149,7 @@ public abstract class Settlement extends GoodsLocation
         return getType().isCapital();
     }
 
-    public void setCapital(boolean capital) {
+    public void setCapital(final boolean capital) {
         if (isCapital() != capital) {
             changeType(owner.getNationType().getSettlementType(capital));
         }
@@ -170,8 +175,10 @@ public abstract class Settlement extends GoodsLocation
      *
      * @param tile The <code>Tile</code> to add.
      */
-    public void addTile(Tile tile) {
-        if (!ownedTiles.contains(tile)) ownedTiles.add(tile);
+    public void addTile(final Tile tile) {
+        if (!ownedTiles.contains(tile)) {
+        	ownedTiles.add(tile);
+        }
     }
 
     /**
@@ -179,7 +186,7 @@ public abstract class Settlement extends GoodsLocation
      *
      * @param tile The <code>Tile</code> to remove.
      */
-    public void removeTile(Tile tile) {
+    public void removeTile(final Tile tile) {
         ownedTiles.remove(tile);
     }
 
@@ -210,8 +217,8 @@ public abstract class Settlement extends GoodsLocation
      * @param random A pseudo-random number source.
      * @return An amount of gold plundered.
      */
-    public int getPlunder(Unit attacker, Random random) {
-        RandomRange range = getPlunderRange(attacker);
+    public int getPlunder(final Unit attacker, final Random random) {
+        final RandomRange range = getPlunderRange(attacker);
         return (range == null) ? 0
             : range.getAmount("Plunder " + getName(), random, false);
     }
@@ -224,7 +231,7 @@ public abstract class Settlement extends GoodsLocation
      *
      * @param maximal If true, also claim all the tiles possible.
      */
-    public void placeSettlement(boolean maximal) {
+    public void placeSettlement(final boolean maximal) {
         List<Tile> tiles;
         if (maximal) {
             tiles = owner.getClaimableTiles(tile, getRadius());
@@ -234,11 +241,11 @@ public abstract class Settlement extends GoodsLocation
         }
 
         tile.setSettlement(this);//-vis(owner),-til
-        for (Tile t : tiles) {
+        for (final Tile t : tiles) {
             t.changeOwnership(owner, this);//-vis(owner,this),-til
         }
         if (!tile.hasRoad()) {
-            TileImprovement road = tile.addRoad();
+            final TileImprovement road = tile.addRoad();
             road.setTurnsToComplete(0);
             road.setVirtual(true);
             road.updateRoadConnections(true);
@@ -254,13 +261,13 @@ public abstract class Settlement extends GoodsLocation
      * Several visibility issues accumulated here.
      */
     public void exciseSettlement() {
-        Tile settlementTile = getTile();
-        for (Tile tile : getOwnedTiles()) {
+        final Tile settlementTile = getTile();
+        for (final Tile tile : getOwnedTiles()) {
             tile.changeOwnership(null, null);//-til
         }
         settlementTile.setSettlement(null);//-vis(owner),-til
         settlementTile.changeOwnership(null, null);//-til
-        TileImprovement road = settlementTile.getRoad();
+        final TileImprovement road = settlementTile.getRoad();
         if (road != null && road.isVirtual()) {
             settlementTile.removeRoad();//-til
         }
@@ -278,7 +285,7 @@ public abstract class Settlement extends GoodsLocation
      *            <code>Settlement</code>.
      * @see #getOwner
      */
-    public void changeOwner(Player newOwner) {
+    public void changeOwner(final Player newOwner) {
         final Player oldOwner = this.owner;
         if (newOwner.isIndian() != oldOwner.isIndian()) {
             throw new IllegalArgumentException("Can not transfer settlements between native and European players.");
@@ -287,7 +294,7 @@ public abstract class Settlement extends GoodsLocation
 
         getGame().checkOwners(this, oldOwner);
 
-        for (Tile t : getOwnedTiles()) {
+        for (final Tile t : getOwnedTiles()) {
             t.changeOwnership(newOwner, this);//-til
         }
 
@@ -303,7 +310,7 @@ public abstract class Settlement extends GoodsLocation
      */
     public boolean isConnectedPort() {
         return any(getTile().getSurroundingTiles(1, 1),
-            t -> !t.isLand() && t.isHighSeasConnected());
+            tile -> !tile.isLand() && tile.isHighSeasConnected());
     }
 
     /**
@@ -313,7 +320,7 @@ public abstract class Settlement extends GoodsLocation
      * @return A high seas count, INFINITY if not connected.
      */
     public int getHighSeasCount() {
-        Tile best = minimize(getTile().getSurroundingTiles(1, 1),
+        final Tile best = minimize(getTile().getSurroundingTiles(1, 1),
                              Tile.isSeaTile, Tile.highSeasComparator);
         return (best == null) ? INFINITY : best.getHighSeasCount();
     }
@@ -325,9 +332,9 @@ public abstract class Settlement extends GoodsLocation
      * @param goodsType a <code>GoodsType</code> value
      * @return an <code>int</code> value
      */
-    public int getConsumptionOf(GoodsType goodsType) {
+    public int getConsumptionOf(final GoodsType goodsType) {
         return Math.max(0, sum(getUnitList(),
-                               u -> u.getType().getConsumptionOf(goodsType)));
+                               unit -> unit.getType().getConsumptionOf(goodsType)));
     }
 
     /**
@@ -337,9 +344,9 @@ public abstract class Settlement extends GoodsLocation
      * @param goodsTypes <code>GoodsType</code> values
      * @return an <code>int</code> value
      */
-    public int getConsumptionOf(List<GoodsType> goodsTypes) {
+    public int getConsumptionOf(final List<GoodsType> goodsTypes) {
         return (goodsTypes == null) ? 0
-            : sum(goodsTypes, gt -> getConsumptionOf(gt));
+            : sum(goodsTypes, gType -> getConsumptionOf(gType));
     }
 
     /**
@@ -359,14 +366,14 @@ public abstract class Settlement extends GoodsLocation
      * @param goods A list of <code>AbstractGoods</code>
      * @return True if the settlement can provide the equipment.
      */
-    public boolean canProvideGoods(List<AbstractGoods> goods) {
-        return all(goods, ag -> {
-                int available = getGoodsCount(ag.getType());
-                int breedingNumber = ag.getType().getBreedingNumber();
+    public boolean canProvideGoods(final List<AbstractGoods> goods) {
+        return all(goods, aGood -> {
+                int available = getGoodsCount(aGood.getType());
+                final int breedingNumber = aGood.getType().getBreedingNumber();
                 if (breedingNumber != GoodsType.INFINITY) {
                     available -= breedingNumber;
                 }
-                return available >= ag.getAmount();
+                return available >= aGood.getAmount();
             });
     }
 
@@ -399,19 +406,21 @@ public abstract class Settlement extends GoodsLocation
      * @param unit The <code>Unit</code> to check.
      * @return The <code>Role</code> that this settlement could provide.
      */
-    public Role canImproveUnitMilitaryRole(Unit unit) {
+    public Role canImproveUnitMilitaryRole(final Unit unit) {
         final Specification spec = getSpecification();
         final Role role = unit.getRole();
 
         // Get the military roles that are superior to the current role
         List<Role> military = spec.getMilitaryRoles();
-        int index = military.indexOf(role);
-        if (index >= 0) military = military.subList(0, index);
+        final int index = military.indexOf(role);
+        if (index >= 0) {
+        	military = military.subList(0, index);
+        }
 
         // To succeed, there must exist an available role for the unit
         // where the extra equipment for the role is present.
         return find(unit.getAvailableRoles(military),
-            r -> canProvideGoods(unit.getGoodsDifference(r, 1)));
+            available -> canProvideGoods(unit.getGoodsDifference(available, 1)));
     }
 
 
@@ -421,7 +430,7 @@ public abstract class Settlement extends GoodsLocation
      * {@inheritDoc}
      */
     @Override
-    public FreeColGameObject getLinkTarget(Player player) {
+    public FreeColGameObject getLinkTarget(final Player player) {
         return (player == getOwner()) ? this : getTile();
     }
 
@@ -473,7 +482,7 @@ public abstract class Settlement extends GoodsLocation
      * @param newName The new name.
      */
     @Override
-    public void setName(String newName) {
+    public void setName(final String newName) {
         this.name = newName;
     }
 
@@ -495,7 +504,7 @@ public abstract class Settlement extends GoodsLocation
      * -til: Changes tile appearance.
      */
     @Override
-    public void setOwner(Player player) {
+    public void setOwner(final Player player) {
         this.owner = player;
     }
 
@@ -555,7 +564,7 @@ public abstract class Settlement extends GoodsLocation
      * {@inheritDoc}
      */
     @Override
-    public NoAddReason getNoAddReason(Locatable locatable) {
+    public NoAddReason getNoAddReason(final Locatable locatable) {
         if (locatable instanceof Unit) {
             // Tighter ownership test now possible.
             if (((Unit)locatable).getOwner() != getOwner()) {
@@ -574,9 +583,9 @@ public abstract class Settlement extends GoodsLocation
      * {@inheritDoc}
      */
     @Override
-    public int priceGoods(List<AbstractGoods> goods) {
+    public int priceGoods(final List<AbstractGoods> goods) {
         return (any(goods,
-                ag -> getGoodsCount(ag.getType()) < ag.getAmount())) ? -1
+                abgood -> getGoodsCount(abgood.getType()) < abgood.getAmount())) ? -1
             : 0;
     }
 
@@ -584,17 +593,21 @@ public abstract class Settlement extends GoodsLocation
      * {@inheritDoc}
      */
     @Override
-    public boolean equipForRole(Unit unit, Role role, int roleCount) {
-        if (!unit.roleIsAvailable(role)) return false;
+    public boolean equipForRole(final Unit unit, final Role role, final int roleCount) {
+        if (!unit.roleIsAvailable(role)) {
+        	return false;
+        }
 
         // Get the change in goods
-        List<AbstractGoods> required = unit.getGoodsDifference(role, roleCount);
+        final List<AbstractGoods> required = unit.getGoodsDifference(role, roleCount);
 
         // Check if the required goods are available
-        if (priceGoods(required) < 0) return false;
+        if (priceGoods(required) < 0) {
+        	return false;
+        }
 
         // Make the change
-        for (AbstractGoods ag : required) {
+        for (final AbstractGoods ag : required) {
             addGoods(ag.getType(), -ag.getAmount());
         }
 
@@ -698,52 +711,48 @@ public abstract class Settlement extends GoodsLocation
      */
     public abstract StringTemplate getAlarmLevelLabel(Player player);
 
-    
-
-    // Serialization
-
-    private static final String NAME_TAG = "name";
-    private static final String OWNER_TAG = "owner";
-    private static final String SETTLEMENT_TYPE_TAG = "settlementType";
-    private static final String TILE_TAG = "tile";
-
-
     /**
      * {@inheritDoc}
      */
     @Override
-    protected void writeAttributes(FreeColXMLWriter xw) throws XMLStreamException {
-        super.writeAttributes(xw);
+    protected void writeAttributes(final FreeColXMLWriter xWriter) throws XMLStreamException {
+        super.writeAttributes(xWriter);
 
         // Delegate writing of name to subclass, as it is not
         // available for uncontacted native settlements.
 
-        xw.writeAttribute(OWNER_TAG, owner);
+        xWriter.writeAttribute(OWNER_TAG, owner);
 
-        xw.writeAttribute(TILE_TAG, tile);
+        xWriter.writeAttribute(TILE_TAG, tile);
 
-        xw.writeAttribute(SETTLEMENT_TYPE_TAG, getType());
+        xWriter.writeAttribute(S_TYPE_TAG, getType());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    protected void writeChildren(FreeColXMLWriter xw) throws XMLStreamException {
-        if (xw.validFor(getOwner())) {
+    protected void writeChildren(final FreeColXMLWriter xWriter) throws XMLStreamException {
+        if (xWriter.validFor(getOwner())) {
 
             // Settlement contents only visible to the owner by default.
-            super.writeChildren(xw);
+            super.writeChildren(xWriter);
 
-            for (Ability ability : getSortedAbilities()) {
-                if (ability.isIndependent()) ability.toXML(xw);
+            for (final Ability ability : getSortedAbilities()) {
+                if (ability.isIndependent()) {
+                	ability.toXML(xWriter);
+                }
             }
 
             final Turn turn = getGame().getTurn();
-            for (Modifier modifier : getSortedModifiers()) {
+            for (final Modifier modifier : getSortedModifiers()) {
                 if (modifier.hasIncrement()
-                    && modifier.isOutOfDate(turn)) continue;
-                if (modifier.isIndependent()) modifier.toXML(xw);
+                    && modifier.isOutOfDate(turn)) {
+                	continue;
+                }
+                if (modifier.isIndependent()) {
+                	modifier.toXML(xWriter);
+                }
             }
         }
     }
@@ -752,22 +761,24 @@ public abstract class Settlement extends GoodsLocation
      * {@inheritDoc}
      */
     @Override
-    protected void readAttributes(FreeColXMLReader xr) throws XMLStreamException {
-        super.readAttributes(xr);
+    protected void readAttributes(final FreeColXMLReader xReader) throws XMLStreamException {
+        super.readAttributes(xReader);
 
         final Game game = getGame();
 
-        name = xr.getAttribute(NAME_TAG, (String)null);
+        name = xReader.getAttribute(NAME_TAG, (String)null);
 
-        Player oldOwner = owner;
-        owner = xr.findFreeColGameObject(game, OWNER_TAG,
+        final Player oldOwner = owner;
+        owner = xReader.findFreeColGameObject(game, OWNER_TAG,
                                          Player.class, (Player)null, true);
-        if (xr.shouldIntern()) game.checkOwners(this, oldOwner);
+        if (xReader.shouldIntern()) {
+        	game.checkOwners(this, oldOwner);
+        }
 
-        tile = xr.findFreeColGameObject(game, TILE_TAG,
+        tile = xReader.findFreeColGameObject(game, TILE_TAG,
                                         Tile.class, (Tile)null, true);
 
-        String newType = xr.getAttribute(SETTLEMENT_TYPE_TAG, (String)null);
+        final String newType = xReader.getAttribute(S_TYPE_TAG, (String)null);
         type = owner.getNationType().getSettlementType(newType);
     }
 
@@ -775,11 +786,11 @@ public abstract class Settlement extends GoodsLocation
      * {@inheritDoc}
      */
     @Override
-    protected void readChildren(FreeColXMLReader xr) throws XMLStreamException {
+    protected void readChildren(final FreeColXMLReader xReader) throws XMLStreamException {
         // Clear containers.
         featureContainer.clear();
 
-        super.readChildren(xr);
+        super.readChildren(xReader);
 
         // Add back the type-derived features.
         addFeatures(type);
@@ -789,20 +800,22 @@ public abstract class Settlement extends GoodsLocation
      * {@inheritDoc}
      */
     @Override
-    protected void readChild(FreeColXMLReader xr) throws XMLStreamException {
+    protected void readChild(final FreeColXMLReader xReader) throws XMLStreamException {
         final Specification spec = getSpecification();
-        final String tag = xr.getLocalName();
+        final String tag = xReader.getLocalName();
 
         if (Ability.getTagName().equals(tag)) {
-            Ability ability = new Ability(xr, spec);
-            if (ability.isIndependent()) addAbility(ability);
-
+            final Ability ability = new Ability(xReader, spec);
+            if (ability.isIndependent()) {
+            	addAbility(ability);
+            }
         } else if (Modifier.getTagName().equals(tag)) {
-            Modifier modifier = new Modifier(xr, spec);
-            if (modifier.isIndependent()) addModifier(modifier);
-
+            final Modifier modifier = new Modifier(xReader, spec);
+            if (modifier.isIndependent()) {
+            	addModifier(modifier);
+            }
         } else {
-            super.readChild(xr);
+            super.readChild(xReader);
         }
     }
 }

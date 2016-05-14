@@ -32,6 +32,20 @@ import net.sf.freecol.common.util.Utils;
  */
 public class Scope extends FreeColObject {
 
+    // Serialization
+
+    private static final String ABILITY_ID_TAG = "ability-id";
+    private static final String ABILITY_VALUE_TAG = "ability-value";
+    private static final String MNEG_TAG = "match-negated";
+    private static final String MNULL_TAG = "matches-null";
+    private static final String METHOD_NAME_TAG = "method-name";
+    private static final String METHOD_VALUE_TAG = "method-value";
+    private static final String TYPE_TAG = "type";
+    // @compat 0.11.3
+    private static final String OLD_MNEG_TAG = "matchNegated";
+    private static final String OLD_MNULL_TAG = "matchesNull";
+    // end @compat 0.11.3
+
     /** 
      * The identifier of a <code>FreeColSpecObjectType</code>, or
      * <code>Option</code>.
@@ -63,16 +77,19 @@ public class Scope extends FreeColObject {
     /**
      * Deliberately empty constructor.
      */
-    public Scope() {}
+    public Scope() {
+    	super();
+    }
 
     /**
      * Creates a new <code>Scope</code> instance from a stream.
      *
-     * @param xr The <code>FreeColXMLReader</code> to read from.
+     * @param xReader The <code>FreeColXMLReader</code> to read from.
      * @exception XMLStreamException if there is an error reading the stream.
      */
-    public Scope(FreeColXMLReader xr) throws XMLStreamException {
-        readFromXML(xr);
+    public Scope(final FreeColXMLReader xReader) throws XMLStreamException {
+    	super();
+        readFromXML(xReader);
     }
 
 
@@ -140,7 +157,7 @@ public class Scope extends FreeColObject {
         this.abilityId = newAbilityId;
     }
 
-    public boolean getAbilityValue() {
+    public boolean isAbilityValue() {
         return abilityValue;
     }
 
@@ -170,7 +187,7 @@ public class Scope extends FreeColObject {
      * @param object The <code>FreeColSpecObjectType</code> to test.
      * @return True if the scope is applicable.
      */
-    public boolean appliesTo(FreeColObject object) {
+    public boolean appliesTo(final FreeColObject object) {
         if (object == null) {
             return matchesNull;
         }
@@ -180,7 +197,7 @@ public class Scope extends FreeColObject {
                     return matchNegated;
                 }
             } else if (object instanceof FreeColObject) {
-                FreeColSpecObjectType fcgot = object.invokeMethod("getType",
+                final FreeColSpecObjectType fcgot = object.invokeMethod("getType",
                     FreeColSpecObjectType.class, (FreeColSpecObjectType)null);
                 if (fcgot == null || !type.equals(fcgot.getId())) {
                     return matchNegated;
@@ -193,8 +210,10 @@ public class Scope extends FreeColObject {
             return matchNegated;
         }
         if (methodName != null) {
-            Object ret = object.invokeMethod(methodName, Object.class, null);
-            if (!String.valueOf(ret).equals(methodValue)) return matchNegated;
+            final Object ret = object.invokeMethod(methodName, Object.class, null);
+            if (!String.valueOf(ret).equals(methodValue)) {
+            	return matchNegated;
+            }
         }
         return !matchNegated;
     }
@@ -207,7 +226,7 @@ public class Scope extends FreeColObject {
      * @return A new scope to negatively match on persons.
      */
     public static Scope makeNegatedPersonScope() {
-        Scope scope = new Scope();
+        final Scope scope = new Scope();
         scope.setAbilityId("model.ability.person");
         scope.setMatchNegated(true);
         return scope;
@@ -221,10 +240,12 @@ public class Scope extends FreeColObject {
      * {@inheritDoc}
      */
     @Override
-    public boolean equals(Object o) {
-        if (o == this) return true;
-        if (o instanceof Scope) {
-            Scope otherScope = (Scope) o;
+    public boolean equals(final Object object) {
+        if (object == this) {
+        	return true;
+        }
+        if (object instanceof Scope) {
+            final Scope otherScope = (Scope) object;
             if (matchNegated != otherScope.matchNegated) {
                 return false;
             }
@@ -245,7 +266,7 @@ public class Scope extends FreeColObject {
             } else if (!abilityId.equals(otherScope.getAbilityId())) {
                 return false;
             }
-            if (abilityValue != otherScope.getAbilityValue()) {
+            if (abilityValue != otherScope.isAbilityValue()) {
                 return false;
             }
             if (methodName == null) {
@@ -282,50 +303,34 @@ public class Scope extends FreeColObject {
         return 31 * hash + (matchNegated ? 1 : 0);
     }
 
-
-    // Serialization
-
-    private static final String ABILITY_ID_TAG = "ability-id";
-    private static final String ABILITY_VALUE_TAG = "ability-value";
-    private static final String MATCH_NEGATED_TAG = "match-negated";
-    private static final String MATCHES_NULL_TAG = "matches-null";
-    private static final String METHOD_NAME_TAG = "method-name";
-    private static final String METHOD_VALUE_TAG = "method-value";
-    private static final String TYPE_TAG = "type";
-    // @compat 0.11.3
-    private static final String OLD_MATCH_NEGATED_TAG = "matchNegated";
-    private static final String OLD_MATCHES_NULL_TAG = "matchesNull";
-    // end @compat 0.11.3
-
-
     /**
      * {@inheritDoc}
      */
     @Override
-    protected void writeAttributes(FreeColXMLWriter xw) throws XMLStreamException {
+    protected void writeAttributes(final FreeColXMLWriter xWriter) throws XMLStreamException {
         // Scopes do not have ids, no super.writeAttributes().
         // However, they might in future.
 
-        xw.writeAttribute(MATCH_NEGATED_TAG, matchNegated);
+        xWriter.writeAttribute(MNEG_TAG, matchNegated);
 
-        xw.writeAttribute(MATCHES_NULL_TAG, matchesNull);
+        xWriter.writeAttribute(MNULL_TAG, matchesNull);
 
         if (type != null) {
-            xw.writeAttribute(TYPE_TAG, type);
+            xWriter.writeAttribute(TYPE_TAG, type);
         }
 
         if (abilityId != null) {
-            xw.writeAttribute(ABILITY_ID_TAG, abilityId);
+            xWriter.writeAttribute(ABILITY_ID_TAG, abilityId);
 
-            xw.writeAttribute(ABILITY_VALUE_TAG, abilityValue);
+            xWriter.writeAttribute(ABILITY_VALUE_TAG, abilityValue);
         }
 
         if (methodName != null) {
-            xw.writeAttribute(METHOD_NAME_TAG, methodName);
+            xWriter.writeAttribute(METHOD_NAME_TAG, methodName);
 
             if (methodValue != null) {
                 // methodValue may be null in the Operand sub-class
-                xw.writeAttribute(METHOD_VALUE_TAG, methodValue);
+                xWriter.writeAttribute(METHOD_VALUE_TAG, methodValue);
             }
         }
     }
@@ -334,25 +339,25 @@ public class Scope extends FreeColObject {
      * {@inheritDoc}
      */
     @Override
-    protected void readAttributes(FreeColXMLReader xr) throws XMLStreamException {
+    protected void readAttributes(final FreeColXMLReader xReader) throws XMLStreamException {
         // Scopes do not have ids, no super.readAttributes().
         // However, they might in future.
 
         // @compat 0.11.3
-        if (xr.hasAttribute(OLD_MATCH_NEGATED_TAG)) {
-            matchNegated = xr.getAttribute(OLD_MATCH_NEGATED_TAG, false);
-        } else
+        if (xReader.hasAttribute(OLD_MNEG_TAG)) {
+            matchNegated = xReader.getAttribute(OLD_MNEG_TAG, false);
+        } else {
         // end @compat 0.11.3
-            matchNegated = xr.getAttribute(MATCH_NEGATED_TAG, false);
-
+            matchNegated = xReader.getAttribute(MNEG_TAG, false);
+        }
         // @compat 0.11.3
-        if (xr.hasAttribute(OLD_MATCHES_NULL_TAG)) {
-            matchesNull = xr.getAttribute(OLD_MATCHES_NULL_TAG, true);
-        } else
+        if (xReader.hasAttribute(OLD_MNULL_TAG)) {
+            matchesNull = xReader.getAttribute(OLD_MNULL_TAG, true);
+        } else {
         // end @compat 0.11.3
-            matchesNull = xr.getAttribute(MATCHES_NULL_TAG, true);
-
-        type = xr.getAttribute(TYPE_TAG, (String)null);
+            matchesNull = xReader.getAttribute(MNULL_TAG, true);
+        }
+        type = xReader.getAttribute(TYPE_TAG, (String)null);
         // @compat 0.10.x
         if ("model.equipment.muskets".equals(type)) {
             type = "model.role.soldier";
@@ -363,13 +368,13 @@ public class Scope extends FreeColObject {
         }
         // end @compat 0.10.x
 
-        abilityId = xr.getAttribute(ABILITY_ID_TAG, (String)null);
+        abilityId = xReader.getAttribute(ABILITY_ID_TAG, (String)null);
 
-        abilityValue = xr.getAttribute(ABILITY_VALUE_TAG, true);
+        abilityValue = xReader.getAttribute(ABILITY_VALUE_TAG, true);
 
-        methodName = xr.getAttribute(METHOD_NAME_TAG, (String)null);
+        methodName = xReader.getAttribute(METHOD_NAME_TAG, (String)null);
 
-        methodValue = xr.getAttribute(METHOD_VALUE_TAG, (String)null);
+        methodValue = xReader.getAttribute(METHOD_VALUE_TAG, (String)null);
     }
 
     /**
@@ -377,18 +382,22 @@ public class Scope extends FreeColObject {
      */
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder(64);
-        sb.append("[Scope ").append(type);
+        final StringBuilder sBuilder = new StringBuilder(64);
+        sBuilder.append("[Scope ").append(type);
         if (abilityId != null) {
-            sb.append(" ").append(abilityId).append("=").append(abilityValue);
+            sBuilder.append(" ").append(abilityId).append("=").append(abilityValue);
         }
         if (methodName != null) {
-            sb.append(" ").append(methodName).append("=").append(methodValue);
+            sBuilder.append(" ").append(methodName).append("=").append(methodValue);
         }
-        if (matchesNull) sb.append(" matches-null");
-        if (matchNegated) sb.append(" match-negated");
-        sb.append("]");
-        return sb.toString();
+        if (matchesNull) {
+        	sBuilder.append(" matches-null");
+        }
+        if (matchNegated) {
+        	sBuilder.append(" match-negated");
+        }
+        sBuilder.append("]");
+        return sBuilder.toString();
     }
 
     /**
