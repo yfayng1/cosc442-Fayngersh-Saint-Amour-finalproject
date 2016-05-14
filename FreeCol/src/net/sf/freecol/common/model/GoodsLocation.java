@@ -52,7 +52,7 @@ public abstract class GoodsLocation extends UnitLocation {
      *
      * @param game The enclosing <code>Game</code>.
      */
-    public GoodsLocation(Game game) {
+    GoodsLocation(Game game) {
         super(game);
     }
 
@@ -62,7 +62,7 @@ public abstract class GoodsLocation extends UnitLocation {
      * @param game The enclosing <code>Game</code>.
      * @param id The object identifier.
      */
-    public GoodsLocation(Game game, String id) {
+    GoodsLocation(Game game, String id) {
         super(game, id);
     }
 
@@ -83,16 +83,17 @@ public abstract class GoodsLocation extends UnitLocation {
         return addGoods(goods.getType(), goods.getAmount());
     }
 
-    /**
-     * Adds a list of goods to this location.
-     *
-     * @param goods The list of <code>AbstractGoods</code> to add.
-     * @return True if the goods were all added.
-     */
-    public final boolean addGoods(List<AbstractGoods> goods) {
-        for (AbstractGoods ag : goods) if (!addGoods(ag)) return false;
-        return true;
-    }
+// TODO Remove unused code found by UCDetector
+//     /**
+//      * Adds a list of goods to this location.
+//      *
+//      * @param goods The list of <code>AbstractGoods</code> to add.
+//      * @return True if the goods were all added.
+//      */
+//     public final boolean addGoods(List<AbstractGoods> goods) {
+//         for (AbstractGoods ag : goods) if (!addGoods(ag)) return false;
+//         return true;
+//     }
 
     /**
      * Removes the some goods from this location.
@@ -133,7 +134,7 @@ public abstract class GoodsLocation extends UnitLocation {
      * @param goods A list of <code>AbstractGoods</code> to check.
      * @return True if the goods are all present.
      */
-    public final boolean containsGoods(List<AbstractGoods> goods) {
+    final boolean containsGoods(List<AbstractGoods> goods) {
         return all(goods, ag -> ag.getAmount() <= getGoodsCount(ag.getType()));
     }
 

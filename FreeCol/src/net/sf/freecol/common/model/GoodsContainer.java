@@ -55,7 +55,7 @@ public class GoodsContainer extends FreeColGameObject implements Ownable {
      * expect to carry, but not so huge as to look silly in user
      * messages.
      */
-    public static final int HUGE_CARGO_SIZE = 100 * CARGO_SIZE;
+    static final int HUGE_CARGO_SIZE = 100 * CARGO_SIZE;
 
     /**
      * The list of Goods stored in this <code>GoodsContainer</code>.
@@ -91,15 +91,16 @@ public class GoodsContainer extends FreeColGameObject implements Ownable {
         this.parent = parent;
     }
 
-    /**
-     * Create a new <code>GoodsContainer</code>.
-     *
-     * @param game The enclosing <code>Game</code>.
-     * @param id The object identifier.
-     */
-    public GoodsContainer(Game game, String id) {
-        super(game, id);
-    }
+// TODO Remove unused code found by UCDetector
+     /**
+      * Create a new <code>GoodsContainer</code>.
+      *
+      * @param game The enclosing <code>Game</code>.
+      * @param id The object identifier.
+      */
+     public GoodsContainer(Game game, String id) {
+         super(game, id);
+     }
 
 
     /**
@@ -121,7 +122,7 @@ public class GoodsContainer extends FreeColGameObject implements Ownable {
      * @return True if there is enough of the specified goods present that it
      *     can be removed without error.
      */
-    public boolean contains(Goods g) {
+    boolean contains(Goods g) {
         return getGoodsCount(g.getType()) >= g.getAmount();
     }
 
@@ -154,15 +155,16 @@ public class GoodsContainer extends FreeColGameObject implements Ownable {
         }
     }
 
-    /**
-     * Adds goods to this goods container.
-     *
-     * @param goods The <code>Goods</code> to add.
-     * @return True if the addition succeeds.
-     */
-    public boolean addGoods(AbstractGoods goods) {
-        return addGoods(goods.getType(), goods.getAmount());
-    }
+// TODO Remove unused code found by UCDetector
+//     /**
+//      * Adds goods to this goods container.
+//      *
+//      * @param goods The <code>Goods</code> to add.
+//      * @return True if the addition succeeds.
+//      */
+//     public boolean addGoods(AbstractGoods goods) {
+//         return addGoods(goods.getType(), goods.getAmount());
+//     }
 
     /**
      * Adds goods by type and amount to this goods container.
@@ -193,15 +195,16 @@ public class GoodsContainer extends FreeColGameObject implements Ownable {
         return true;
     }
 
-    /**
-     * Removes goods from this goods container.
-     *
-     * @param goods The <code>Goods</code> to remove from this container.
-     * @return The <code>Goods</code> actually removed.
-     */
-    public Goods removeGoods(AbstractGoods goods) {
-        return removeGoods(goods.getType(), goods.getAmount());
-    }
+// TODO Remove unused code found by UCDetector
+//     /**
+//      * Removes goods from this goods container.
+//      *
+//      * @param goods The <code>Goods</code> to remove from this container.
+//      * @return The <code>Goods</code> actually removed.
+//      */
+//     public Goods removeGoods(AbstractGoods goods) {
+//         return removeGoods(goods.getType(), goods.getAmount());
+//     }
 
     /**
      * Removes all goods of a given type from this goods container.
@@ -301,19 +304,20 @@ public class GoodsContainer extends FreeColGameObject implements Ownable {
         }
     }
 
-    /**
-     * Checks if any storable type of goods has reached the given amount.
-     *
-     * @param amount The amount to check.
-     * @return True if any storable, capacity limited goods has reached the
-     *     given amount.
-     */
-    public boolean hasReachedCapacity(int amount) {
-        synchronized (this.storedGoods) {
-            return any(this.storedGoods.keySet(), gt -> gt.isStorable()
-                && !gt.limitIgnored() && this.storedGoods.get(gt) > amount);
-        }
-    }
+// TODO Remove unused code found by UCDetector
+//     /**
+//      * Checks if any storable type of goods has reached the given amount.
+//      *
+//      * @param amount The amount to check.
+//      * @return True if any storable, capacity limited goods has reached the
+//      *     given amount.
+//      */
+//     public boolean hasReachedCapacity(int amount) {
+//         synchronized (this.storedGoods) {
+//             return any(this.storedGoods.keySet(), gt -> gt.isStorable()
+//                 && !gt.limitIgnored() && this.storedGoods.get(gt) > amount);
+//         }
+//     }
 
     /**
      * Gets the amount of space that the goods in this container will consume.
@@ -393,29 +397,31 @@ public class GoodsContainer extends FreeColGameObject implements Ownable {
         }
     }
 
-    /**
-     * Restore the current stored goods of this goods container to the
-     * old state.
-     */
-    public void restoreState() {
-        synchronized (this.storedGoods) {
-            synchronized (this.oldStoredGoods) {
-                this.storedGoods.clear();
-                this.storedGoods.putAll(this.oldStoredGoods);
-            }
-        }
-    }
+// TODO Remove unused code found by UCDetector
+//     /**
+//      * Restore the current stored goods of this goods container to the
+//      * old state.
+//      */
+//     public void restoreState() {
+//         synchronized (this.storedGoods) {
+//             synchronized (this.oldStoredGoods) {
+//                 this.storedGoods.clear();
+//                 this.storedGoods.putAll(this.oldStoredGoods);
+//             }
+//         }
+//     }
 
-    /**
-     * Has this goods containers contents changed from what was recorded
-     * last time the state was saved?
-     *
-     * @return True if the contents have changed.
-     */
-    public boolean hasChanged() {
-        return any(getSpecification().getGoodsTypeList(),
-            gt -> getOldGoodsCount(gt) != getGoodsCount(gt));
-    }
+// TODO Remove unused code found by UCDetector
+//     /**
+//      * Has this goods containers contents changed from what was recorded
+//      * last time the state was saved?
+//      *
+//      * @return True if the contents have changed.
+//      */
+//     public boolean hasChanged() {
+//         return any(getSpecification().getGoodsTypeList(),
+//             gt -> getOldGoodsCount(gt) != getGoodsCount(gt));
+//     }
 
     /**
      * Fire property changes for all goods that have seen level changes
@@ -423,7 +429,7 @@ public class GoodsContainer extends FreeColGameObject implements Ownable {
      *
      * @return True if something changed.
      */
-    public boolean fireChanges() {
+    boolean fireChanges() {
         boolean ret = false;
         for (GoodsType type : getSpecification().getGoodsTypeList()) {
             int oldCount = getOldGoodsCount(type);
@@ -469,10 +475,10 @@ public class GoodsContainer extends FreeColGameObject implements Ownable {
 
     // Serialization
 
-    public static final String AMOUNT_TAG = "amount";
-    public static final String OLD_STORED_GOODS_TAG = "oldStoredGoods";
-    public static final String STORED_GOODS_TAG = "storedGoods";
-    public static final String TYPE_TAG = "type";
+    private static final String AMOUNT_TAG = "amount";
+    private static final String OLD_STORED_GOODS_TAG = "oldStoredGoods";
+    private static final String STORED_GOODS_TAG = "storedGoods";
+    private static final String TYPE_TAG = "type";
 
 
     /**

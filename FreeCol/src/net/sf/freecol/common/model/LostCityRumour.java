@@ -114,7 +114,7 @@ public class LostCityRumour extends TileItem {
      * @param type The type of rumour.
      * @param name The name of the rumour.
      */
-    public LostCityRumour(Game game, Tile tile, RumourType type, String name) {
+    LostCityRumour(Game game, Tile tile, RumourType type, String name) {
         super(game, tile);
 
         this.type = type;

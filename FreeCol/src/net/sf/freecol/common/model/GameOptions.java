@@ -28,15 +28,15 @@ package net.sf.freecol.common.model;
 public class GameOptions {
 
     /** Map game option group. */
-    public static final String GAMEOPTIONS_MAP
+    static final String GAMEOPTIONS_MAP
         = "gameOptions.map";
     
     /** The number of turns to sail between Europe and the New World. */
-    public static final String TURNS_TO_SAIL
+    static final String TURNS_TO_SAIL
         = "model.option.turnsToSail";
 
     /** Changes the settlement limits. */
-    public static final String SETTLEMENT_LIMIT_MODIFIER
+    static final String SETTLEMENT_LIMIT_MODIFIER
         = "model.option.settlementLimitModifier";
 
     /** Enables/disables fog of war. */
@@ -48,11 +48,11 @@ public class GameOptions {
         = "model.option.explorationPoints";
 
     /** Allow amphibious moves. */
-    public static final String AMPHIBIOUS_MOVES
+    static final String AMPHIBIOUS_MOVES
         = "model.option.amphibiousMoves";
 
     /** Allow empty units to trade. */
-    public static final String EMPTY_TRADERS
+    static final String EMPTY_TRADERS
         = "model.option.emptyTraders";
 
     /** Do settlement actions consume the chief contact bonus. */
@@ -100,7 +100,7 @@ public class GameOptions {
         = "model.option.initialImmigration";
 
     /** Per turn immigration penalty for units in Europe. */
-    public static final String EUROPEAN_UNIT_IMMIGRATION_PENALTY
+    static final String EUROPEAN_UNIT_IMMIGRATION_PENALTY
         = "model.option.europeanUnitImmigrationPenalty";
 
     /** Per turn player immigration bonus. */
@@ -117,7 +117,7 @@ public class GameOptions {
 
 
     /** Colony game option group. */
-    public static final String GAMEOPTIONS_COLONY
+    static final String GAMEOPTIONS_COLONY
         = "gameOptions.colony";
 
     /** Is bell accumulation capped when 100% rebels achieved? */
@@ -133,7 +133,7 @@ public class GameOptions {
         = "model.option.customIgnoreBoycott";
 
     /** Custom Houses only allowed in coastal colonies? */
-    public static final String CUSTOMS_ON_COAST
+    static final String CUSTOMS_ON_COAST
         = "model.option.customsOnCoast";
 
     /** All units disembark when a carrier arrives in a colony (Col1). */
@@ -148,7 +148,7 @@ public class GameOptions {
         = "model.option.expertsHaveConnections";
 
     /** Can colonies be founded during the war of independence? */
-    public static final String FOUND_COLONY_DURING_REBELLION
+    static final String FOUND_COLONY_DURING_REBELLION
         = "model.option.foundColonyDuringRebellion";
 
     /**
@@ -186,7 +186,7 @@ public class GameOptions {
      * production of secondary (non-food) goods on the colony center
      * tile.
      */
-    public static final String ONLY_NATURAL_IMPROVEMENTS
+    static final String ONLY_NATURAL_IMPROVEMENTS
         = "model.option.onlyNaturalImprovements";
 
     /** Enable natural disasters striking colonies. */
@@ -198,9 +198,10 @@ public class GameOptions {
     // public static final String HAMMER_PRICE = "hammerPrice";
 
 
-    /** Victory conditions game option group. */
-    public static final String GAMEOPTIONS_VICTORY_CONDITIONS
-        = "gameOptions.victoryConditions";
+// TODO Remove unused code found by UCDetector
+     /** Victory conditions game option group. */
+     public static final String GAMEOPTIONS_VICTORY_CONDITIONS
+         = "gameOptions.victoryConditions";
 
     /**
      * Victory condition: Should the <code>Player</code> who first
@@ -225,7 +226,7 @@ public class GameOptions {
 
 
     /** Years game option group. */
-    public static final String GAMEOPTIONS_YEARS
+    static final String GAMEOPTIONS_YEARS
         = "gameOptions.years";
 
     /**
@@ -233,14 +234,14 @@ public class GameOptions {
      * value only shortens the game.  In future, it might cause the map
      * generator to create foreign colonies.
      */
-    public static final String STARTING_YEAR
+    static final String STARTING_YEAR
         = "model.option.startingYear";
 
     /**
      * The first year in which there are two seasons.  Changing this
      * value influences the duration of the game.
      */
-    public static final String SEASON_YEAR
+    static final String SEASON_YEAR
         = "model.option.seasonYear";
 
     /** The year in which owning at least one colony becomes mandatory. */
@@ -248,7 +249,7 @@ public class GameOptions {
         = "model.option.mandatoryColonyYear";
 
     /** The very last year of the game. */
-    public static final String LAST_YEAR
+    static final String LAST_YEAR
         = "model.option.lastYear";
 
     /**
@@ -256,7 +257,7 @@ public class GameOptions {
      * words, if a colonial player does not declare independence by
      * the end of this year, the game is lost.
      */
-    public static final String LAST_COLONIAL_YEAR
+    static final String LAST_COLONIAL_YEAR
         = "model.option.lastColonialYear";
 
     /**
@@ -272,11 +273,11 @@ public class GameOptions {
         = "model.option.independenceTurn";
 
     /** The "ages" where founding father weights change, specified as years. */
-    public static final String AGES
+    static final String AGES
         = "model.option.ages";
 
     /** The number of seasons. */
-    public static final String SEASONS
+    static final String SEASONS
         = "model.option.seasons";
     
     
@@ -284,18 +285,18 @@ public class GameOptions {
      * Prices game option group.
      * This group is synthesized at game initialization.
      */
-    public static final String GAMEOPTIONS_PRICES
+    static final String GAMEOPTIONS_PRICES
         = "gameOptions.prices";
     
 
     // Difficulty options are effectively special multi-valued game options.
 
     /** Immigration (difficulty) group. */
-    public static final String DIFFICULTY_IMMIGRATION
+    static final String DIFFICULTY_IMMIGRATION
         = "model.difficulty.immigration";
 
     /** Rate cross requirement increases. */
-    public static final String CROSSES_INCREMENT
+    static final String CROSSES_INCREMENT
         = "model.option.crossesIncrement";
 
     /** Rate recruitment prices increase. */
@@ -307,7 +308,7 @@ public class GameOptions {
         = "model.option.lowerCapIncrease";
 
     /** A price increase prefix. */
-    public static final String PRICE_INCREASE
+    static final String PRICE_INCREASE
         = "model.option.priceIncrease";
 
     /** Are there price increases specific to unit type. */
@@ -315,7 +316,7 @@ public class GameOptions {
         = "model.option.priceIncreasePerType";
 
     /** Are the initial immigrants expert units. */
-    public static final String EXPERT_STARTING_UNITS
+    static final String EXPERT_STARTING_UNITS
         = "model.option.expertStartingUnits";
 
     /** Predefined initial immigrants. */
@@ -324,19 +325,19 @@ public class GameOptions {
 
 
     /** Native (difficulty) group. */
-    public static final String DIFFICULTY_NATIVES
+    static final String DIFFICULTY_NATIVES
         = "model.difficulty.natives";
 
     /** Base multiplier from land productivity to price. */
-    public static final String LAND_PRICE_FACTOR
+    static final String LAND_PRICE_FACTOR
         = "model.option.landPriceFactor";
 
     /** Probability of an attack extracting converts. */
-    public static final String NATIVE_CONVERT_PROBABILITY
+    static final String NATIVE_CONVERT_PROBABILITY
         = "model.option.nativeConvertProbability";
 
     /** Probability of angry natives burning missions. */
-    public static final String BURN_PROBABILITY
+    static final String BURN_PROBABILITY
         = "model.option.burnProbability";
 
     /** Factor for how a successful native demand reduces tension. */
@@ -356,16 +357,17 @@ public class GameOptions {
         = "model.option.destroySettlementScore";
 
     /** The behaviour when building on native land. */
-    public static final String BUILD_ON_NATIVE_LAND
+    static final String BUILD_ON_NATIVE_LAND
         = "model.option.buildOnNativeLand";
-    public static final String BUILD_ON_NATIVE_LAND_ALWAYS
+    static final String BUILD_ON_NATIVE_LAND_ALWAYS
         = "model.option.buildOnNativeLand.always";
-    public static final String BUILD_ON_NATIVE_LAND_FIRST
+    static final String BUILD_ON_NATIVE_LAND_FIRST
         = "model.option.buildOnNativeLand.first";
-    public static final String BUILD_ON_NATIVE_LAND_FIRST_AND_UNCONTACTED
+    static final String BUILD_ON_NATIVE_LAND_FIRST_AND_UNCONTACTED
         = "model.option.buildOnNativeLand.firstAndUncontacted";
-    public static final String BUILD_ON_NATIVE_LAND_NEVER
-        = "model.option.buildOnNativeLand.never";
+// TODO Remove unused code found by UCDetector
+     public static final String BUILD_ON_NATIVE_LAND_NEVER
+         = "model.option.buildOnNativeLand.never";
 
     /**
      * Option for setting the number of settlements on the map.
@@ -376,30 +378,30 @@ public class GameOptions {
 
 
     /** Monarch (difficulty) group. */
-    public static final String DIFFICULTY_MONARCH
+    static final String DIFFICULTY_MONARCH
         = "model.difficulty.monarch";
 
     /**
      * The grace period at the start of the game before the monarch
      * begins to meddle.
      */
-    public static final String MONARCH_MEDDLING
+    static final String MONARCH_MEDDLING
         = "model.option.monarchMeddling";
 
     /** Moderating factor for tax raises. */
-    public static final String TAX_ADJUSTMENT
+    static final String TAX_ADJUSTMENT
         = "model.option.taxAdjustment";
 
     /** Percentage of real price to change for mercenary units. */
-    public static final String MERCENARY_PRICE
+    static final String MERCENARY_PRICE
         = "model.option.mercenaryPrice";
 
     /** Maximum tax rate. */
-    public static final String MAXIMUM_TAX
+    static final String MAXIMUM_TAX
         = "model.option.maximumTax";
 
     /** The degree of monarch support. */
-    public static final String MONARCH_SUPPORT
+    static final String MONARCH_SUPPORT
         = "model.option.monarchSupport";
 
     /** Percentage fee for transporting treasures to Europe. */
@@ -411,7 +413,7 @@ public class GameOptions {
         = "model.option.interventionBells";
 
     /** How often to update the intervention force. */
-    public static final String INTERVENTION_TURNS
+    static final String INTERVENTION_TURNS
         = "model.option.interventionTurns";
 
     /** The basic composition of the REF.  "refSize" is a legacy term. */
@@ -419,15 +421,15 @@ public class GameOptions {
         = "model.option.refSize";
 
     /** The basic composition of the intervention force. */
-    public static final String INTERVENTION_FORCE
+    static final String INTERVENTION_FORCE
         = "model.option.interventionForce";
 
     /** The basic composition of the mercenary force. */
-    public static final String MERCENARY_FORCE
+    static final String MERCENARY_FORCE
         = "model.option.mercenaryForce";
 
     /** The base mercenary force sometimes supplied with a war declaration. */
-    public static final String WAR_SUPPORT_FORCE
+    static final String WAR_SUPPORT_FORCE
         = "model.option.warSupportForce";
 
     /** The base amount of gold sometimes supplied with a war declaration. */
@@ -435,7 +437,7 @@ public class GameOptions {
         = "model.option.warSupportGold";
 
     /** Government (difficulty) group. */
-    public static final String DIFFICULTY_GOVERNMENT
+    static final String DIFFICULTY_GOVERNMENT
         = "model.difficulty.government";
 
     /** The percent SoL to achieve "bad" government. */
@@ -447,16 +449,16 @@ public class GameOptions {
         = "model.option.veryBadGovernmentLimit";
 
     /** The percent SoL to achieve "good" government. */
-    public static final String GOOD_GOVERNMENT_LIMIT
+    static final String GOOD_GOVERNMENT_LIMIT
         = "model.option.goodGovernmentLimit";
 
     /** The percent SoL to achieve "very good" government. */
-    public static final String VERY_GOOD_GOVERNMENT_LIMIT
+    static final String VERY_GOOD_GOVERNMENT_LIMIT
         = "model.option.veryGoodGovernmentLimit";
 
 
     /** Other (difficulty) group. */
-    public static final String DIFFICULTY_OTHER
+    static final String DIFFICULTY_OTHER
         = "model.difficulty.other";
 
     /** The amount of money each player will receive before the game starts. */
@@ -464,7 +466,7 @@ public class GameOptions {
         = "model.option.startingMoney";
 
     /** Rate the bells for founding father recruitment grows. */
-    public static final String FOUNDING_FATHER_FACTOR
+    static final String FOUNDING_FATHER_FACTOR
         = "model.option.foundingFatherFactor";
 
     /** Retributive markup on tea party goods. */
@@ -472,11 +474,11 @@ public class GameOptions {
         = "model.option.arrearsFactor";
 
     /** The number of units that do not consume bells. */
-    public static final String UNITS_THAT_USE_NO_BELLS
+    static final String UNITS_THAT_USE_NO_BELLS
         = "model.option.unitsThatUseNoBells";
 
     /** Tile production. */
-    public static final String TILE_PRODUCTION
+    static final String TILE_PRODUCTION
         = "model.option.tileProduction";
 
     /** Bad rumour chance. */
@@ -484,12 +486,12 @@ public class GameOptions {
         = "model.option.badRumour";
 
     /** Good rumour chance. */
-    public static final String GOOD_RUMOUR
+    static final String GOOD_RUMOUR
         = "model.option.goodRumour";
 
 
     /** Cheat (difficulty) group. */
-    public static final String DIFFICULTY_CHEAT
+    static final String DIFFICULTY_CHEAT
         = "model.difficulty.cheat";
 
     public static final String LIFT_BOYCOTT_CHEAT

@@ -37,7 +37,7 @@ import net.sf.freecol.common.model.Operand.OperandType;
 public final class Limit extends FreeColSpecObjectType {
 
     /** The basic operation used in evaluating this limit. */
-    public static enum Operator {
+    static enum Operator {
         EQ, LT, GT, LE, GE
     }
 
@@ -67,7 +67,7 @@ public final class Limit extends FreeColSpecObjectType {
      * @param specification The <code>Specification</code> to refer to.
      * @exception XMLStreamException if there is a problem reading.
      */
-    public Limit(FreeColXMLReader xr, Specification specification) throws XMLStreamException {
+    Limit(FreeColXMLReader xr, Specification specification) throws XMLStreamException {
         super(specification);
 
         readFromXML(xr);

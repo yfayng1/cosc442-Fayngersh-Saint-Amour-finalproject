@@ -38,9 +38,10 @@ import net.sf.freecol.common.io.FreeColXMLWriter;
  * A type of equipment.  Equipment differs from goods (although it is often
  * derived from it) in that it must be attached to a unit.
  */
-public class EquipmentType extends BuildableType {
+class EquipmentType extends BuildableType {
 
-    public static final EquipmentType[] NO_EQUIPMENT = new EquipmentType[0];
+// TODO Remove unused code found by UCDetector
+//     public static final EquipmentType[] NO_EQUIPMENT = new EquipmentType[0];
 
     /** The maximum number of equipment items that can be combined. */
     private int maximumCount = 1;
@@ -72,15 +73,16 @@ public class EquipmentType extends BuildableType {
     private List<String> compatibleEquipment = null;
 
 
-    /**
-     * Simple constructor.
-     *
-     * @param id The object identifier.
-     * @param specification The <code>Specification</code> to refer to.
-     */
-    public EquipmentType(String id, Specification specification) {
-        super(id, specification);
-    }
+// TODO Remove unused code found by UCDetector
+     /**
+      * Simple constructor.
+      *
+      * @param id The object identifier.
+      * @param specification The <code>Specification</code> to refer to.
+      */
+     public EquipmentType(String id, Specification specification) {
+         super(id, specification);
+     }
 
 
     /**
@@ -101,45 +103,48 @@ public class EquipmentType extends BuildableType {
         return combatLossPriority;
     }
 
-    /**
-     * Can this equipment type be captured in combat?
-     *
-     * @return True if this equipment can be captured.
-     */
-    public boolean canBeCaptured() {
-        return combatLossPriority > 0;
-    }
+// TODO Remove unused code found by UCDetector
+//     /**
+//      * Can this equipment type be captured in combat?
+//      *
+//      * @return True if this equipment can be captured.
+//      */
+//     public boolean canBeCaptured() {
+//         return combatLossPriority > 0;
+//     }
 
-    /**
-     * Get the type of equipment to capture, handling the case where
-     * Europeans and Indians use different <code>EquipmentType</code>s
-     * for the same underlying goods.
-     *
-     * @param byIndians Is the capture by the Indians?
-     * @return The captured <code>EquipmentType</code>.
-     */
-    public EquipmentType getCaptureEquipment(boolean byIndians) {
-        return (captureEquipmentId != null
-                && byIndians == captureEquipmentByIndians)
-            ? getSpecification().getEquipmentType(captureEquipmentId)
-            : this;
-    }
+// TODO Remove unused code found by UCDetector
+//     /**
+//      * Get the type of equipment to capture, handling the case where
+//      * Europeans and Indians use different <code>EquipmentType</code>s
+//      * for the same underlying goods.
+//      *
+//      * @param byIndians Is the capture by the Indians?
+//      * @return The captured <code>EquipmentType</code>.
+//      */
+//     public EquipmentType getCaptureEquipment(boolean byIndians) {
+//         return (captureEquipmentId != null
+//                 && byIndians == captureEquipmentByIndians)
+//             ? getSpecification().getEquipmentType(captureEquipmentId)
+//             : this;
+//     }
 
-    /**
-     * Is this type of equipment compatible with the given type of equipment?
-     *
-     * @param otherType The other <code>EquipmentType</code>.
-     * @return True if the equipment is compatible.
-     */
-    public boolean isCompatibleWith(EquipmentType otherType) {
-        if (this.getId().equals(otherType.getId())) {
-            // model.equipment.tools for example
-            return true;
-        }
-        return compatibleEquipment != null
-            && compatibleEquipment.contains(otherType.getId())
-            && otherType.compatibleEquipment.contains(getId());
-    }
+// TODO Remove unused code found by UCDetector
+//     /**
+//      * Is this type of equipment compatible with the given type of equipment?
+//      *
+//      * @param otherType The other <code>EquipmentType</code>.
+//      * @return True if the equipment is compatible.
+//      */
+//     public boolean isCompatibleWith(EquipmentType otherType) {
+//         if (this.getId().equals(otherType.getId())) {
+//             // model.equipment.tools for example
+//             return true;
+//         }
+//         return compatibleEquipment != null
+//             && compatibleEquipment.contains(otherType.getId())
+//             && otherType.compatibleEquipment.contains(getId());
+//     }
 
     /**
      * Add a compatible equipment identifier.

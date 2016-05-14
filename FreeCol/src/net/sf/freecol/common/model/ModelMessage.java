@@ -112,7 +112,7 @@ public class ModelMessage extends StringTemplate {
      *               message should be associated with.
      * @param display The <code>FreeColObject</code> to display.
      */
-    public ModelMessage(MessageType messageType, String id, String defaultId,
+    ModelMessage(MessageType messageType, String id, String defaultId,
                         FreeColGameObject source, FreeColObject display) {
         super(id, defaultId, TemplateType.TEMPLATE);
 
@@ -154,7 +154,7 @@ public class ModelMessage extends StringTemplate {
      * @param xr The <code>FreeColXMLReader</code> to read from.
      * @exception XMLStreamException if there is a problem reading the stream.
      */
-    public ModelMessage(FreeColXMLReader xr) throws XMLStreamException {
+    ModelMessage(FreeColXMLReader xr) throws XMLStreamException {
 
         readFromXML(xr);
     }
@@ -202,7 +202,7 @@ public class ModelMessage extends StringTemplate {
      *
      * @param newSource A new source.
      */
-    public void divert(FreeColGameObject newSource) {
+    void divert(FreeColGameObject newSource) {
         if (Utils.equals(displayId, sourceId)) displayId = newSource.getId();
         sourceId = newSource.getId();
     }
@@ -230,7 +230,7 @@ public class ModelMessage extends StringTemplate {
      *
      * @return True if this message has been displayed.
      */
-    public boolean hasBeenDisplayed() {
+    boolean hasBeenDisplayed() {
         return beenDisplayed;
     }
 

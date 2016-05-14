@@ -46,15 +46,16 @@ public class EuropeanNationType extends NationType {
     private final Map<String, Map<String, AbstractUnit>> startingUnitMap = new HashMap<>();
 
 
-    /**
-     * Create a new European nation type.
-     *
-     * @param id The object identifier.
-     * @param specification The <code>Specification</code> to refer to.
-     */
-    public EuropeanNationType(String id, Specification specification) {
-        super(id, specification);
-    }
+// TODO Remove unused code found by UCDetector
+     /**
+      * Create a new European nation type.
+      *
+      * @param id The object identifier.
+      * @param specification The <code>Specification</code> to refer to.
+      */
+     public EuropeanNationType(String id, Specification specification) {
+         super(id, specification);
+     }
 
 
     /**
@@ -104,7 +105,7 @@ public class EuropeanNationType extends NationType {
      * @param key The value of the expert-starting-units field.
      * @return A list of <code>AbstractUnit</code>s to start with.
      */
-    public List<AbstractUnit> getStartingUnits(String key) {
+    private List<AbstractUnit> getStartingUnits(String key) {
         Map<String, AbstractUnit> result = new HashMap<>();
         Map<String, AbstractUnit> defaultMap = startingUnitMap.get(null);
         Map<String, AbstractUnit> difficultyMap = startingUnitMap.get(key);

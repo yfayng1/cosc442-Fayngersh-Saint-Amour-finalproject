@@ -122,7 +122,7 @@ public class HistoryEvent extends StringTemplate {
      * @param xr The <code>FreeColXMLReader</code> to read from.
      * @exception XMLStreamException if there is a problem reading the stream.
      */
-    public HistoryEvent(FreeColXMLReader xr) throws XMLStreamException {
+    HistoryEvent(FreeColXMLReader xr) throws XMLStreamException {
         readFromXML(xr);
     }
 

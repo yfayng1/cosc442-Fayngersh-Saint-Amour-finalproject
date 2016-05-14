@@ -146,7 +146,7 @@ public class LandMap {
      * @param y The y coordinate.
      * @return True if there coordinate is valid.
      */
-    public boolean isValid(int x, int y) {
+    private boolean isValid(int x, int y) {
         return x >= 0 && x < this.width && y >= 0 && y < this.height;
     }
 

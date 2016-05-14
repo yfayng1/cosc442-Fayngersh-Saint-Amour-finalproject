@@ -64,7 +64,7 @@ public final class LastSale extends FreeColObject {
      * @param when In which <code>Turn</code> the sale occurred.
      * @param price The per-unit price of the sale.
      */
-    public LastSale(String id, Turn when, int price) {
+    private LastSale(String id, Turn when, int price) {
         setId(id);
         this.when = when;
         this.price = price;
@@ -76,7 +76,7 @@ public final class LastSale extends FreeColObject {
      * @param xr The <code>FreeColXMLReader</code> to read from.
      * @exception XMLStreamException if there is a problem reading the stream.
      */
-    public LastSale(FreeColXMLReader xr) throws XMLStreamException {
+    LastSale(FreeColXMLReader xr) throws XMLStreamException {
         readFromXML(xr);
     }
 
@@ -107,7 +107,7 @@ public final class LastSale extends FreeColObject {
      *
      * @return A key string.
      */
-    public static String makeKey(Location where, GoodsType what) {
+    static String makeKey(Location where, GoodsType what) {
         return where.getId() + "-" + what.getId();
     }
 

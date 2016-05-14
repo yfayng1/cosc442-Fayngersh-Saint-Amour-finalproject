@@ -115,7 +115,7 @@ public class IndianSettlement extends Settlement implements TradeLocation {
      * At the client side, only the information regarding the player
      * on that client should be included.
      */
-    protected final java.util.Map<Player, ContactLevel> contactLevels = new HashMap<>();
+    private final java.util.Map<Player, ContactLevel> contactLevels = new HashMap<>();
 
     /** Units that belong to this settlement. */
     protected final List<Unit> ownedUnits = new ArrayList<>();
@@ -127,7 +127,7 @@ public class IndianSettlement extends Settlement implements TradeLocation {
     protected int convertProgress = 0;
 
     /** The number of the turn during which the last tribute was paid. */
-    protected int lastTribute = 0;
+    private int lastTribute = 0;
 
     /** The most hated nation. */
     protected Player mostHated = null;
@@ -232,7 +232,7 @@ public class IndianSettlement extends Settlement implements TradeLocation {
      *       owns.
      * @return a <code>boolean</code> value
      */
-    public boolean removeOwnedUnit(Unit unit) {
+    boolean removeOwnedUnit(Unit unit) {
         if (unit == null) {
             throw new IllegalArgumentException("Parameter 'unit' must not be 'null'.");
         }
@@ -665,21 +665,22 @@ public class IndianSettlement extends Settlement implements TradeLocation {
         this.forSale.addAll(forSale);
     }
 
-    /**
-     * Is a unit permitted to make contact with this settlement?
-     * The unit must be from a nation that has already made contact,
-     * or in the first instance, must be arriving by land, with the
-     * exception of trading ships.
-     *
-     * @param unit The <code>Unit</code> that proposes to contact this
-     *             settlement.
-     * @return True if the settlement accepts such contact.
-     */
-    public boolean allowContact(Unit unit) {
-        return unit.getOwner().hasContacted(owner)
-            || !unit.isNaval()
-            || unit.hasGoodsCargo();
-    }
+// TODO Remove unused code found by UCDetector
+     /**
+      * Is a unit permitted to make contact with this settlement?
+      * The unit must be from a nation that has already made contact,
+      * or in the first instance, must be arriving by land, with the
+      * exception of trading ships.
+      *
+      * @param unit The <code>Unit</code> that proposes to contact this
+      *             settlement.
+      * @return True if the settlement accepts such contact.
+      */
+     public boolean allowContact(Unit unit) {
+         return unit.getOwner().hasContacted(owner)
+             || !unit.isNaval()
+             || unit.hasGoodsCargo();
+     }
 
     /**
      * Gets the amount of gold this <code>IndianSettlment</code>
@@ -796,7 +797,7 @@ public class IndianSettlement extends Settlement implements TradeLocation {
      * @param type The <code>GoodsType</code>.
      * @return The amount of goods wanted.
      */
-    protected int getWantedGoodsAmount(GoodsType type) {
+    private int getWantedGoodsAmount(GoodsType type) {
         if (getUnitCount() <= 0) return 0;
 
         final Specification spec = getSpecification();
@@ -985,7 +986,7 @@ public class IndianSettlement extends Settlement implements TradeLocation {
      * @return The maximum amount, of the given type of goods, that can
      *         be produced in one turn.
      */
-    public int getMaximumProduction(GoodsType goodsType) {
+    private int getMaximumProduction(GoodsType goodsType) {
         return sum(getTile().getSurroundingTiles(0, getRadius()),
             t -> t.getOwningSettlement() == null
                 || t.getOwningSettlement() == this,
@@ -1393,10 +1394,10 @@ public class IndianSettlement extends Settlement implements TradeLocation {
     private static final String PLAYER_TAG = "player";
     // Public for now while 0.10.7 backward compatibility code in Tile
     // for PlayerExploredTile needs to check these.
-    public static final String LEARNABLE_SKILL_TAG = "learnableSkill";
-    public static final String WANTED_GOODS_TAG = "wantedGoods";
+    static final String LEARNABLE_SKILL_TAG = "learnableSkill";
+    static final String WANTED_GOODS_TAG = "wantedGoods";
     // @compat 0.10.1
-    public static final String OLD_UNITS_TAG = "units";
+    private static final String OLD_UNITS_TAG = "units";
     // end @compat
 
 

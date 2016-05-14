@@ -281,7 +281,7 @@ public final class Market extends FreeColGameObject implements Ownable {
      * @param goodsType The <code>GoodsType</code> to get the sales for.
      * @return The current sales amount.
      */
-    public int getSales(GoodsType goodsType) {
+    int getSales(GoodsType goodsType) {
         MarketData data = getMarketData(goodsType);
         return (data == null) ? 0 : data.getSales();
     }
@@ -306,7 +306,7 @@ public final class Market extends FreeColGameObject implements Ownable {
      * @param goodsType The <code>GoodsType</code> to get the income for.
      * @return The current income before taxes.
      */
-    public int getIncomeBeforeTaxes(GoodsType goodsType) {
+    int getIncomeBeforeTaxes(GoodsType goodsType) {
         MarketData data = getMarketData(goodsType);
         return (data == null) ? 0 : data.getIncomeBeforeTaxes();
     }

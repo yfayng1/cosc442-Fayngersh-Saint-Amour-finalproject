@@ -45,19 +45,20 @@ public class HighSeas extends UnitLocation {
      *
      * @param game The enclosing <code>Game</code>.
      */
-    public HighSeas(Game game) {
+    HighSeas(Game game) {
         super(game);
     }
 
-    /**
-     * Create a new high seas.
-     *
-     * @param game The enclosing <code>Game</code>.
-     * @param id The object identifier.
-     */
-    public HighSeas(Game game, String id) {
-        super(game, id);
-    }
+// TODO Remove unused code found by UCDetector
+     /**
+      * Create a new high seas.
+      *
+      * @param game The enclosing <code>Game</code>.
+      * @param id The object identifier.
+      */
+     public HighSeas(Game game, String id) {
+         super(game, id);
+     }
 
 
     /**
@@ -74,7 +75,7 @@ public class HighSeas extends UnitLocation {
      *
      * @param destination A destination <code>Location</code>.
      */
-    public void addDestination(Location destination) {
+    void addDestination(Location destination) {
         if (destination != null) {
             if (!destinations.contains(destination)) {
                 destinations.add(destination);
@@ -92,7 +93,7 @@ public class HighSeas extends UnitLocation {
      *
      * @param destination A destination <code>Location</code>.
      */
-    public void removeDestination(Location destination) {
+    void removeDestination(Location destination) {
         destinations.remove(destination);
     }
 

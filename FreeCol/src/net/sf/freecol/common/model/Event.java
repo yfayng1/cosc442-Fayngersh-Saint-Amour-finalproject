@@ -62,7 +62,7 @@ public class Event extends FreeColSpecObjectType {
      * @param specification The <code>Specification</code> to refer to.
      * @exception XMLStreamException if there a problem reading the stream.
      */
-    public Event(FreeColXMLReader xr, Specification specification) throws XMLStreamException {
+    Event(FreeColXMLReader xr, Specification specification) throws XMLStreamException {
         super(specification);
 
         readFromXML(xr);

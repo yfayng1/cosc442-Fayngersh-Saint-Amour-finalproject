@@ -56,7 +56,7 @@ public abstract class FreeColSpecObject extends FreeColObject {
      * @param returnClass The expected class of the object.
      * @return The new spec object, or null on error.
      */
-    public static <T extends FreeColObject> T newInstance(Specification spec,
+    static <T extends FreeColObject> T newInstance(Specification spec,
         Class<T> returnClass) {
         try {
             return Introspector.instantiate(returnClass,

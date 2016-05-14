@@ -91,7 +91,7 @@ public abstract class FreeColObject
      * @param returnClass The required FreeColObject class.
      * @return The new object or null on error.
      */
-    public static <T extends FreeColObject> T newInstance(Class<T> returnClass) {
+    static <T extends FreeColObject> T newInstance(Class<T> returnClass) {
         try {
             return Introspector.instantiate(returnClass,
                 new Class[] {}, new Object[] {});
@@ -154,7 +154,7 @@ public abstract class FreeColObject
      * @param id The identifier to examine.
      * @return The type part of the identifier, or null on error.
      */
-    public static String getIdType(String id) {
+    static String getIdType(String id) {
         if (id != null) {
             int col = id.indexOf(':');
             return (col >= 0) ? id.substring(0, col) : id;
@@ -272,29 +272,33 @@ public abstract class FreeColObject
         pcs.addPropertyChangeListener(propertyName, listener);
     }
 
-    public void fireIndexedPropertyChange(String propertyName, int index, boolean oldValue, boolean newValue) {
-        if (pcs != null) {
-            pcs.fireIndexedPropertyChange(propertyName, index, oldValue, newValue);
-        }
-    }
+// TODO Remove unused code found by UCDetector
+//     public void fireIndexedPropertyChange(String propertyName, int index, boolean oldValue, boolean newValue) {
+//         if (pcs != null) {
+//             pcs.fireIndexedPropertyChange(propertyName, index, oldValue, newValue);
+//         }
+//     }
 
-    public void fireIndexedPropertyChange(String propertyName, int index, int oldValue, int newValue) {
-        if (pcs != null) {
-            pcs.fireIndexedPropertyChange(propertyName, index, oldValue, newValue);
-        }
-    }
+// TODO Remove unused code found by UCDetector
+//     public void fireIndexedPropertyChange(String propertyName, int index, int oldValue, int newValue) {
+//         if (pcs != null) {
+//             pcs.fireIndexedPropertyChange(propertyName, index, oldValue, newValue);
+//         }
+//     }
 
-    public void fireIndexedPropertyChange(String propertyName, int index, Object oldValue, Object newValue) {
-        if (pcs != null) {
-            pcs.fireIndexedPropertyChange(propertyName, index, oldValue, newValue);
-        }
-    }
+// TODO Remove unused code found by UCDetector
+//     public void fireIndexedPropertyChange(String propertyName, int index, Object oldValue, Object newValue) {
+//         if (pcs != null) {
+//             pcs.fireIndexedPropertyChange(propertyName, index, oldValue, newValue);
+//         }
+//     }
 
-    public void firePropertyChange(PropertyChangeEvent event) {
-        if (pcs != null) {
-            pcs.firePropertyChange(event);
-        }
-    }
+// TODO Remove unused code found by UCDetector
+//     public void firePropertyChange(PropertyChangeEvent event) {
+//         if (pcs != null) {
+//             pcs.firePropertyChange(event);
+//         }
+//     }
 
     public void firePropertyChange(String propertyName, boolean oldValue, boolean newValue) {
         if (pcs != null) {
@@ -319,14 +323,16 @@ public abstract class FreeColObject
             : pcs.getPropertyChangeListeners();
     }
 
-    public PropertyChangeListener[] getPropertyChangeListeners(String propertyName) {
-        return (pcs == null) ? new PropertyChangeListener[0]
-            : pcs.getPropertyChangeListeners(propertyName);
-    }
+// TODO Remove unused code found by UCDetector
+//     public PropertyChangeListener[] getPropertyChangeListeners(String propertyName) {
+//         return (pcs == null) ? new PropertyChangeListener[0]
+//             : pcs.getPropertyChangeListeners(propertyName);
+//     }
 
-    public boolean hasListeners(String propertyName) {
-        return (pcs == null) ? false : pcs.hasListeners(propertyName);
-    }
+// TODO Remove unused code found by UCDetector
+//     public boolean hasListeners(String propertyName) {
+//         return (pcs == null) ? false : pcs.hasListeners(propertyName);
+//     }
 
     public void removePropertyChangeListener(PropertyChangeListener listener) {
         if (pcs != null) {
@@ -392,15 +398,16 @@ public abstract class FreeColObject
         return FeatureContainer.hasAbility(getAbilities(id, fcgot, turn));
     }
 
-    /**
-     * Checks if this object contains a given ability key.
-     *
-     * @param key The key to check.
-     * @return True if the key is present.
-     */
-    public boolean containsAbilityKey(String key) {
-        return !getAbilities(key, null, null).isEmpty();
-    }
+// TODO Remove unused code found by UCDetector
+//     /**
+//      * Checks if this object contains a given ability key.
+//      *
+//      * @param key The key to check.
+//      * @return True if the key is present.
+//      */
+//     public boolean containsAbilityKey(String key) {
+//         return !getAbilities(key, null, null).isEmpty();
+//     }
 
     /**
      * Gets a sorted copy of the abilities of this object.
@@ -441,7 +448,7 @@ public abstract class FreeColObject
      *     ability applies to.
      * @return A set of abilities.
      */
-    public final Set<Ability> getAbilities(String id,
+    private final Set<Ability> getAbilities(String id,
                                            FreeColSpecObjectType fcgot) {
         return getAbilities(id, fcgot, null);
     }
@@ -492,7 +499,7 @@ public abstract class FreeColObject
      *
      * @param id The object identifier.
      */
-    public void removeAbilities(String id) {
+    void removeAbilities(String id) {
         FeatureContainer fc = getFeatureContainer();
         if (fc != null) fc.removeAbilities(id);
     }
@@ -516,7 +523,7 @@ public abstract class FreeColObject
      *     modifier applies to.
      * @return True if the modifier is present.
      */
-    public final boolean hasModifier(String id, FreeColSpecObjectType fcgot) {
+    private final boolean hasModifier(String id, FreeColSpecObjectType fcgot) {
         return hasModifier(id, fcgot, null);
     }
 
@@ -529,7 +536,7 @@ public abstract class FreeColObject
      * @param turn An optional applicable <code>Turn</code>.
      * @return True if the modifier is present.
      */
-    public boolean hasModifier(String id, FreeColSpecObjectType fcgot,
+    private boolean hasModifier(String id, FreeColSpecObjectType fcgot,
                                Turn turn) {
         return !getModifiers(id, fcgot, turn).isEmpty();
     }
@@ -540,7 +547,7 @@ public abstract class FreeColObject
      * @param key The key to check.
      * @return True if the key is present.
      */
-    public final boolean containsModifierKey(String key) {
+    final boolean containsModifierKey(String key) {
         Set<Modifier> set = getModifiers(key);
         return (set == null) ? false : !set.isEmpty();
     }
@@ -584,7 +591,7 @@ public abstract class FreeColObject
      *     modifier applies to.
      * @return A set of modifiers.
      */
-    public final Set<Modifier> getModifiers(String id,
+    final Set<Modifier> getModifiers(String id,
                                             FreeColSpecObjectType fcgot) {
         return getModifiers(id, fcgot, null);
     }
@@ -646,7 +653,7 @@ public abstract class FreeColObject
      * @param mods The <code>Modifier</code>s to apply.
      * @return The modified number.
      */
-    public static final float applyModifiers(float number, Turn turn,
+    static final float applyModifiers(float number, Turn turn,
                                              Collection<Modifier> mods) {
         return FeatureContainer.applyModifiers(number, turn, mods);
     }
@@ -680,7 +687,7 @@ public abstract class FreeColObject
      *
      * @param id The object identifier.
      */
-    public void removeModifiers(String id) {
+    void removeModifiers(String id) {
         FeatureContainer fc = getFeatureContainer();
         if (fc != null) fc.removeModifiers(id);
     }
@@ -701,7 +708,7 @@ public abstract class FreeColObject
      *
      * @param fco The <code>FreeColObject</code> to find features to remove in.
      */
-    public void removeFeatures(FreeColObject fco) {
+    void removeFeatures(FreeColObject fco) {
         FeatureContainer fc = getFeatureContainer();
         if (fc != null) fc.removeFeatures(fco);
     }
@@ -819,21 +826,22 @@ public abstract class FreeColObject
     /**
      * Debugging tool, dump object XML to System.err.
      */
-    public void dumpObject() {
+    void dumpObject() {
         save(System.err, WriteScope.toSave(), false);
     }
 
-    /**
-     * Debugging tool, dump collection XML to System.err.
-     *
-     * @param <T> The collection member type.
-     * @param items The collection to dump.
-     */
-    public static <T extends FreeColObject> void dumpCollection(Collection<T> items) {
-        System.err.println("[Collection begin ");
-        for (T t : items) t.dumpObject();
-        System.err.println(" collection end]");
-    }
+// TODO Remove unused code found by UCDetector
+//     /**
+//      * Debugging tool, dump collection XML to System.err.
+//      *
+//      * @param <T> The collection member type.
+//      * @param items The collection to dump.
+//      */
+//     public static <T extends FreeColObject> void dumpCollection(Collection<T> items) {
+//         System.err.println("[Collection begin ");
+//         for (T t : items) t.dumpObject();
+//         System.err.println(" collection end]");
+//     }
 
     /**
      * Writes the object to the given file.
@@ -855,7 +863,7 @@ public abstract class FreeColObject
      * @return True if the save proceeded without error.
      * @exception FileNotFoundException if unable to open the file.
      */
-    public boolean save(File file, WriteScope scope)
+    private boolean save(File file, WriteScope scope)
         throws FileNotFoundException {
         return save(file, scope, false);
     }
@@ -920,7 +928,7 @@ public abstract class FreeColObject
      * @exception XMLStreamException if there are any problems writing
      *     to the stream.
      */
-    public String serialize(WriteScope scope) throws XMLStreamException {
+    private String serialize(WriteScope scope) throws XMLStreamException {
         StringWriter sw = new StringWriter();
         try (
             FreeColXMLWriter xw = new FreeColXMLWriter(sw, scope);
@@ -942,7 +950,7 @@ public abstract class FreeColObject
      * @exception XMLStreamException if there are any problems writing
      *     to the stream.
      */
-    public String serialize() throws XMLStreamException {
+    String serialize() throws XMLStreamException {
         return serialize(WriteScope.toServer());
     }
 
@@ -1174,7 +1182,7 @@ public abstract class FreeColObject
      * @exception XMLStreamException if a problem was encountered
      *      during parsing.
      */
-    public final void readFromXMLPartial(FreeColXMLReader xr) throws XMLStreamException {
+    private final void readFromXMLPartial(FreeColXMLReader xr) throws XMLStreamException {
         final Class theClass = getClass();
         final String tag = xr.getLocalName();
         int n = xr.getAttributeCount();

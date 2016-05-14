@@ -59,7 +59,7 @@ public class GoodsTradeItem extends TradeItem {
      * @param xr The <code>FreeColXMLReader</code> to read from.
      * @exception XMLStreamException if there is an error reading the stream.
      */
-    public GoodsTradeItem(Game game, FreeColXMLReader xr) throws XMLStreamException {
+    GoodsTradeItem(Game game, FreeColXMLReader xr) throws XMLStreamException {
         super(game, xr);
     }
 

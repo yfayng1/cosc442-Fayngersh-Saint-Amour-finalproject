@@ -51,12 +51,14 @@ public class Effect extends FreeColSpecObjectType {
         = "model.disaster.effect.lossOfMoney";
     public static final String LOSS_OF_GOODS
         = "model.disaster.effect.lossOfGoods";
-    public static final String LOSS_OF_TILE_PRODUCTION
-        = "model.disaster.effect.lossOfTileProduction";
+// TODO Remove unused code found by UCDetector
+//     public static final String LOSS_OF_TILE_PRODUCTION
+//         = "model.disaster.effect.lossOfTileProduction";
     public static final String LOSS_OF_BUILDING
         = "model.disaster.effect.lossOfBuilding";
-    public static final String LOSS_OF_BUILDING_PRODUCTION
-        = "model.disaster.effect.lossOfBuildingProduction";
+// TODO Remove unused code found by UCDetector
+//     public static final String LOSS_OF_BUILDING_PRODUCTION
+//         = "model.disaster.effect.lossOfBuildingProduction";
 
     /** The probability of this effect. */
     private int probability;
@@ -77,7 +79,7 @@ public class Effect extends FreeColSpecObjectType {
      * @param specification The <code>Specification</code> to refer to.
      * @exception XMLStreamException if an error occurs
      */
-    public Effect(FreeColXMLReader xr, Specification specification) throws XMLStreamException {
+    Effect(FreeColXMLReader xr, Specification specification) throws XMLStreamException {
         setSpecification(specification);
         readFromXML(xr);
     }
@@ -87,7 +89,7 @@ public class Effect extends FreeColSpecObjectType {
      *
      * @param template The <code>Effect</code> to copy from.
      */
-    public Effect(Effect template) {
+    Effect(Effect template) {
         setId(template.getId());
         setSpecification(template.getSpecification());
         this.probability = template.probability;

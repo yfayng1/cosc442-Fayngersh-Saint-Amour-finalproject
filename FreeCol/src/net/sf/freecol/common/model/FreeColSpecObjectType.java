@@ -79,7 +79,7 @@ public abstract class FreeColSpecObjectType extends FreeColSpecObject
      *
      * @param id The object identifier.
      */
-    public FreeColSpecObjectType(String id) {
+    FreeColSpecObjectType(String id) {
         this(id, null);
     }
 
@@ -89,7 +89,7 @@ public abstract class FreeColSpecObjectType extends FreeColSpecObject
      *
      * @param specification The <code>Specification</code> to refer to.
      */
-    public FreeColSpecObjectType(Specification specification) {
+    FreeColSpecObjectType(Specification specification) {
         this(null, specification);
     }
 
@@ -100,7 +100,7 @@ public abstract class FreeColSpecObjectType extends FreeColSpecObject
      * @param id The object identifier.
      * @param specification The <code>Specification</code> to refer to.
      */
-    public FreeColSpecObjectType(String id, Specification specification) {
+    FreeColSpecObjectType(String id, Specification specification) {
         super(specification);
 
         setId(id);

@@ -84,7 +84,7 @@ public class MarketData extends FreeColGameObject {
      * @param game The enclosing <code>Game</code>.
      * @param goodsType The <code>GoodsType</code> this market data describes.
      */
-    public MarketData(Game game, GoodsType goodsType) {
+    MarketData(Game game, GoodsType goodsType) {
         super(game);
 
         this.goodsType = goodsType;
@@ -313,7 +313,7 @@ public class MarketData extends FreeColGameObject {
      *
      * @return True if the price changes.
      */
-    public boolean price() {
+    boolean price() {
         if (!goodsType.isStorable()) return false;
         int diff = goodsType.getPriceDifference();
         float amountPrice = initialPrice * (goodsType.getInitialAmount()
@@ -382,7 +382,7 @@ public class MarketData extends FreeColGameObject {
     /**
      * Update the pricing of this datum, ignoring the price change clamp.
      */
-    public void update() {
+    void update() {
         costToBuy = -1; // Disable price change clamping
         price();
     }

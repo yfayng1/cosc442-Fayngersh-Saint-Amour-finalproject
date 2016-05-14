@@ -93,7 +93,7 @@ public class DiplomaticTrade extends FreeColGameObject {
      * @param game The enclosing <code>Game</code>.
      * @param id The identifier (ignored).
      */
-    public DiplomaticTrade(Game game, String id) {
+    private DiplomaticTrade(Game game, String id) {
         super(game, ""); // Identifier not required
     }
         
@@ -243,14 +243,15 @@ public class DiplomaticTrade extends FreeColGameObject {
         this.items.remove(newItem);
     }
 
-    /**
-     * Remove from the DiplomaticTrade.
-     *
-     * @param index The index of the <code>TradeItem</code> to remove
-     */
-    public void remove(int index) {
-        this.items.remove(index);
-    }
+// TODO Remove unused code found by UCDetector
+     /**
+      * Remove from the DiplomaticTrade.
+      *
+      * @param index The index of the <code>TradeItem</code> to remove
+      */
+     public void remove(int index) {
+         this.items.remove(index);
+     }
 
     /**
      * Removes all trade items of the same class as the given argument.
@@ -292,14 +293,15 @@ public class DiplomaticTrade extends FreeColGameObject {
         return this.items.isEmpty();
     }
 
-    /**
-     * Get an iterator for all the TradeItems.
-     *
-     * @return An iterator for all TradeItems.
-     */
-    public Iterator<TradeItem> iterator() {
-        return this.items.iterator();
-    }
+// TODO Remove unused code found by UCDetector
+     /**
+      * Get an iterator for all the TradeItems.
+      *
+      * @return An iterator for all TradeItems.
+      */
+     public Iterator<TradeItem> iterator() {
+         return this.items.iterator();
+     }
 
     /**
      * Get the items offered by a particular player.

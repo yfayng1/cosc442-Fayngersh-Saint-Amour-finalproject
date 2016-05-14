@@ -165,7 +165,7 @@ public class Game extends FreeColGameObject {
      * Serialization is not needed directly as these must be completely
      * within { players, unknownEnemy, map } which are directly serialized.
      */
-    protected final HashMap<String, WeakReference<FreeColGameObject>> freeColGameObjects;
+    private final HashMap<String, WeakReference<FreeColGameObject>> freeColGameObjects;
 
     /**
      * The combat model this game uses. At the moment, the only combat
@@ -188,7 +188,7 @@ public class Game extends FreeColGameObject {
      * Usually this is the AIMain instance.
      * FIXME: is this better done with a property change listener?
      */
-    protected FreeColGameObjectListener freeColGameObjectListener = null;
+    private FreeColGameObjectListener freeColGameObjectListener = null;
 
 
     /**
@@ -538,17 +538,18 @@ public class Game extends FreeColGameObject {
             Collectors.toList());
     }
 
-    /**
-     * Get live players in the game, optionally excluding supplied ones.
-     *
-     * @param players The <code>Player</code>s to exclude.
-     * @return A list of live <code>Player</code>s, with exclusions.
-     */
-    public List<Player> getOtherLivePlayers(Player... players) {
-        List<Player> result = getLivePlayers(null);
-        for (Player other : players) result.remove(other);
-        return result;
-    }
+// TODO Remove unused code found by UCDetector
+     /**
+      * Get live players in the game, optionally excluding supplied ones.
+      *
+      * @param players The <code>Player</code>s to exclude.
+      * @return A list of live <code>Player</code>s, with exclusions.
+      */
+     public List<Player> getOtherLivePlayers(Player... players) {
+         List<Player> result = getLivePlayers(null);
+         for (Player other : players) result.remove(other);
+         return result;
+     }
 
     /**
      * Get the live European players in this game.
@@ -593,7 +594,7 @@ public class Game extends FreeColGameObject {
      *     current player.
      * @see #getNextPlayer
      */
-    public Player getPlayerAfter(Player beforePlayer) {
+    private Player getPlayerAfter(Player beforePlayer) {
         if (players.isEmpty()) return null;
 
         final int start = players.indexOf(beforePlayer);
@@ -921,7 +922,7 @@ public class Game extends FreeColGameObject {
      * @param id The object identifier.
      * @param fcgo The new <code>FreeColGameObject</code>.
      */
-    public void notifySetFreeColGameObject(String id, FreeColGameObject fcgo) {
+    private void notifySetFreeColGameObject(String id, FreeColGameObject fcgo) {
         if (freeColGameObjectListener != null) {
             freeColGameObjectListener.setFreeColGameObject(id, fcgo);
         }
@@ -932,7 +933,7 @@ public class Game extends FreeColGameObject {
      *
      * @param id The object identifier.
      */
-    public void notifyRemoveFreeColGameObject(String id) {
+    private void notifyRemoveFreeColGameObject(String id) {
         if (freeColGameObjectListener != null) {
             freeColGameObjectListener.removeFreeColGameObject(id);
         }
@@ -945,7 +946,7 @@ public class Game extends FreeColGameObject {
      * @param oldOwner The old owning <code>Player</code>.
      * @param newOwner The new owning <code>Player</code>.
      */
-    public void notifyOwnerChanged(FreeColGameObject source,
+    void notifyOwnerChanged(FreeColGameObject source,
                                    Player oldOwner, Player newOwner) {
         if (freeColGameObjectListener != null) {
             freeColGameObjectListener.ownerChanged(source, oldOwner, newOwner);
@@ -961,7 +962,7 @@ public class Game extends FreeColGameObject {
      * @param oldOwner The previous (possible unchanged) owning
      *     <code>Player</code>.
      */
-    public void checkOwners(Ownable o, Player oldOwner) {
+    void checkOwners(Ownable o, Player oldOwner) {
         Player newOwner = o.getOwner();
         if (oldOwner == newOwner) return;
 
@@ -1096,28 +1097,29 @@ public class Game extends FreeColGameObject {
         return locationClasses.get(tag);
     }
 
-    /**
-     * Unserialize from XML to a FreeColObject in this game.
-     *
-     * @param <T> The actual return type.
-     * @param xml The xml serialized version of an object.
-     * @param returnClass The expected object class.
-     * @return The unserialized object.
-     * @exception XMLStreamException if there are any problems reading from
-     *     the stream.
-     */
-    public <T extends FreeColObject> T unserialize(String xml,
-        Class<T> returnClass) throws XMLStreamException {
-        try {
-            FreeColXMLReader xr = new FreeColXMLReader(new StringReader(xml));
-            xr.nextTag();
-            T ret = FreeColGameObject.newInstance(this, returnClass);
-            ret.readFromXML(xr);
-            return ret;
-
-        } catch (Exception ex) {
-            throw new XMLStreamException(ex);
-        }
+// TODO Remove unused code found by UCDetector
+     /**
+      * Unserialize from XML to a FreeColObject in this game.
+      *
+      * @param <T> The actual return type.
+      * @param xml The xml serialized version of an object.
+      * @param returnClass The expected object class.
+      * @return The unserialized object.
+      * @exception XMLStreamException if there are any problems reading from
+      *     the stream.
+      */
+     public <T extends FreeColObject> T unserialize(String xml,
+         Class<T> returnClass) throws XMLStreamException {
+         try {
+             FreeColXMLReader xr = new FreeColXMLReader(new StringReader(xml));
+             xr.nextTag();
+             T ret = FreeColGameObject.newInstance(this, returnClass);
+             ret.readFromXML(xr);
+             return ret;
+ 
+         } catch (Exception ex) {
+             throw new XMLStreamException(ex);
+         }
     }
 
 

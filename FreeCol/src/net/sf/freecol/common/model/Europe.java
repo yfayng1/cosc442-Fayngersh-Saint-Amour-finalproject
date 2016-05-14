@@ -52,9 +52,9 @@ public class Europe extends UnitLocation
     /** The initial lower bound on recruitment price. */
     private static final int LOWER_CAP_INITIAL = 80;
 
-    public static final String UNIT_CHANGE = "unitChange";
+    static final String UNIT_CHANGE = "unitChange";
 
-    public static final Ability ABILITY_DRESS_MISSIONARY
+    private static final Ability ABILITY_DRESS_MISSIONARY
         = new Ability(Ability.DRESS_MISSIONARY, true);
 
     /**

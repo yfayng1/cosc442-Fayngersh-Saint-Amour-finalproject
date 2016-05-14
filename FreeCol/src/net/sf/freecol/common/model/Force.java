@@ -61,7 +61,7 @@ public class Force extends FreeColSpecObject {
      *
      * @param specification The <code>Specification</code> for this object.
      */
-    public Force(Specification specification) {
+    Force(Specification specification) {
         super(specification);
     }
 
@@ -73,7 +73,7 @@ public class Force extends FreeColSpecObject {
      * @param ability An optional ability name required of the units
      *     in the force.
      */
-    public Force(Specification specification, List<AbstractUnit> units,
+    Force(Specification specification, List<AbstractUnit> units,
                  String ability) {
         this(specification);
         for (AbstractUnit unit : units) {
@@ -114,7 +114,7 @@ public class Force extends FreeColSpecObject {
     /**
      * Update the space and capacity variables.
      */
-    public final void updateSpaceAndCapacity() {
+    final void updateSpaceAndCapacity() {
         final Specification spec = getSpecification();
         this.capacity = sum(this.navalUnits,
             nu -> nu.getType(spec).canCarryUnits(),
@@ -205,13 +205,13 @@ public class Force extends FreeColSpecObject {
      *     consider the land units.
      * @return The approximate offence power.
      */
-    public double calculateStrength(boolean naval) {
+    double calculateStrength(boolean naval) {
         return AbstractUnit.calculateStrength(getSpecification(),
             (naval) ? this.navalUnits : this.landUnits);
     }
 
     // @compat 0.10.x
-    public void fixOldREFRoles() {
+    void fixOldREFRoles() {
         Iterator<AbstractUnit> aui = landUnits.iterator();
         List<AbstractUnit> todo = new ArrayList<>();
         while (aui.hasNext()) {
@@ -235,8 +235,8 @@ public class Force extends FreeColSpecObject {
                     
     // Serialization
 
-    public static final String LAND_UNITS_TAG = "landUnits";
-    public static final String NAVAL_UNITS_TAG = "navalUnits";
+    static final String LAND_UNITS_TAG = "landUnits";
+    static final String NAVAL_UNITS_TAG = "navalUnits";
     // @compat 0.10.5
     // public for now, revert to private
     // end @compat

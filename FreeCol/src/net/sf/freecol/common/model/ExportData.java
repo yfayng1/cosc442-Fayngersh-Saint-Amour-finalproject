@@ -67,7 +67,7 @@ public class ExportData extends FreeColObject {
      * @param goodsType The <code>GoodsType</code> this data refers to.
      * @param importLevel The import level to use.
      */
-    public ExportData(GoodsType goodsType, int importLevel) {
+    ExportData(GoodsType goodsType, int importLevel) {
         setId(goodsType.getId());
         setImportLevel(importLevel);
     }
@@ -78,7 +78,7 @@ public class ExportData extends FreeColObject {
      * @param xr The <code>FreeColXMLReader</code> to read.
      * @exception XMLStreamException if there is a problem reading the stream.
      */
-    public ExportData(FreeColXMLReader xr) throws XMLStreamException {
+    ExportData(FreeColXMLReader xr) throws XMLStreamException {
         readFromXML(xr);
     }
 

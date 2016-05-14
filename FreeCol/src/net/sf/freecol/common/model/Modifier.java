@@ -39,29 +39,29 @@ import org.w3c.dom.Element;
  */
 public class Modifier extends Feature {
 
-    public static final String AMPHIBIOUS_ATTACK
+    static final String AMPHIBIOUS_ATTACK
         = "model.modifier.amphibiousAttack";
-    public static final String ARTILLERY_AGAINST_RAID
+    static final String ARTILLERY_AGAINST_RAID
         = "model.modifier.artilleryAgainstRaid";
-    public static final String ARTILLERY_IN_THE_OPEN
+    static final String ARTILLERY_IN_THE_OPEN
         = "model.modifier.artilleryInTheOpen";
-    public static final String ATTACK_BONUS
+    static final String ATTACK_BONUS
         = "model.modifier.attackBonus";
-    public static final String BIG_MOVEMENT_PENALTY
+    static final String BIG_MOVEMENT_PENALTY
         = "model.modifier.bigMovementPenalty";
-    public static final String BOMBARD_BONUS
+    static final String BOMBARD_BONUS
         = "model.modifier.bombardBonus";
     public static final String BREEDING_DIVISOR
         = "model.modifier.breedingDivisor";
-    public static final String BREEDING_FACTOR
+    static final String BREEDING_FACTOR
         = "model.modifier.breedingFactor";
     public static final String BUILDING_PRICE_BONUS
         = "model.modifier.buildingPriceBonus";
-    public static final String CARGO_PENALTY
+    static final String CARGO_PENALTY
         = "model.modifier.cargoPenalty";
     public static final String COLONY_GOODS_PARTY
         = "model.modifier.colonyGoodsParty";
-    public static final String CONSUME_ONLY_SURPLUS_PRODUCTION
+    static final String CONSUME_ONLY_SURPLUS_PRODUCTION
         = "model.modifier.consumeOnlySurplusProduction";
     public static final String CONVERSION_ALARM_RATE
         = "model.modifier.conversionAlarmRate";
@@ -69,7 +69,7 @@ public class Modifier extends Feature {
         = "model.modifier.conversionSkill";
     public static final String DEFENCE
         = "model.modifier.defence";
-    public static final String EXPLORE_LOST_CITY_RUMOUR
+    static final String EXPLORE_LOST_CITY_RUMOUR
         = "model.modifier.exploreLostCityRumour";
     public static final String EXPOSED_TILES_RADIUS
         = "model.modifier.exposedTilesRadius";
@@ -129,21 +129,21 @@ public class Modifier extends Feature {
     // @compat 0.10.x
     // These are now attached to modifiers in the spec, but
     // Specification.fixup010x() still needs them for now.
-    public static final int RESOURCE_PRODUCTION_INDEX = 10;
-    public static final int COLONY_PRODUCTION_INDEX = 20;
+    static final int RESOURCE_PRODUCTION_INDEX = 10;
+    static final int COLONY_PRODUCTION_INDEX = 20;
     public static final int EXPERT_PRODUCTION_INDEX = 30;
     public static final int FATHER_PRODUCTION_INDEX = 40;
     public static final int IMPROVEMENT_PRODUCTION_INDEX = 50;
     public static final int AUTO_PRODUCTION_INDEX = 60;
     public static final int BUILDING_PRODUCTION_INDEX = 70;
-    public static final int NATION_PRODUCTION_INDEX = 80;
+    static final int NATION_PRODUCTION_INDEX = 80;
     public static final int PARTY_PRODUCTION_INDEX = 90;
     public static final int DISASTER_PRODUCTION_INDEX = 100;
     // end @compat 0.10.x
     public static final int DEFAULT_PRODUCTION_INDEX = 100;
 
     // Specific combat indicies
-    public static final int BASE_COMBAT_INDEX = 10;
+    static final int BASE_COMBAT_INDEX = 10;
     public static final int UNIT_ADDITIVE_COMBAT_INDEX = 20;
     public static final int UNIT_NORMAL_COMBAT_INDEX = 40;
     public static final int ROLE_COMBAT_INDEX = 30;
