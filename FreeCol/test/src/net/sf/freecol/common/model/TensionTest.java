@@ -203,6 +203,17 @@ public class TensionTest {
 		// add additional test code here
 	}
 
+	//Testing the maximum boundary for setValue()
+	@Test
+	public void testSetValue_4()
+		throws Exception {
+		Tension fixture = new Tension();
+		int newValue = 4000;
+		
+		fixture.setValue(newValue);
+		assertEquals(1100, fixture.getValue());
+	}
+	
 	/**
 	 * Run the String toString() method test.
 	 *
